@@ -1,0 +1,263 @@
+<!-- Autor: Agent | Data: 2024 | Operations - TCO, procurement, metricas -->
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8"/>
+<title>Operações & Custos — LLM Security Hub</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen font-sans">
+<div class="fixed top-4 left-4 z-50">
+<a href="index.html" class="inline-flex items-center gap-2 px-3 py-2 bg-sky-600 hover:bg-sky-700 rounded-lg transition text-sm" aria-label="Voltar ao Hub">← Hub</a>
+</div>
+<div class="max-w-6xl mx-auto py-10 px-4">
+<header class="mb-10 text-center">
+<h1 class="text-4xl font-bold mb-2">Operações & Custos</h1>
+<p class="text-slate-300 text-lg">TCO, procurement e <span class="text-amber-400">métricas de negócio</span> para segurança LLM</p>
+</header>
+<div class="mb-8 flex flex-wrap gap-2 justify-center">
+<a href="#tco" class="px-3 py-1 bg-amber-900/40 border border-amber-500/40 rounded hover:bg-amber-900/60 transition">TCO</a>
+<a href="#procurement" class="px-3 py-1 bg-emerald-900/40 border border-emerald-500/40 rounded hover:bg-emerald-900/60 transition">Procurement</a>
+<a href="#metrics" class="px-3 py-1 bg-purple-900/40 border border-purple-500/40 rounded hover:bg-purple-900/60 transition">Métricas</a>
+<a href="#maturity" class="px-3 py-1 bg-cyan-900/40 border border-cyan-500/40 rounded hover:bg-cyan-900/60 transition">Maturidade</a>
+</div>
+<section id="tco" class="mb-10 bg-slate-900/50 border border-amber-500/40 rounded-xl p-6">
+<h2 class="text-2xl font-semibold text-amber-300 mb-4">💰 TCO de Segurança LLM</h2>
+<div class="space-y-6">
+<div class="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+<h3 class="text-lg font-semibold text-amber-200 mb-3">Custos de Implementação</h3>
+<p class="text-sm text-slate-300 mb-3">Investimento inicial para estabelecer programa de segurança LLM. Inclui aquisição de ferramentas, treinamento de equipe, consultoria especializada e setup de infraestrutura.</p>
+<div class="grid md:grid-cols-2 gap-4">
+<div>
+<h4 class="text-sm font-semibold text-amber-100 mb-2">Ferramentas e Licenças</h4>
+<ul class="text-xs text-slate-300 space-y-1">
+<li>• SIEM/Log management: $50k-200k/ano</li>
+<li>• Vulnerability scanners: $20k-80k/ano</li>
+<li>• DLP solutions: $30k-150k/ano</li>
+<li>• Red team tools: $10k-50k/ano</li>
+</ul>
+</div>
+<div>
+<h4 class="text-sm font-semibold text-amber-100 mb-2">Recursos Humanos</h4>
+<ul class="text-xs text-slate-300 space-y-1">
+<li>• AI Security Engineer: $120k-200k/ano</li>
+<li>• Red Team Specialist: $100k-180k/ano</li>
+<li>• Compliance Officer: $90k-150k/ano</li>
+<li>• Treinamento: $5k-15k por pessoa</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+<h3 class="text-lg font-semibold text-amber-200 mb-3">Custos Operacionais</h3>
+<p class="text-sm text-slate-300 mb-3">Despesas recorrentes para manter operação de segurança. Inclui monitoramento 24/7, atualizações, testes periódicos e resposta a incidentes.</p>
+<div class="bg-slate-950 rounded p-3 font-mono text-xs mb-3">
+<p class="text-slate-400 mb-2"># Cálculo de custo operacional mensal</p>
+<p class="text-emerald-400">monitoring_cost = 15000  # SOC 24/7</p>
+<p class="text-emerald-400">tools_maintenance = 8000</p>
+<p class="text-emerald-400">red_team_monthly = 12000  # Testes mensais</p>
+<p class="text-emerald-400">incident_response = 5000  # Média</p>
+<p class="text-emerald-400">total_monthly = 40000  # ~$480k/ano</p>
+</div>
+</div>
+<div class="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+<h3 class="text-lg font-semibold text-amber-200 mb-3">Custos de Compliance</h3>
+<p class="text-sm text-slate-300 mb-3">Investimentos para atender regulamentações (LGPD, GDPR, ISO 27001, SOC 2). Inclui auditorias, certificações, documentação e remediações.</p>
+<ul class="text-xs text-slate-300 space-y-1">
+<li>• Auditoria ISO 27001: $30k-100k (inicial) + $15k-40k/ano</li>
+<li>• SOC 2 Type II: $50k-150k (inicial) + $25k-75k/ano</li>
+<li>• LGPD/GDPR compliance: $40k-120k (setup) + $20k-60k/ano</li>
+<li>• Consultoria jurídica: $10k-30k/ano</li>
+</ul>
+</div>
+<div class="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+<h3 class="text-lg font-semibold text-amber-200 mb-3">ROI de Investimentos</h3>
+<p class="text-sm text-slate-300 mb-3">Retorno calculado através de incidentes evitados, redução de downtime, proteção de reputação e conformidade regulatória.</p>
+<div class="grid md:grid-cols-2 gap-4">
+<div class="p-3 bg-amber-950/20 rounded border border-amber-700">
+<h4 class="text-sm font-semibold text-amber-200 mb-2">Custos Evitados</h4>
+<ul class="text-xs text-slate-300 space-y-1">
+<li>• Data breach: $4.45M (média global)</li>
+<li>• Downtime: $5k-10k/hora</li>
+<li>• Multas LGPD: até 2% receita</li>
+<li>• Danos reputacionais: 20-30% valor marca</li>
+</ul>
+</div>
+<div class="p-3 bg-emerald-950/20 rounded border border-emerald-700">
+<h4 class="text-sm font-semibold text-emerald-200 mb-2">Benefícios Tangíveis</h4>
+<ul class="text-xs text-slate-300 space-y-1">
+<li>• Redução de incidentes: 60-80%</li>
+<li>• Tempo de detecção: -70%</li>
+<li>• Custo por incidente: -50%</li>
+<li>• Confiança de clientes: +40%</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="procurement" class="mb-10 bg-slate-900/50 border border-emerald-500/40 rounded-xl p-6">
+<h2 class="text-2xl font-semibold text-emerald-300 mb-4">🛒 Procurement Seguro</h2>
+<div class="space-y-6">
+<div class="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+<h3 class="text-lg font-semibold text-emerald-200 mb-3">Vendor Assessment Checklist</h3>
+<p class="text-sm text-slate-300 mb-3">Avaliação sistemática de fornecedores LLM antes de contratação. Validar segurança, compliance e capacidades técnicas.</p>
+<div class="grid md:grid-cols-2 gap-4">
+<div>
+<h4 class="text-sm font-semibold text-emerald-100 mb-2">Segurança Técnica</h4>
+<div class="space-y-1">
+<label class="flex items-center text-xs text-slate-300"><input type="checkbox" class="mr-2"/> Certificações (ISO 27001, SOC 2)</label>
+<label class="flex items-center text-xs text-slate-300"><input type="checkbox" class="mr-2"/> Penetration tests recentes</label>
+<label class="flex items-center text-xs text-slate-300"><input type="checkbox" class="mr-2"/> Bug bounty program ativo</label>
+<label class="flex items-center text-xs text-slate-300"><input type="checkbox" class="mr-2"/> Encryption at rest e in transit</label>
+<label class="flex items-center text-xs text-slate-300"><input type="checkbox" class="mr-2"/> Multi-tenancy isolation</label>
+</div>
+</div>
+<div>
+<h4 class="text-sm font-semibold text-emerald-100 mb-2">Compliance e Governança</h4>
+<div class="space-y-1">
+<label class="flex items-center text-xs text-slate-300"><input type="checkbox" class="mr-2"/> LGPD/GDPR compliance</label>
+<label class="flex items-center text-xs text-slate-300"><input type="checkbox" class="mr-2"/> Data residency options</label>
+<label class="flex items-center text-xs text-slate-300"><input type="checkbox" class="mr-2"/> Audit logs disponíveis</label>
+<label class="flex items-center text-xs text-slate-300"><input type="checkbox" class="mr-2"/> Incident response plan</label>
+<label class="flex items-center text-xs text-slate-300"><input type="checkbox" class="mr-2"/> SLA de segurança definido</label>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+<h3 class="text-lg font-semibold text-emerald-200 mb-3">SLA de Segurança</h3>
+<p class="text-sm text-slate-300 mb-3">Acordos de nível de serviço específicos para segurança. Definir métricas, responsabilidades e penalidades.</p>
+<div class="bg-slate-950 rounded p-3 font-mono text-xs">
+<p class="text-slate-400 mb-2"># Exemplo de SLA de segurança</p>
+<p class="text-emerald-400">sla_metrics = {</p>
+<p class="text-emerald-400 ml-4">"uptime": "99.9%",</p>
+<p class="text-emerald-400 ml-4">"incident_response": "< 1 hour",</p>
+<p class="text-emerald-400 ml-4">"vulnerability_patch": "< 48 hours",</p>
+<p class="text-emerald-400 ml-4">"data_breach_notification": "< 24 hours"</p>
+<p class="text-emerald-400">}</p>
+</div>
+</div>
+<div class="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+<h3 class="text-lg font-semibold text-emerald-200 mb-3">Cláusulas Contratuais Críticas</h3>
+<ul class="text-xs text-slate-300 space-y-2">
+<li><strong>Data Ownership:</strong> Cliente mantém propriedade total dos dados. Vendor não pode usar para treinamento sem consentimento explícito.</li>
+<li><strong>Right to Audit:</strong> Cliente pode auditar segurança do vendor anualmente ou após incidentes.</li>
+<li><strong>Data Deletion:</strong> Garantia de deleção completa em até 30 dias após término do contrato.</li>
+<li><strong>Breach Notification:</strong> Vendor deve notificar em 24h qualquer suspeita de comprometimento.</li>
+<li><strong>Liability Cap:</strong> Limite de responsabilidade adequado ao risco (mínimo 2x valor anual do contrato).</li>
+<li><strong>Exit Strategy:</strong> Processo claro de migração e exportação de dados.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="metrics" class="mb-10 bg-slate-900/50 border border-purple-500/40 rounded-xl p-6">
+<h2 class="text-2xl font-semibold text-purple-300 mb-4">📊 Métricas de Negócio</h2>
+<div class="space-y-6">
+<div class="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+<h3 class="text-lg font-semibold text-purple-200 mb-3">KPIs Principais</h3>
+<div class="grid md:grid-cols-3 gap-4">
+<div class="p-3 bg-purple-950/20 rounded border border-purple-700">
+<h4 class="text-sm font-semibold text-purple-200 mb-2">Redução de Incidentes</h4>
+<p class="text-2xl font-bold text-purple-300">-75%</p>
+<p class="text-xs text-slate-400">vs. baseline sem programa</p>
+</div>
+<div class="p-3 bg-blue-950/20 rounded border border-blue-700">
+<h4 class="text-sm font-semibold text-blue-200 mb-2">Tempo de Resposta</h4>
+<p class="text-2xl font-bold text-blue-300">< 15min</p>
+<p class="text-xs text-slate-400">detecção até contenção</p>
+</div>
+<div class="p-3 bg-emerald-950/20 rounded border border-emerald-700">
+<h4 class="text-sm font-semibold text-emerald-200 mb-2">Custo por Incidente</h4>
+<p class="text-2xl font-bold text-emerald-300">$12k</p>
+<p class="text-xs text-slate-400">vs. $48k sem programa</p>
+</div>
+</div>
+</div>
+<div class="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+<h3 class="text-lg font-semibold text-purple-200 mb-3">Dashboard Executivo</h3>
+<div class="space-y-3">
+<div class="flex justify-between items-center p-2 bg-slate-950 rounded">
+<span class="text-sm text-slate-300">Security Posture Score</span>
+<span class="text-lg font-bold text-emerald-400">87/100</span>
+</div>
+<div class="flex justify-between items-center p-2 bg-slate-950 rounded">
+<span class="text-sm text-slate-300">Compliance Rate</span>
+<span class="text-lg font-bold text-sky-400">94%</span>
+</div>
+<div class="flex justify-between items-center p-2 bg-slate-950 rounded">
+<span class="text-sm text-slate-300">Mean Time to Detect (MTTD)</span>
+<span class="text-lg font-bold text-amber-400">8 min</span>
+</div>
+<div class="flex justify-between items-center p-2 bg-slate-950 rounded">
+<span class="text-sm text-slate-300">Mean Time to Respond (MTTR)</span>
+<span class="text-lg font-bold text-purple-400">22 min</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="maturity" class="mb-10 bg-slate-900/50 border border-cyan-500/40 rounded-xl p-6">
+<h2 class="text-2xl font-semibold text-cyan-300 mb-4">📈 Maturity Assessment</h2>
+<div class="space-y-6">
+<div class="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+<h3 class="text-lg font-semibold text-cyan-200 mb-3">Níveis de Maturidade</h3>
+<div class="space-y-3">
+<div class="border-l-4 border-red-500 pl-3">
+<h4 class="text-sm font-semibold text-red-200">Nível 1: Inicial</h4>
+<p class="text-xs text-slate-400">Sem programa formal. Segurança ad-hoc e reativa.</p>
+</div>
+<div class="border-l-4 border-orange-500 pl-3">
+<h4 class="text-sm font-semibold text-orange-200">Nível 2: Gerenciado</h4>
+<p class="text-xs text-slate-400">Políticas básicas. Monitoramento manual. Resposta inconsistente.</p>
+</div>
+<div class="border-l-4 border-yellow-500 pl-3">
+<h4 class="text-sm font-semibold text-yellow-200">Nível 3: Definido</h4>
+<p class="text-xs text-slate-400">Processos documentados. Ferramentas implementadas. Treinamento regular.</p>
+</div>
+<div class="border-l-4 border-emerald-500 pl-3">
+<h4 class="text-sm font-semibold text-emerald-200">Nível 4: Quantitativo</h4>
+<p class="text-xs text-slate-400">Métricas estabelecidas. Automação avançada. Melhoria contínua.</p>
+</div>
+<div class="border-l-4 border-cyan-500 pl-3">
+<h4 class="text-sm font-semibold text-cyan-200">Nível 5: Otimizado</h4>
+<p class="text-xs text-slate-400">Inovação contínua. Threat intelligence. Proativo e preditivo.</p>
+</div>
+</div>
+</div>
+<div class="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+<h3 class="text-lg font-semibold text-cyan-200 mb-3">Self-Assessment</h3>
+<form class="space-y-3">
+<div>
+<label class="text-sm text-slate-300 block mb-1">Políticas de segurança documentadas?</label>
+<select class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-sm">
+<option>Não</option>
+<option>Parcialmente</option>
+<option>Sim, completas</option>
+</select>
+</div>
+<div>
+<label class="text-sm text-slate-300 block mb-1">Monitoramento em tempo real?</label>
+<select class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-sm">
+<option>Não</option>
+<option>Manual</option>
+<option>Automatizado</option>
+</select>
+</div>
+<div>
+<label class="text-sm text-slate-300 block mb-1">Red team exercises?</label>
+<select class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-sm">
+<option>Nunca</option>
+<option>Anual</option>
+<option>Trimestral</option>
+<option>Mensal</option>
+</select>
+</div>
+<button type="button" class="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 rounded text-sm">Calcular Nível</button>
+</form>
+</div>
+</div>
+</section>
+</div>
+</body>
+</html>

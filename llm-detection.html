@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Detecção e Monitoramento — LLM Security</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen font-sans">
+  <!-- Botão fixo de retorno -->
+  <div class="fixed top-4 left-4 z-50">
+    <a href="index.html" class="inline-flex items-center gap-2 px-3 py-2 bg-sky-600 hover:bg-sky-700 rounded-lg transition text-sm">
+      ← Hub
+    </a>
+  </div>
+  
+  <div class="max-w-6xl mx-auto py-10 px-4">
+    <header class="mb-10 text-center">
+      <h1 class="text-4xl font-bold mb-2">Detecção e Monitoramento de Ataques LLM</h1>
+      <p class="text-slate-300 text-lg">
+        Como identificar, alertar e responder a tentativas de exploração em <span class="text-emerald-400">tempo real</span>
+      </p>
+    </header>
+
+    <!-- Navegação -->
+    <div class="mb-8 flex flex-wrap gap-2 justify-center">
+      <a href="#metrics" class="px-3 py-1 bg-emerald-900/40 border border-emerald-500/40 rounded hover:bg-emerald-900/60 transition">Métricas</a>
+      <a href="#detection" class="px-3 py-1 bg-amber-900/40 border border-amber-500/40 rounded hover:bg-amber-900/60 transition">Detecção</a>
+      <a href="#alerting" class="px-3 py-1 bg-rose-900/40 border border-rose-500/40 rounded hover:bg-rose-900/60 transition">Alertas</a>
+      <a href="#response" class="px-3 py-1 bg-purple-900/40 border border-purple-500/40 rounded hover:bg-purple-900/60 transition">Resposta</a>
+    </div>
+
+    <!-- Métricas de Segurança -->
+    <section id="metrics" class="mb-10 bg-slate-900/50 border border-emerald-500/40 rounded-xl p-6">
+      <h2 class="text-2xl font-semibold text-emerald-300 mb-4">📊 Métricas e KPIs de Segurança</h2>
+      
+      <div class="grid md:grid-cols-2 gap-6">
+        <div class="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+          <h3 class="text-lg font-semibold text-emerald-200 mb-3">Métricas de Ataque</h3>
+          <div class="space-y-3">
+            <div class="flex justify-between items-center">
+              <span class="text-sm text-slate-300">Taxa de Jailbreak</span>
+              <code class="text-xs bg-slate-950 px-2 py-1 rounded text-emerald-400">jailbreak_attempts / total_requests</code>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-sm text-slate-300">Prompt Injection Rate</span>
+              <code class="text-xs bg-slate-950 px-2 py-1 rounded text-emerald-400">injection_detected / total_prompts</code>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-sm text-slate-300">Data Extraction Attempts</span>
+              <code class="text-xs bg-slate-950 px-2 py-1 rounded text-emerald-400">extraction_patterns / session</code>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-sm text-slate-300">Anomalous Behavior Score</span>
+              <code class="text-xs bg-slate-950 px-2 py-1 rounded text-emerald-400">ML_anomaly_score > threshold</code>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+          <h3 class="text-lg font-semibold text-emerald-200 mb-3">Métricas de Defesa</h3>
+          <div class="space-y-3">
+            <div class="flex justify-between items-center">
+              <span class="text-sm text-slate-300">Filter Effectiveness</span>
+              <code class="text-xs bg-slate-950 px-2 py-1 rounded text-emerald-400">blocked_attacks / detected_attacks</code>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-sm text-slate-300">False Positive Rate</span>
+              <code class="text-xs bg-slate-950 px-2 py-1 rounded text-emerald-400">false_positives / total_blocks</code>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-sm text-slate-300">Response Time</span>
+              <code class="text-xs bg-slate-950 px-2 py-1 rounded text-emerald-400">detection_to_block_latency</code>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-sm text-slate-300">Coverage Rate</span>
+              <code class="text-xs bg-slate-950 px-2 py-1 rounded text-emerald-400">monitored_endpoints / total_endpoints</code>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Detecção em Tempo Real -->
+    <section id="detection" class="mb-10 bg-slate-900/50 border border-amber-500/40 rounded-xl p-6">
+      <h2 class="text-2xl font-semibold text-amber-300 mb-4">🔍 Sistemas de Detecção</h2>
+      
+      <div class="space-y-6">
+        <!-- Pattern Matching -->
+        <div class="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+          <h3 class="text-lg font-semibold text-amber-200 mb-3">Pattern Matching</h3>
+          <div class="bg-slate-950 rounded p-3 font-mono text-xs">
+            <p class="text-slate-400 mb-2"># Regex patterns para detecção</p>
+            <p class="text-emerald-400">JAILBREAK_PATTERNS = [</p>
+            <p class="text-emerald-400 ml-4">r"ignore.*previous.*instructions?",</p>
+            <p class="text-emerald-400 ml-4">r"you are now.*DAN",</p>
+            <p class="text-emerald-400 ml-4">r"forget.*system.*prompt",</p>
+            <p class="text-emerald-400 ml-4">r"act as.*without.*restrictions"</p>
+            <p class="text-emerald-400">]</p>
+          </div>
+          <p class="text-xs text-slate-400 mt-2">
+            <strong>Limitações:</strong> Facilmente contornável com variações semânticas
+          </p>
+        </div>
+
+        <!-- ML-based Detection -->
+        <div class="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+          <h3 class="text-lg font-semibold text-amber-200 mb-3">Detecção via ML</h3>
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <h4 class="text-sm font-semibold text-amber-100 mb-2">Classificadores de Segurança</h4>
+              <ul class="text-xs text-slate-300 space-y-1">
+                <li>• <strong>Toxicity Classifier:</strong> Detecta conteúdo tóxico/ofensivo</li>
+                <li>• <strong>PII Detector:</strong> Identifica dados pessoais</li>
+                <li>• <strong>Jailbreak Classifier:</strong> Modelo treinado em tentativas conhecidas</li>
+                <li>• <strong>Anomaly Detector:</strong> Isolation Forest para padrões anômalos</li>
+              </ul>
+            </div>
+            <div>
+              <h4 class="text-sm font-semibold text-amber-100 mb-2">Análise Comportamental</h4>
+              <ul class="text-xs text-slate-300 space-y-1">
+                <li>• <strong>Session Analysis:</strong> Padrões de uso por sessão</li>
+                <li>• <strong>Rate Analysis:</strong> Frequência anômala de requests</li>
+                <li>• <strong>Content Similarity:</strong> Detecção de queries repetitivas</li>
+                <li>• <strong>User Profiling:</strong> Desvios do comportamento normal</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Log Analysis -->
+        <div class="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+          <h3 class="text-lg font-semibold text-amber-200 mb-3">Análise de Logs</h3>
+          <div class="bg-slate-950 rounded p-3 font-mono text-xs text-emerald-400">
+            <p class="text-slate-400"># Exemplo de log estruturado</p>
+            <p>{</p>
+            <p class="ml-2">"timestamp": "2024-01-15T10:30:45Z",</p>
+            <p class="ml-2">"user_id": "user_12345",</p>
+            <p class="ml-2">"session_id": "sess_abcdef",</p>
+            <p class="ml-2">"prompt_hash": "sha256_hash",</p>
+            <p class="ml-2">"risk_score": 0.85,</p>
+            <p class="ml-2">"detected_patterns": ["jailbreak", "data_extraction"],</p>
+            <p class="ml-2">"action_taken": "blocked"</p>
+            <p>}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sistema de Alertas -->
+    <section id="alerting" class="mb-10 bg-slate-900/50 border border-rose-500/40 rounded-xl p-6">
+      <h2 class="text-2xl font-semibold text-rose-300 mb-4">🚨 Sistema de Alertas</h2>
+      
+      <div class="grid md:grid-cols-3 gap-4">
+        <div class="bg-rose-950/20 rounded-lg p-4 border border-rose-700">
+          <h3 class="text-sm font-semibold text-rose-200 mb-2">🔴 Crítico</h3>
+          <ul class="text-xs text-slate-300 space-y-1">
+            <li>• System prompt extraction</li>
+            <li>• Successful jailbreak</li>
+            <li>• Data exfiltration detected</li>
+            <li>• Multiple attack vectors</li>
+          </ul>
+          <div class="mt-3 text-xs text-rose-400">
+            <strong>Ação:</strong> Bloqueio imediato + escalação
+          </div>
+        </div>
+
+        <div class="bg-orange-950/20 rounded-lg p-4 border border-orange-700">
+          <h3 class="text-sm font-semibold text-orange-200 mb-2">🟠 Alto</h3>
+          <ul class="text-xs text-slate-300 space-y-1">
+            <li>• Repeated jailbreak attempts</li>
+            <li>• Anomalous usage patterns</li>
+            <li>• Rate limiting violations</li>
+            <li>• Suspicious token patterns</li>
+          </ul>
+          <div class="mt-3 text-xs text-orange-400">
+            <strong>Ação:</strong> Throttling + monitoramento
+          </div>
+        </div>
+
+        <div class="bg-yellow-950/20 rounded-lg p-4 border border-yellow-700">
+          <h3 class="text-sm font-semibold text-yellow-200 mb-2">🟡 Médio</h3>
+          <ul class="text-xs text-slate-300 space-y-1">
+            <li>• Single jailbreak attempt</li>
+            <li>• Unusual prompt patterns</li>
+            <li>• High token consumption</li>
+            <li>• New user behavior</li>
+          </ul>
+          <div class="mt-3 text-xs text-yellow-400">
+            <strong>Ação:</strong> Log + análise posterior
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-6 bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+        <h3 class="text-lg font-semibold text-rose-200 mb-3">Canais de Notificação</h3>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div>
+            <h4 class="text-sm font-semibold text-slate-200 mb-2">Tempo Real</h4>
+            <ul class="text-xs text-slate-300 space-y-1">
+              <li>• Slack/Teams webhooks</li>
+              <li>• PagerDuty integration</li>
+              <li>• SMS para incidentes críticos</li>
+              <li>• Dashboard em tempo real</li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-sm font-semibold text-slate-200 mb-2">Relatórios</h4>
+            <ul class="text-xs text-slate-300 space-y-1">
+              <li>• Relatórios diários por email</li>
+              <li>• Dashboards executivos semanais</li>
+              <li>• Análises de tendências mensais</li>
+              <li>• Compliance reports trimestrais</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Incident Response -->
+    <section id="response" class="mb-10 bg-slate-900/50 border border-purple-500/40 rounded-xl p-6">
+      <h2 class="text-2xl font-semibold text-purple-300 mb-4">🛡️ Incident Response Playbook</h2>
+      
+      <div class="space-y-6">
+        <!-- Fase 1: Detecção -->
+        <div class="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+          <h3 class="text-lg font-semibold text-purple-200 mb-3">1️⃣ Detecção e Triagem</h3>
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <h4 class="text-sm font-semibold text-purple-100 mb-2">Ações Imediatas (0-15min)</h4>
+              <ul class="text-xs text-slate-300 space-y-1">
+                <li>✓ Confirmar alerta verdadeiro/falso positivo</li>
+                <li>✓ Classificar severidade do incidente</li>
+                <li>✓ Isolar usuário/sessão afetada</li>
+                <li>✓ Preservar logs e evidências</li>
+              </ul>
+            </div>
+            <div>
+              <h4 class="text-sm font-semibold text-purple-100 mb-2">Escalação</h4>
+              <ul class="text-xs text-slate-300 space-y-1">
+                <li>• <strong>Crítico:</strong> CISO + Legal + PR</li>
+                <li>• <strong>Alto:</strong> Security Team Lead</li>
+                <li>• <strong>Médio:</strong> SOC Analyst</li>
+                <li>• <strong>Baixo:</strong> Automated response</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fase 2: Contenção -->
+        <div class="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+          <h3 class="text-lg font-semibold text-purple-200 mb-3">2️⃣ Contenção e Mitigação</h3>
+          <div class="bg-slate-950 rounded p-3 font-mono text-xs">
+            <p class="text-slate-400 mb-2"># Ações de contenção automatizadas</p>
+            <p class="text-emerald-400">if risk_score > CRITICAL_THRESHOLD:</p>
+            <p class="text-emerald-400 ml-4">block_user_immediately()</p>
+            <p class="text-emerald-400 ml-4">revoke_api_keys()</p>
+            <p class="text-emerald-400 ml-4">quarantine_session()</p>
+            <p class="text-emerald-400 ml-4">notify_security_team()</p>
+          </div>
+          <div class="mt-3 grid md:grid-cols-2 gap-4">
+            <div>
+              <h4 class="text-sm font-semibold text-purple-100 mb-2">Contenção Técnica</h4>
+              <ul class="text-xs text-slate-300 space-y-1">
+                <li>• Rate limiting agressivo</li>
+                <li>• Bloqueio de IP/User-Agent</li>
+                <li>• Filtros de prompt mais restritivos</li>
+                <li>• Isolamento de instâncias comprometidas</li>
+              </ul>
+            </div>
+            <div>
+              <h4 class="text-sm font-semibold text-purple-100 mb-2">Comunicação</h4>
+              <ul class="text-xs text-slate-300 space-y-1">
+                <li>• Notificar stakeholders internos</li>
+                <li>• Preparar comunicação externa</li>
+                <li>• Documentar timeline do incidente</li>
+                <li>• Coordenar com equipes afetadas</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fase 3: Investigação -->
+        <div class="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+          <h3 class="text-lg font-semibold text-purple-200 mb-3">3️⃣ Investigação Forense</h3>
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <h4 class="text-sm font-semibold text-purple-100 mb-2">Coleta de Evidências</h4>
+              <ul class="text-xs text-slate-300 space-y-1">
+                <li>• Logs completos da sessão</li>
+                <li>• Histórico de prompts e respostas</li>
+                <li>• Metadados de rede (IP, headers)</li>
+                <li>• Análise de padrões de ataque</li>
+              </ul>
+            </div>
+            <div>
+              <h4 class="text-sm font-semibold text-purple-100 mb-2">Análise de Impacto</h4>
+              <ul class="text-xs text-slate-300 space-y-1">
+                <li>• Dados potencialmente expostos</li>
+                <li>• Usuários afetados</li>
+                <li>• Duração do comprometimento</li>
+                <li>• Eficácia das defesas</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fase 4: Recovery -->
+        <div class="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+          <h3 class="text-lg font-semibold text-purple-200 mb-3">4️⃣ Recuperação e Lessons Learned</h3>
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <h4 class="text-sm font-semibold text-purple-100 mb-2">Ações de Recuperação</h4>
+              <ul class="text-xs text-slate-300 space-y-1">
+                <li>• Atualizar filtros de segurança</li>
+                <li>• Patch vulnerabilidades identificadas</li>
+                <li>• Revisar políticas de acesso</li>
+                <li>• Retreinar modelos de detecção</li>
+              </ul>
+            </div>
+            <div>
+              <h4 class="text-sm font-semibold text-purple-100 mb-2">Post-Mortem</h4>
+              <ul class="text-xs text-slate-300 space-y-1">
+                <li>• Documentar root cause</li>
+                <li>• Identificar melhorias de processo</li>
+                <li>• Atualizar playbooks</li>
+                <li>• Treinar equipe em novas técnicas</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Ferramentas de Monitoramento -->
+    <section class="mb-10 bg-slate-900/70 border border-sky-500/40 rounded-xl p-6">
+      <h2 class="text-2xl font-semibold text-sky-300 mb-4">🔧 Stack de Monitoramento</h2>
+      
+      <div class="grid md:grid-cols-3 gap-4">
+        <div class="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+          <h3 class="text-sm font-semibold text-sky-200 mb-2">SIEM/Log Management</h3>
+          <ul class="text-xs text-slate-300 space-y-1">
+            <li>• <strong>Splunk:</strong> Enterprise log analysis</li>
+            <li>• <strong>ELK Stack:</strong> Open-source logging</li>
+            <li>• <strong>Datadog:</strong> Cloud-native monitoring</li>
+            <li>• <strong>Sumo Logic:</strong> SaaS log management</li>
+          </ul>
+        </div>
+
+        <div class="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+          <h3 class="text-sm font-semibold text-sky-200 mb-2">ML/AI Security</h3>
+          <ul class="text-xs text-slate-300 space-y-1">
+            <li>• <strong>Garak:</strong> LLM vulnerability scanner</li>
+            <li>• <strong>PromptInject:</strong> Injection testing</li>
+            <li>• <strong>Adversarial Robustness Toolbox:</strong> IBM</li>
+            <li>• <strong>TextAttack:</strong> NLP adversarial framework</li>
+          </ul>
+        </div>
+
+        <div class="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+          <h3 class="text-sm font-semibold text-sky-200 mb-2">Alerting & Response</h3>
+          <ul class="text-xs text-slate-300 space-y-1">
+            <li>• <strong>PagerDuty:</strong> Incident management</li>
+            <li>• <strong>Opsgenie:</strong> Alert orchestration</li>
+            <li>• <strong>Grafana:</strong> Visualization & dashboards</li>
+            <li>• <strong>Prometheus:</strong> Metrics collection</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+
+  </div>
+</body>
+</html>

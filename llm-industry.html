@@ -1,0 +1,278 @@
+<!-- Autor: Agent | Data: 2024 | Industry - Setores especificos -->
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8"/>
+<title>Setores & Indústrias — LLM Security Hub</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen font-sans">
+<div class="fixed top-4 left-4 z-50">
+<a href="index.html" class="inline-flex items-center gap-2 px-3 py-2 bg-sky-600 hover:bg-sky-700 rounded-lg transition text-sm" aria-label="Voltar ao Hub">← Hub</a>
+</div>
+<div class="max-w-6xl mx-auto py-10 px-4">
+<header class="mb-10 text-center">
+<h1 class="text-4xl font-bold mb-2">Segurança LLM por Setor</h1>
+<p class="text-slate-300 text-lg">Regulamentações, casos de uso e <span class="text-cyan-400">políticas específicas</span> por indústria</p>
+</header>
+<div class="mb-8 flex flex-wrap gap-2 justify-center">
+<a href="#financeiro" class="px-3 py-1 bg-emerald-900/40 border border-emerald-500/40 rounded hover:bg-emerald-900/60 transition">Financeiro</a>
+<a href="#saude" class="px-3 py-1 bg-rose-900/40 border border-rose-500/40 rounded hover:bg-rose-900/60 transition">Saúde</a>
+<a href="#publico" class="px-3 py-1 bg-blue-900/40 border border-blue-500/40 rounded hover:bg-blue-900/60 transition">Público</a>
+<a href="#varejo" class="px-3 py-1 bg-purple-900/40 border border-purple-500/40 rounded hover:bg-purple-900/60 transition">Varejo</a>
+<a href="#educacao" class="px-3 py-1 bg-amber-900/40 border border-amber-500/40 rounded hover:bg-amber-900/60 transition">Educação</a>
+</div>
+<section id="financeiro" class="mb-10 bg-slate-900/50 border border-emerald-500/40 rounded-xl p-6">
+<h2 class="text-2xl font-semibold text-emerald-300 mb-4">🏦 Setor Financeiro</h2>
+<div class="space-y-6">
+<div class="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+<h3 class="text-lg font-semibold text-emerald-200 mb-3">Regulamentações</h3>
+<ul class="text-sm text-slate-300 space-y-2">
+<li><strong>BACEN Resolução 4.658/2018:</strong> Política de Segurança Cibernética. Exige gestão de riscos, controles de acesso e plano de resposta a incidentes.</li>
+<li><strong>BACEN Circular 3.909/2018:</strong> Requisitos para contratação de serviços de processamento e armazenamento de dados. Aplicável a LLMs em cloud.</li>
+<li><strong>CVM Resolução 85/2021:</strong> Governança de dados para mercado de capitais. Inclui uso de IA em decisões de investimento.</li>
+<li><strong>Lei do Sigilo Bancário:</strong> Proteção de dados financeiros. LLMs não podem expor informações de clientes.</li>
+</ul>
+</div>
+<div class="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+<h3 class="text-lg font-semibold text-emerald-200 mb-3">Casos de Uso</h3>
+<div class="grid md:grid-cols-2 gap-4">
+<div>
+<h4 class="text-sm font-semibold text-emerald-100 mb-2">Detecção de Fraude</h4>
+<p class="text-xs text-slate-400 mb-2">LLMs analisam transações e comunicações para identificar padrões fraudulentos.</p>
+<p class="text-xs text-rose-300">Risco: False positives bloqueiam clientes legítimos. Viés pode discriminar grupos.</p>
+</div>
+<div>
+<h4 class="text-sm font-semibold text-emerald-100 mb-2">Chatbots Bancários</h4>
+<p class="text-xs text-slate-400 mb-2">Atendimento automatizado para consultas, transações e suporte.</p>
+<p class="text-xs text-rose-300">Risco: Jailbreak pode expor dados de outros clientes. Phishing via AI.</p>
+</div>
+<div>
+<h4 class="text-sm font-semibold text-emerald-100 mb-2">Análise de Crédito</h4>
+<p class="text-xs text-slate-400 mb-2">Avaliação automatizada de risco de crédito usando dados históricos.</p>
+<p class="text-xs text-rose-300">Risco: Viés algorítmico. Falta de explicabilidade para decisões negativas.</p>
+</div>
+<div>
+<h4 class="text-sm font-semibold text-emerald-100 mb-2">Compliance Automation</h4>
+<p class="text-xs text-slate-400 mb-2">Análise de documentos para KYC, AML e due diligence.</p>
+<p class="text-xs text-rose-300">Risco: Erros podem resultar em não-conformidade e multas.</p>
+</div>
+</div>
+</div>
+<div class="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+<h3 class="text-lg font-semibold text-emerald-200 mb-3">Riscos Específicos</h3>
+<ul class="text-xs text-slate-300 space-y-1">
+<li>• <strong>Market Manipulation:</strong> LLMs gerando análises falsas para influenciar mercados</li>
+<li>• <strong>Insider Trading:</strong> Vazamento de informações privilegiadas via queries</li>
+<li>• <strong>Regulatory Arbitrage:</strong> Uso de IA para contornar regulamentações</li>
+<li>• <strong>Systemic Risk:</strong> Falhas em LLMs amplamente usados afetam todo setor</li>
+</ul>
+</div>
+<div class="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+<h3 class="text-lg font-semibold text-emerald-200 mb-3">Template de Política</h3>
+<p class="text-xs text-slate-400 mb-2">Baixe template customizado para instituições financeiras:</p>
+<a href="/resources/templates/politica-ia-financeiro.docx" class="inline-block px-4 py-2 bg-emerald-600 hover:bg-emerald-700 rounded text-sm">Download Template</a>
+</div>
+</div>
+</section>
+<section id="saude" class="mb-10 bg-slate-900/50 border border-rose-500/40 rounded-xl p-6">
+<h2 class="text-2xl font-semibold text-rose-300 mb-4">🏥 Setor Saúde</h2>
+<div class="space-y-6">
+<div class="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+<h3 class="text-lg font-semibold text-rose-200 mb-3">Regulamentações</h3>
+<ul class="text-sm text-slate-300 space-y-2">
+<li><strong>LGPD Art. 11:</strong> Dados sensíveis de saúde requerem consentimento específico e proteção adicional.</li>
+<li><strong>CFM Resolução 2.314/2022:</strong> Telemedicina e uso de tecnologias. IA deve ter supervisão médica.</li>
+<li><strong>ANVISA RDC 657/2022:</strong> Software como dispositivo médico. LLMs diagnósticos precisam registro.</li>
+<li><strong>HIPAA (EUA):</strong> Para empresas com operações nos EUA. Proteção de PHI (Protected Health Information).</li>
+</ul>
+</div>
+<div class="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+<h3 class="text-lg font-semibold text-rose-200 mb-3">Casos de Uso</h3>
+<div class="grid md:grid-cols-2 gap-4">
+<div>
+<h4 class="text-sm font-semibold text-rose-100 mb-2">Diagnóstico Assistido</h4>
+<p class="text-xs text-slate-400 mb-2">LLMs analisam sintomas, exames e histórico para sugerir diagnósticos.</p>
+<p class="text-xs text-rose-300">Risco: Erro diagnóstico. Responsabilidade médica vs. IA.</p>
+</div>
+<div>
+<h4 class="text-sm font-semibold text-rose-100 mb-2">Triagem Automatizada</h4>
+<p class="text-xs text-slate-400 mb-2">Classificação de urgência em pronto-socorro e telemedicina.</p>
+<p class="text-xs text-rose-300">Risco: Subtriagem pode ser fatal. Viés racial/socioeconômico.</p>
+</div>
+<div>
+<h4 class="text-sm font-semibold text-rose-100 mb-2">Análise de Prontuários</h4>
+<p class="text-xs text-slate-400 mb-2">Extração de insights de registros médicos eletrônicos.</p>
+<p class="text-xs text-rose-300">Risco: Vazamento de dados sensíveis. Cross-patient leakage.</p>
+</div>
+<div>
+<h4 class="text-sm font-semibold text-rose-100 mb-2">Drug Discovery</h4>
+<p class="text-xs text-slate-400 mb-2">Aceleração de pesquisa farmacêutica com IA.</p>
+<p class="text-xs text-rose-300">Risco: Propriedade intelectual. Validação clínica necessária.</p>
+</div>
+</div>
+</div>
+<div class="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+<h3 class="text-lg font-semibold text-rose-200 mb-3">Riscos Específicos</h3>
+<ul class="text-xs text-slate-300 space-y-1">
+<li>• <strong>Medical Malpractice:</strong> Quem é responsável por erro de IA? Médico ou desenvolvedor?</li>
+<li>• <strong>PHI Exposure:</strong> Dados de saúde são altamente sensíveis. Vazamento tem consequências graves.</li>
+<li>• <strong>Bias in Healthcare:</strong> Modelos treinados em populações não-diversas perpetuam desigualdades.</li>
+<li>• <strong>Overreliance:</strong> Médicos podem confiar excessivamente em IA, reduzindo julgamento clínico.</li>
+</ul>
+</div>
+<div class="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+<h3 class="text-lg font-semibold text-rose-200 mb-3">Template de Política</h3>
+<a href="/resources/templates/politica-ia-saude.docx" class="inline-block px-4 py-2 bg-rose-600 hover:bg-rose-700 rounded text-sm">Download Template</a>
+</div>
+</div>
+</section>
+<section id="publico" class="mb-10 bg-slate-900/50 border border-blue-500/40 rounded-xl p-6">
+<h2 class="text-2xl font-semibold text-blue-300 mb-4">🏛️ Setor Público</h2>
+<div class="space-y-6">
+<div class="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+<h3 class="text-lg font-semibold text-blue-200 mb-3">Regulamentações</h3>
+<ul class="text-sm text-slate-300 space-y-2">
+<li><strong>LGPD Art. 23:</strong> Tratamento de dados pelo poder público. Finalidade pública e interesse coletivo.</li>
+<li><strong>Lei de Acesso à Informação:</strong> Transparência em decisões automatizadas. Cidadão tem direito a explicação.</li>
+<li><strong>Marco Civil da Internet:</strong> Princípios de neutralidade e privacidade aplicáveis a serviços públicos digitais.</li>
+<li><strong>EU AI Act:</strong> Sistemas de IA em serviços públicos são considerados "alto risco".</li>
+</ul>
+</div>
+<div class="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+<h3 class="text-lg font-semibold text-blue-200 mb-3">Casos de Uso</h3>
+<div class="grid md:grid-cols-2 gap-4">
+<div>
+<h4 class="text-sm font-semibold text-blue-100 mb-2">Atendimento ao Cidadão</h4>
+<p class="text-xs text-slate-400 mb-2">Chatbots para serviços públicos (INSS, Receita Federal).</p>
+<p class="text-xs text-rose-300">Risco: Informações incorretas. Exclusão digital de idosos.</p>
+</div>
+<div>
+<h4 class="text-sm font-semibold text-blue-100 mb-2">Análise de Políticas Públicas</h4>
+<p class="text-xs text-slate-400 mb-2">IA para avaliar impacto de legislações e programas sociais.</p>
+<p class="text-xs text-rose-300">Risco: Viés político. Falta de transparência em decisões.</p>
+</div>
+<div>
+<h4 class="text-sm font-semibold text-blue-100 mb-2">Detecção de Fraudes</h4>
+<p class="text-xs text-slate-400 mb-2">Identificação de irregularidades em licitações e benefícios.</p>
+<p class="text-xs text-rose-300">Risco: False positives prejudicam cidadãos. Discriminação.</p>
+</div>
+<div>
+<h4 class="text-sm font-semibold text-blue-100 mb-2">Justiça Preditiva</h4>
+<p class="text-xs text-slate-400 mb-2">Análise de processos e sugestão de sentenças.</p>
+<p class="text-xs text-rose-300">Risco: Viés racial/social. Violação de presunção de inocência.</p>
+</div>
+</div>
+</div>
+<div class="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+<h3 class="text-lg font-semibold text-blue-200 mb-3">Riscos Específicos</h3>
+<ul class="text-xs text-slate-300 space-y-1">
+<li>• <strong>Algorithmic Accountability:</strong> Decisões públicas devem ser auditáveis e explicáveis.</li>
+<li>• <strong>Digital Divide:</strong> IA pode excluir populações sem acesso digital.</li>
+<li>• <strong>Surveillance:</strong> Uso de IA para monitoramento massivo viola privacidade.</li>
+<li>• <strong>Democratic Legitimacy:</strong> Decisões automatizadas podem minar processo democrático.</li>
+</ul>
+</div>
+<div class="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+<h3 class="text-lg font-semibold text-blue-200 mb-3">Template de Política</h3>
+<a href="/resources/templates/politica-ia-governo.docx" class="inline-block px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded text-sm">Download Template</a>
+</div>
+</div>
+</section>
+<section id="varejo" class="mb-10 bg-slate-900/50 border border-purple-500/40 rounded-xl p-6">
+<h2 class="text-2xl font-semibold text-purple-300 mb-4">🛒 Varejo & E-commerce</h2>
+<div class="space-y-6">
+<div class="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+<h3 class="text-lg font-semibold text-purple-200 mb-3">Regulamentações</h3>
+<ul class="text-sm text-slate-300 space-y-2">
+<li><strong>CDC (Código de Defesa do Consumidor):</strong> Proteção contra práticas abusivas. IA não pode enganar consumidores.</li>
+<li><strong>LGPD:</strong> Consentimento para uso de dados pessoais em recomendações e marketing.</li>
+<li><strong>Lei do E-commerce:</strong> Transparência em preços dinâmicos e algoritmos de precificação.</li>
+</ul>
+</div>
+<div class="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+<h3 class="text-lg font-semibold text-purple-200 mb-3">Casos de Uso</h3>
+<div class="grid md:grid-cols-2 gap-4">
+<div>
+<h4 class="text-sm font-semibold text-purple-100 mb-2">Recomendações Personalizadas</h4>
+<p class="text-xs text-slate-400 mb-2">LLMs sugerem produtos baseados em histórico e preferências.</p>
+<p class="text-xs text-rose-300">Risco: Filter bubbles. Manipulação de comportamento.</p>
+</div>
+<div>
+<h4 class="text-sm font-semibold text-purple-100 mb-2">Chatbots de Atendimento</h4>
+<p class="text-xs text-slate-400 mb-2">Suporte automatizado para dúvidas e reclamações.</p>
+<p class="text-xs text-rose-300">Risco: Frustração do cliente. Escalação inadequada.</p>
+</div>
+<div>
+<h4 class="text-sm font-semibold text-purple-100 mb-2">Precificação Dinâmica</h4>
+<p class="text-xs text-slate-400 mb-2">Ajuste de preços em tempo real baseado em demanda.</p>
+<p class="text-xs text-rose-300">Risco: Discriminação de preços. Práticas anticompetitivas.</p>
+</div>
+<div>
+<h4 class="text-sm font-semibold text-purple-100 mb-2">Detecção de Fraudes</h4>
+<p class="text-xs text-slate-400 mb-2">Identificação de transações fraudulentas e chargebacks.</p>
+<p class="text-xs text-rose-300">Risco: Bloqueio de clientes legítimos. Perda de vendas.</p>
+</div>
+</div>
+</div>
+<div class="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+<h3 class="text-lg font-semibold text-purple-200 mb-3">Proteção de Dados de Consumidores</h3>
+<ul class="text-xs text-slate-300 space-y-1">
+<li>• Consentimento explícito para uso de dados em IA</li>
+<li>• Direito de opt-out de decisões automatizadas</li>
+<li>• Transparência em algoritmos de recomendação</li>
+<li>• Proteção contra profiling discriminatório</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="educacao" class="mb-10 bg-slate-900/50 border border-amber-500/40 rounded-xl p-6">
+<h2 class="text-2xl font-semibold text-amber-300 mb-4">🎓 Educação</h2>
+<div class="space-y-6">
+<div class="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+<h3 class="text-lg font-semibold text-amber-200 mb-3">Regulamentações</h3>
+<ul class="text-sm text-slate-300 space-y-2">
+<li><strong>ECA (Estatuto da Criança e do Adolescente):</strong> Proteção especial para dados de menores.</li>
+<li><strong>LGPD Art. 14:</strong> Consentimento dos pais para tratamento de dados de crianças.</li>
+<li><strong>COPPA (EUA):</strong> Para plataformas com usuários menores de 13 anos.</li>
+</ul>
+</div>
+<div class="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+<h3 class="text-lg font-semibold text-amber-200 mb-3">Casos de Uso</h3>
+<div class="grid md:grid-cols-2 gap-4">
+<div>
+<h4 class="text-sm font-semibold text-amber-100 mb-2">Tutores Virtuais</h4>
+<p class="text-xs text-slate-400 mb-2">LLMs como assistentes de aprendizagem personalizados.</p>
+<p class="text-xs text-rose-300">Risco: Dependência excessiva. Informações incorretas.</p>
+</div>
+<div>
+<h4 class="text-sm font-semibold text-amber-100 mb-2">Detecção de Plágio</h4>
+<p class="text-xs text-slate-400 mb-2">Identificação de trabalhos gerados por IA.</p>
+<p class="text-xs text-rose-300">Risco: False positives. Estudantes penalizados injustamente.</p>
+</div>
+<div>
+<h4 class="text-sm font-semibold text-amber-100 mb-2">Avaliação Automatizada</h4>
+<p class="text-xs text-slate-400 mb-2">Correção de provas e trabalhos com IA.</p>
+<p class="text-xs text-rose-300">Risco: Viés em avaliação. Falta de feedback qualitativo.</p>
+</div>
+<div>
+<h4 class="text-sm font-semibold text-amber-100 mb-2">Personalização de Ensino</h4>
+<p class="text-xs text-slate-400 mb-2">Adaptação de conteúdo ao ritmo do aluno.</p>
+<p class="text-xs text-rose-300">Risco: Reforço de desigualdades. Exclusão de estilos de aprendizagem.</p>
+</div>
+</div>
+</div>
+<div class="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+<h3 class="text-lg font-semibold text-amber-200 mb-3">Privacidade de Menores</h3>
+<ul class="text-xs text-slate-300 space-y-1">
+<li>• Consentimento parental obrigatório</li>
+<li>• Minimização de coleta de dados</li>
+<li>• Proibição de profiling para marketing</li>
+<li>• Direito ao esquecimento ampliado</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+</body>
+</html>
