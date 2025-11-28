@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <title>Módulo de Firewalls</title>
+    <style>
+        body {
+            background-color: #0a0a0a;
+        }
+        .card:hover .card-title {
+            color: #ef4444; /* Red 500 */
+        }
+        .card-title {
+            transition: color 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-12 animate__animated animate__fadeInDown">
+            <h1 class="text-4xl md:text-5xl font-bold text-red-500" style="text-shadow: 0 0 15px rgba(239, 68, 68, 0.7);">
+                Módulo de Firewalls
+            </h1>
+            <p class="mt-4 text-lg text-gray-400">
+                A primeira linha de defesa da sua rede.
+            </p>
+        </header>
+
+        <main class="animate__animated animate__fadeInUp">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <a href="introducao-tipos.html" class="card block p-6 bg-gray-800 rounded-xl transform transition duration-300 hover:scale-105 hover:bg-gray-700 shadow-lg">
+                    <h3 class="card-title text-xl font-bold text-white mb-2">Introdução e Tipos</h3>
+                    <p class="text-gray-400">O que é um firewall, sua importância e os diferentes tipos (Stateful, Proxy de Aplicação, NGFW).</p>
+                </a>
+                <!-- Card 2 -->
+                <a href="implementacao-configuracao.html" class="card block p-6 bg-gray-800 rounded-xl transform transition duration-300 hover:scale-105 hover:bg-gray-700 shadow-lg">
+                    <h3 class="card-title text-xl font-bold text-white mb-2">Implementação e Configuração</h3>
+                    <p class="text-gray-400">Zonas de segurança (DMZ), criação de políticas, NAT e firewalls de host.</p>
+                </a>
+            </div>
+        </main>
+
+        <footer class="text-center mt-16 animate__animated animate__fadeInUp">
+            <a href="../index.html"
+                class="inline-block bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-full transition-transform transform hover:scale-105 shadow-lg">
+                Voltar ao Módulo de Redes
+            </a>
+        </footer>
+    </div>
+</body>
+</html>

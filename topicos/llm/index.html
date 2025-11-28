@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>LLM Security Hub — Estudo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen font-sans">
+  <div class="max-w-6xl mx-auto py-10 px-4">
+    <header class="mb-10 text-center">
+      <h1 class="text-5xl font-bold mb-4 bg-gradient-to-r from-sky-400 via-emerald-400 to-rose-400 bg-clip-text text-transparent">
+        LLM Security Hub
+      </h1>
+      <p class="text-slate-300 text-xl leading-relaxed">
+        Revisão dos estudos sobre <span class="text-emerald-400">segurança</span>, <span class="text-amber-300">vulnerabilidades</span> e <span class="text-rose-400">exploração</span> de Large Language Models
+      </p>
+    </header>
+
+    <!-- Navegação Principal -->
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+      <!-- Arquitetura -->
+      <a href="llm-architecture.html" class="group bg-slate-900/50 border border-sky-500/40 rounded-xl p-6 hover:border-sky-400 transition-all hover:shadow-[0_0_30px_rgba(14,165,233,0.3)]">
+        <div class="flex items-center gap-3 mb-3">
+          <span class="text-3xl">🏗️</span>
+          <h2 class="text-xl font-semibold text-sky-300">Arquitetura LLM</h2>
+        </div>
+        <p class="text-sm text-slate-400 mb-3">Camadas, componentes e superfície de ataque de modelos de linguagem</p>
+        <div class="text-xs text-sky-400">6 camadas • Vetores de ataque • Defesas</div>
+      </a>
+
+      <!-- Técnicas de Exploração -->
+      <a href="llm-exploits.html" class="group bg-slate-900/50 border border-rose-500/40 rounded-xl p-6 hover:border-rose-400 transition-all hover:shadow-[0_0_30px_rgba(244,63,94,0.3)]">
+        <div class="flex items-center gap-3 mb-3">
+          <span class="text-3xl">⚔️</span>
+          <h2 class="text-xl font-semibold text-rose-300">Técnicas de Exploração</h2>
+        </div>
+        <p class="text-sm text-slate-400 mb-3">Exemplos práticos de ataques e vulnerabilidades conhecidas</p>
+        <div class="text-xs text-rose-400">6 técnicas • Exemplos • Defesas</div>
+      </a>
+
+      <!-- Detecção e Monitoramento -->
+      <a href="llm-detection.html" class="group bg-slate-900/50 border border-emerald-500/40 rounded-xl p-6 hover:border-emerald-400 transition-all hover:shadow-[0_0_30px_rgba(16,185,129,0.3)]">
+        <div class="flex items-center gap-3 mb-3">
+          <span class="text-3xl">🔍</span>
+          <h2 class="text-xl font-semibold text-emerald-300">Detecção & Monitoramento</h2>
+        </div>
+        <p class="text-sm text-slate-400 mb-3">Como identificar e responder a tentativas de ataque</p>
+        <div class="text-xs text-emerald-400">Métricas • Alertas • Incident Response</div>
+      </a>
+
+      <!-- Ferramentas Práticas -->
+      <a href="llm-tools.html" class="group bg-slate-900/50 border border-amber-500/40 rounded-xl p-6 hover:border-amber-400 transition-all hover:shadow-[0_0_30px_rgba(245,158,11,0.3)]">
+        <div class="flex items-center gap-3 mb-3">
+          <span class="text-3xl">🛠️</span>
+          <h2 class="text-xl font-semibold text-amber-300">Ferramentas & Testes</h2>
+        </div>
+        <p class="text-sm text-slate-400 mb-3">Scripts, frameworks e metodologias de teste</p>
+        <div class="text-xs text-amber-400">Red Team • Automação • Benchmarks</div>
+      </a>
+
+      <!-- Governança -->
+      <a href="llm-governance.html" class="group bg-slate-900/50 border border-purple-500/40 rounded-xl p-6 hover:border-purple-400 transition-all hover:shadow-[0_0_30px_rgba(168,85,247,0.3)]">
+        <div class="flex items-center gap-3 mb-3">
+          <span class="text-3xl">⚖️</span>
+          <h2 class="text-xl font-semibold text-purple-300">Governança & Compliance</h2>
+        </div>
+        <p class="text-sm text-slate-400 mb-3">Frameworks, políticas e aspectos legais</p>
+        <div class="text-xs text-purple-400">NIST • ISO 27001 • LGPD • AI Act</div>
+      </a>
+
+      <!-- Casos Reais -->
+      <a href="llm-cases.html" class="group bg-slate-900/50 border border-cyan-500/40 rounded-xl p-6 hover:border-cyan-400 transition-all hover:shadow-[0_0_30px_rgba(6,182,212,0.3)]">
+        <div class="flex items-center gap-3 mb-3">
+          <span class="text-3xl">📊</span>
+          <h2 class="text-xl font-semibold text-cyan-300">Casos & Estudos</h2>
+        </div>
+        <p class="text-sm text-slate-400 mb-3">Incidentes reais e análises de segurança</p>
+        <div class="text-xs text-cyan-400">CVEs • Breaches • Lessons Learned</div>
+      </a>
+
+      <!-- RAG Security -->
+      <a href="llm-rag-security.html" class="group bg-slate-900/50 border border-rose-500/40 rounded-xl p-6 hover:border-rose-400 transition-all hover:shadow-[0_0_30px_rgba(244,63,94,0.3)]">
+        <div class="flex items-center gap-3 mb-3">
+          <span class="text-3xl">🔗</span>
+          <h2 class="text-xl font-semibold text-rose-300">RAG Security</h2>
+        </div>
+        <p class="text-sm text-slate-400 mb-3">Vulnerabilidades em Retrieval Augmented Generation</p>
+        <div class="text-xs text-rose-400">Vector DB • Injection • Data Leakage</div>
+      </a>
+
+      <!-- Multimodal -->
+      <a href="llm-multimodal.html" class="group bg-slate-900/50 border border-purple-500/40 rounded-xl p-6 hover:border-purple-400 transition-all hover:shadow-[0_0_30px_rgba(168,85,247,0.3)]">
+        <div class="flex items-center gap-3 mb-3">
+          <span class="text-3xl">🎨</span>
+          <h2 class="text-xl font-semibold text-purple-300">Multimodal Security</h2>
+        </div>
+        <p class="text-sm text-slate-400 mb-3">Ataques em sistemas Vision + Text + Audio</p>
+        <div class="text-xs text-purple-400">Deepfakes • OCR Injection • Cross-Modal</div>
+      </a>
+
+      <!-- Operações -->
+      <a href="llm-operations.html" class="group bg-slate-900/50 border border-amber-500/40 rounded-xl p-6 hover:border-amber-400 transition-all hover:shadow-[0_0_30px_rgba(245,158,11,0.3)]">
+        <div class="flex items-center gap-3 mb-3">
+          <span class="text-3xl">💰</span>
+          <h2 class="text-xl font-semibold text-amber-300">Operações & Custos</h2>
+        </div>
+        <p class="text-sm text-slate-400 mb-3">TCO, procurement e métricas de negócio</p>
+        <div class="text-xs text-amber-400">ROI • SLA • Maturity Assessment</div>
+      </a>
+
+      <!-- Setorial -->
+      <a href="llm-industry.html" class="group bg-slate-900/50 border border-blue-500/40 rounded-xl p-6 hover:border-blue-400 transition-all hover:shadow-[0_0_30px_rgba(59,130,246,0.3)]">
+        <div class="flex items-center gap-3 mb-3">
+          <span class="text-3xl">🏢</span>
+          <h2 class="text-xl font-semibold text-blue-300">Setores & Indústrias</h2>
+        </div>
+        <p class="text-sm text-slate-400 mb-3">Regulamentações e políticas por setor</p>
+        <div class="text-xs text-blue-400">Financeiro • Saúde • Público • Varejo</div>
+      </a>
+    </div>
+
+    <!-- Status do Conteúdo -->
+    <div class="bg-slate-900/70 border border-slate-700 rounded-xl p-6">
+      <h3 class="text-lg font-semibold text-slate-200 mb-4">📈 Status do Conteúdo</h3>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-sm text-slate-300">Arquitetura LLM</span>
+            <span class="px-2 py-1 bg-emerald-900/40 border border-emerald-500/40 rounded text-xs text-emerald-300">✓ Completo</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-sm text-slate-300">Técnicas de Exploração</span>
+            <span class="px-2 py-1 bg-emerald-900/40 border border-emerald-500/40 rounded text-xs text-emerald-300">✓ Completo</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-sm text-slate-300">Detecção & Monitoramento</span>
+            <span class="px-2 py-1 bg-amber-900/40 border border-amber-500/40 rounded text-xs text-amber-300">🚧 Novo</span>
+          </div>
+        </div>
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-sm text-slate-300">Ferramentas & Testes</span>
+            <span class="px-2 py-1 bg-amber-900/40 border border-amber-500/40 rounded text-xs text-amber-300">🚧 Novo</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-sm text-slate-300">Governança & Compliance</span>
+            <span class="px-2 py-1 bg-amber-900/40 border border-amber-500/40 rounded text-xs text-amber-300">🚧 Novo</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-sm text-slate-300">Casos & Estudos</span>
+            <span class="px-2 py-1 bg-amber-900/40 border border-amber-500/40 rounded text-xs text-amber-300">🚧 Novo</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Seção Downloads -->
+    <div class="mt-10 bg-slate-900/70 border border-sky-500/40 rounded-xl p-6">
+      <h2 class="text-2xl font-semibold text-sky-300 mb-4">📥 Downloads</h2>
+      <div class="grid md:grid-cols-3 gap-4">
+        <a href="/resources/templates/" class="p-4 bg-slate-800/50 rounded-lg border border-slate-700 hover:border-sky-500 transition">
+          <h3 class="text-lg font-semibold text-sky-200 mb-2">📄 Templates de Políticas</h3>
+          <p class="text-xs text-slate-400">Políticas customizadas por setor (Financeiro, Saúde, Governo)</p>
+        </a>
+        <a href="/resources/scripts/" class="p-4 bg-slate-800/50 rounded-lg border border-slate-700 hover:border-emerald-500 transition">
+          <h3 class="text-lg font-semibold text-emerald-200 mb-2">💻 Scripts de Teste</h3>
+          <p class="text-xs text-slate-400">Ferramentas automatizadas para testes de segurança</p>
+        </a>
+        <a href="/resources/datasets/" class="p-4 bg-slate-800/50 rounded-lg border border-slate-700 hover:border-purple-500 transition">
+          <h3 class="text-lg font-semibold text-purple-200 mb-2">📂 Datasets de Pesquisa</h3>
+          <p class="text-xs text-slate-400">Prompts adversariais e exemplos de ataques</p>
+        </a>
+      </div>
+    </div>
+
+    <!-- Aviso Legal -->
+    <div class="mt-8 p-4 bg-rose-950/30 border-l-4 border-rose-500 rounded">
+      <h3 class="text-sm font-semibold text-rose-300 mb-2">⚠️ AVISO LEGAL</h3>
+      <p class="text-xs text-slate-300">
+        Este conteúdo é estritamente educacional. Usar estas técnicas sem autorização é ilegal e viola termos de serviço. 
+        Use apenas em ambientes controlados, com permissão explícita, ou para pesquisa de segurança ética.
+      </p>
+    </div>
+  </div>
+</body>
+</html>

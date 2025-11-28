@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <title>Criptografia e Tunelamento em VPNs</title>
+    <style>
+        body { background-color: #0a0a0a; }
+        .concept-card {
+            background-color: #1e293b; /* Slate-800 */
+            border-left: 4px solid #22c55e; /* Green-500 */
+            transition: all 0.3s ease-in-out;
+        }
+        .concept-card:hover { transform: scale(1.02); }
+        .code {
+            background-color: #0f172a; /* Slate-900 */
+            color: #94a3b8; /* Slate-400 */
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-12 animate__animated animate__fadeInDown">
+            <h1 class="text-4xl md:text-5xl font-bold text-green-500" style="text-shadow: 0 0 15px rgba(34, 197, 94, 0.7);">
+                Criptografia e Tunelamento em VPNs
+            </h1>
+            <p class="mt-4 text-lg text-gray-400">
+                Os pilares da segurança e privacidade em redes privadas virtuais.
+            </p>
+        </header>
+
+        <main class="max-w-4xl mx-auto space-y-12 animate__animated animate__fadeInUp">
+            
+            <!-- Introdução à Criptografia em VPNs -->
+            <section>
+                <h2 class="text-3xl font-bold text-emerald-400 mb-4">O Papel da Criptografia</h2>
+                <p class="text-gray-300 leading-relaxed mb-6">
+                    A criptografia é o coração de uma VPN, garantindo que os dados transmitidos sejam ininteligíveis para qualquer um que tente interceptá-los. Ela transforma informações legíveis (texto puro) em um formato codificado (cifrado) que só pode ser decodificado com a chave correta.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="concept-card p-6 rounded-lg">
+                        <h3 class="text-xl font-semibold text-white mb-2">Criptografia Simétrica</h3>
+                        <p class="text-gray-400">Usa uma única chave para criptografar e descriptografar. É rápida e eficiente, ideal para criptografar grandes volumes de dados. A chave deve ser compartilhada de forma segura entre as partes.</p>
+                        <p class="text-xs text-gray-500 mt-2">Ex: AES, DES</p>
+                    </div>
+                    <div class="concept-card p-6 rounded-lg">
+                        <h3 class="text-xl font-semibold text-white mb-2">Criptografia Assimétrica</h3>
+                        <p class="text-gray-400">Usa um par de chaves (pública e privada). A chave pública criptografa, e a privada descriptografa (e vice-versa). É mais lenta, usada para troca segura de chaves simétricas e autenticação.</p>
+                        <p class="text-xs text-gray-500 mt-2">Ex: RSA, ECC</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Funções de Hash e Assinaturas Digitais -->
+            <section>
+                <h2 class="text-3xl font-bold text-emerald-400 mb-4">Integridade e Autenticidade</h2>
+                <p class="text-gray-300 leading-relaxed mb-6">
+                    Além da confidencialidade (garantida pela criptografia), as VPNs precisam assegurar a integridade dos dados (não foram alterados) e a autenticidade das partes (quem está comunicando é quem diz ser).
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="concept-card p-6 rounded-lg">
+                        <h3 class="text-xl font-semibold text-white mb-2">Funções de Hash</h3>
+                        <p class="text-gray-400">Transformam dados de qualquer tamanho em um "resumo" de tamanho fixo (hash). Qualquer alteração mínima nos dados resulta em um hash completamente diferente. Usado para verificar a integridade dos dados.</p>
+                        <p class="text-xs text-gray-500 mt-2">Ex: SHA-256, MD5 (obsoleto para segurança)</p>
+                    </div>
+                    <div class="concept-card p-6 rounded-lg">
+                        <h3 class="text-xl font-semibold text-white mb-2">Assinaturas Digitais</h3>
+                        <p class="text-gray-400">Usam criptografia assimétrica e funções de hash para verificar a autenticidade e a não-repúdio. O remetente assina o hash da mensagem com sua chave privada; o receptor verifica com a chave pública do remetente.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tunelamento: O Coração da VPN -->
+            <section>
+                <h2 class="text-3xl font-bold text-emerald-400 mb-4">Tunelamento: Criando um Caminho Privado</h2>
+                <p class="text-gray-300 leading-relaxed mb-6">
+                    Tunelamento é o processo de encapsular pacotes de dados dentro de outros pacotes. É como colocar uma carta dentro de outro envelope antes de enviá-la. Em uma VPN, os dados originais são criptografados e depois colocados dentro de um novo pacote, que então é enviado pela rede pública (internet).
+                </p>
+                <div class="bg-gray-800 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-white mb-3">Como funciona:</h3>
+                    <ul class="mt-4 space-y-2 text-gray-300 list-disc list-inside">
+                        <li>
+                            <strong>Encapsulamento:</strong> O pacote de dados original (com seu cabeçalho e carga útil) é criptografado.
+                        </li>
+                        <li>
+                            <strong>Novo Cabeçalho:</strong> Um novo cabeçalho (do protocolo de tunelamento da VPN) é adicionado ao pacote criptografado. Este novo cabeçalho contém as informações de roteamento necessárias para atravessar a rede pública até o servidor VPN.
+                        </li>
+                        <li>
+                            <strong>Transmissão:</strong> O pacote "tunelado" é enviado pela internet. Para observadores externos, parece ser apenas tráfego criptografado indo do seu dispositivo para o servidor VPN.
+                        </li>
+                        <li>
+                            <strong>Desencapsulamento:</strong> No servidor VPN, o novo cabeçalho é removido, o pacote interno é descriptografado, e o pacote de dados original é encaminhado para seu destino final (por exemplo, um site na internet ou um servidor na rede interna da empresa).
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+        </main>
+
+        <footer class="text-center mt-16 animate__animated animate__fadeInUp">
+            <a href="index.html" class="inline-block bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-full transition-transform transform hover:scale-105 shadow-lg">
+                Voltar ao Módulo de VPNs
+            </a>
+        </footer>
+    </div>
+</body>
+</html>

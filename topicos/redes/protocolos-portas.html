@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <title>Protocolos e Portas</title>
+    <style>
+        body { background-color: #0a0a0a; }
+        .protocol-card {
+            background-color: #1e293b; /* Slate-800 */
+            border: 1px solid #334155; /* Slate-700 */
+            transition: all 0.3s ease-in-out;
+        }
+        .protocol-card:hover {
+            border-color: #f59e0b; /* Amber-500 */
+            transform: scale(1.03);
+        }
+        .code {
+            background-color: #0f172a; /* Slate-900 */
+            color: #94a3b8; /* Slate-400 */
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-12 animate__animated animate__fadeInDown">
+            <h1 class="text-4xl md:text-5xl font-bold text-amber-400" style="text-shadow: 0 0 15px rgba(251, 191, 36, 0.7);">
+                Protocolos e Portas: A Linguagem da Rede
+            </h1>
+            <p class="mt-4 text-lg text-gray-400">
+                Entendendo como os serviços conversam e se organizam.
+            </p>
+        </header>
+
+        <main class="max-w-4xl mx-auto space-y-12 animate__animated animate__fadeInUp">
+            
+            <!-- TCP vs UDP -->
+            <section>
+                <h2 class="text-3xl font-bold text-orange-500 mb-4">TCP vs. UDP: A Escolha entre Confiabilidade e Velocidade</h2>
+                <p class="text-gray-300 leading-relaxed mb-6">
+                    Na camada de Transporte, dois protocolos dominam: TCP e UDP. A escolha entre eles define como os dados são enviados e recebidos, com um trade-off fundamental.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Card TCP -->
+                    <div class="protocol-card rounded-lg p-6">
+                        <h3 class="text-2xl font-bold text-cyan-400">TCP (Transmission Control Protocol)</h3>
+                        <p class="mt-2 text-gray-400">O protocolo confiável. Garante que todos os pacotes cheguem na ordem correta e sem erros.</p>
+                        <ul class="mt-4 space-y-2 text-gray-300 list-disc list-inside">
+                            <li><strong>Orientado à conexão:</strong> Usa o <code class="code">three-way handshake</code> (SYN, SYN-ACK, ACK) para estabelecer uma conexão antes de enviar dados.</li>
+                            <li><strong>Controle de fluxo:</strong> Gerencia a quantidade de dados enviados para não sobrecarregar o receptor.</li>
+                            <li><strong>Confirmação e retransmissão:</strong> Se um pacote se perde, o TCP o reenvia.</li>
+                            <li><strong>Casos de uso:</strong> Navegação web (HTTP/S), email (SMTP), transferência de arquivos (FTP). Onde a integridade dos dados é crítica.</li>
+                        </ul>
+                    </div>
+                     <!-- Card UDP -->
+                    <div class="protocol-card rounded-lg p-6">
+                        <h3 class="text-2xl font-bold text-lime-400">UDP (User Datagram Protocol)</h3>
+                        <p class="mt-2 text-gray-400">O protocolo veloz. Envia os dados e não olha para trás. Não há garantia de entrega ou ordem.</p>
+                        <ul class="mt-4 space-y-2 text-gray-300 list-disc list-inside">
+                            <li><strong>Não orientado à conexão:</strong> Simplesmente envia os pacotes (datagramas) para o destino.</li>
+                             <li><strong>Sem controle:</strong> Não há controle de fluxo, confirmação ou retransmissão.</li>
+                            <li><strong>Baixa latência:</strong> Muito mais rápido por não ter toda a sobrecarga do TCP.</li>
+                            <li><strong>Casos de uso:</strong> Streaming de vídeo/áudio, jogos online, chamadas de voz (VoIP), DNS. Onde a velocidade é mais importante que a perda ocasional de um pacote.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Portas Lógicas -->
+            <section>
+                <h2 class="text-3xl font-bold text-orange-500 mb-4">Portas Lógicas: Os "Apartamentos" de um Endereço IP</h2>
+                <p class="text-gray-300 leading-relaxed mb-4">
+                   Se o endereço IP é o endereço de um prédio, as portas são os números dos apartamentos. Elas permitem que um único dispositivo execute múltiplos serviços de rede simultaneamente. Uma porta é um número de 16 bits (de 0 a 65535). A combinação de um IP e uma porta (ex: <code class="code">192.168.1.1:443</code>) é chamada de <strong>socket</strong>.
+                </p>
+                 <ul class="text-gray-400 space-y-1">
+                    <li><strong class="text-white">Portas 0-1023:</strong> Bem Conhecidas (Well-known ports), reservadas para serviços padrão (HTTP, FTP, etc).</li>
+                    <li><strong class="text-white">Portas 1024-49151:</strong> Registradas, usadas por aplicações específicas.</li>
+                    <li><strong class="text-white">Portas 49152-65535:</strong> Dinâmicas ou Privadas, usadas para conexões de saída temporárias.</li>
+                </ul>
+            </section>
+
+            <!-- Protocolos de Aplicação -->
+            <section>
+                <h2 class="text-3xl font-bold text-orange-500 mb-4">Protocolos de Aplicação Essenciais</h2>
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-xl font-semibold">DNS (Domain Name System) - Porta 53 (UDP/TCP)</h3>
+                        <p class="text-gray-400">É a "lista telefônica" da internet. Traduz nomes de domínio legíveis por humanos (como <code class="code">google.com</code>) para endereços IP compreendidos por máquinas. As consultas usam UDP pela velocidade, mas transferências de zona (sincronização entre servidores DNS) usam TCP pela confiabilidade.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold">HTTP/HTTPS (Hypertext Transfer Protocol) - Portas 80/443 (TCP)</h3>
+                        <p class="text-gray-400">O protocolo da World Wide Web. Define como as mensagens são formatadas e transmitidas entre seu navegador e os servidores web. O HTTPS é a versão segura, que criptografa a comunicação usando SSL/TLS.</p>
+                    </div>
+                     <div>
+                        <h3 class="text-xl font-semibold">DHCP (Dynamic Host Configuration Protocol) - Portas 67/68 (UDP)</h3>
+                        <p class="text-gray-400">Automatiza a configuração de rede. Quando você se conecta a uma rede, seu dispositivo envia uma mensagem em broadcast, e um servidor DHCP responde, fornecendo um endereço IP, máscara de sub-rede, gateway padrão e servidores DNS.</p>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <footer class="text-center mt-16 animate__animated animate__fadeInUp">
+            <a href="index.html" class="inline-block bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-full transition-transform transform hover:scale-105 shadow-lg">
+                Voltar ao Módulo de Redes
+            </a>
+        </footer>
+    </div>
+</body>
+</html>

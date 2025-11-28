@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <title>Protocolos de Proxy: HTTP vs. SOCKS</title>
+    <style>
+        body { background-color: #0a0a0a; }
+        .table-header { background-color: #312e81; } /* Indigo-900 */
+        .table-cell { background-color: #1e293b; } /* Slate-800 */
+        .highlight { color: #facc15; } /* Yellow-400 */
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-12 animate__animated animate__fadeInDown">
+            <h1 class="text-4xl md:text-5xl font-bold text-pink-500" style="text-shadow: 0 0 15px rgba(236, 72, 153, 0.7);">
+                Protocolos de Proxy: HTTP vs. SOCKS
+            </h1>
+            <p class="mt-4 text-lg text-gray-400">
+                Entendendo a diferença entre o especialista e o polivalente.
+            </p>
+        </header>
+
+        <main class="max-w-4xl mx-auto space-y-12 animate__animated animate__fadeInUp">
+            
+            <section>
+                <p class="text-gray-300 leading-relaxed text-lg">
+                    A escolha do protocolo de proxy é crucial, pois define o que o proxy pode "ver" e que tipo de tráfego ele pode manipular. A decisão geralmente se resume a dois principais concorrentes: HTTP e SOCKS.
+                </p>
+            </section>
+            
+            <!-- Proxy HTTP/S -->
+            <section>
+                <h2 class="text-3xl font-bold text-sky-400 mb-4">Proxy HTTP/S: O Especialista em Web</h2>
+                <p class="text-gray-300 leading-relaxed mb-4">
+                    Como o nome sugere, um proxy HTTP é projetado especificamente para o tráfego da web (protocolo HTTP). Ele opera na <strong class="highlight">Camada 7 (Aplicação)</strong> do modelo OSI. Isso significa que ele "entende" as requisições que está intermediando.
+                </p>
+                <div class="bg-gray-800 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold mb-3">Características:</h3>
+                    <ul class="space-y-3 text-gray-300 list-disc list-inside">
+                        <li>
+                            <strong>Inteligência de Aplicação:</strong> Por entender HTTP, ele pode realizar ações inteligentes como cache de páginas web, filtragem de URLs, e até mesmo reescrever cabeçalhos de requisição.
+                        </li>
+                        <li>
+                            <strong>Filtragem de Conteúdo:</strong> É a escolha ideal para ambientes corporativos que precisam bloquear acesso a determinados sites ou tipos de conteúdo.
+                        </li>
+                         <li>
+                            <strong>Proxy HTTPS:</strong> Uma variação que usa o comando <code class="bg-slate-700 p-1 rounded">CONNECT</code> para criar um túnel SSL/TLS, permitindo a passagem de tráfego HTTPS criptografado. No entanto, o proxy não consegue inspecionar o conteúdo criptografado (a menos que use técnicas de Man-in-the-Middle, como em proxies corporativos).
+                        </li>
+                        <li>
+                            <strong>Limitação:</strong> É restrito a tráfego web. Não consegue manipular tráfego de e-mails, torrents, jogos online, etc.
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Proxy SOCKS -->
+            <section>
+                <h2 class="text-3xl font-bold text-lime-400 mb-4">Proxy SOCKS: O Polivalente</h2>
+                <p class="text-gray-300 leading-relaxed mb-4">
+                    O SOCKS (Socket Secure) é um protocolo mais versátil. Ele opera na <strong class="highlight">Camada 5 (Sessão)</strong> do modelo OSI. Diferente do HTTP, o SOCKS não entende os dados que está transportando; ele simplesmente estabelece uma conexão TCP (ou UDP, no caso do SOCKS5) entre o cliente e o servidor e passa os dados de um lado para o outro.
+                </p>
+                 <div class="bg-gray-800 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold mb-3">Características:</h3>
+                    <ul class="space-y-3 text-gray-300 list-disc list-inside">
+                        <li>
+                            <strong>Agnóstico a Protocolo:</strong> Pode manipular qualquer tipo de tráfego de rede: HTTP, FTP, SMTP, torrents, jogos, etc. É uma ferramenta muito mais flexível.
+                        </li>
+                        <li>
+                            <strong>SOCKS4 vs. SOCKS5:</strong> SOCKS4 é mais antigo e básico. <strong class="highlight">SOCKS5</strong> é o padrão moderno, adicionando três recursos cruciais: suporte a <strong>autenticação</strong> (o proxy pode exigir um nome de usuário e senha), suporte a <strong>UDP</strong> (essencial para jogos e streaming) e melhor suporte a resolução de nomes (DNS).
+                        </li>
+                        <li>
+                           <strong>Menos Inteligente, Mais Flexível:</strong> Como não interpreta os dados, não pode fazer cache de conteúdo web ou filtragem de URL. Sua função é puramente criar um túnel para o tráfego.
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Tabela Comparativa -->
+             <section>
+                <h2 class="text-3xl font-bold text-pink-500 mb-6">Tabela Comparativa Rápida</h2>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full text-center">
+                        <thead>
+                            <tr class="table-header">
+                                <th class="py-3 px-4">Característica</th>
+                                <th class="py-3 px-4">Proxy HTTP/S</th>
+                                <th class="py-3 px-4">Proxy SOCKS5</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td class="py-3 px-4 border-b border-gray-700 table-cell">Camada OSI</td><td class="py-3 px-4 border-b border-gray-700 table-cell">7 (Aplicação)</td><td class="py-3 px-4 border-b border-gray-700 table-cell">5 (Sessão)</td></tr>
+                            <tr><td class="py-3 px-4 border-b border-gray-700 table-cell">Tipos de Tráfego</td><td class="py-3 px-4 border-b border-gray-700 table-cell">Apenas Web (HTTP/S)</td><td class="py-3 px-4 border-b border-gray-700 table-cell">Qualquer tráfego (TCP/UDP)</td></tr>
+                             <tr><td class="py-3 px-4 border-b border-gray-700 table-cell">Inteligência</td><td class="py-3 px-4 border-b border-gray-700 table-cell">Alta (pode filtrar/cachear)</td><td class="py-3 px-4 border-b border-gray-700 table-cell">Baixa (apenas repassa dados)</td></tr>
+                            <tr><td class="py-3 px-4 border-b border-gray-700 table-cell">Autenticação</td><td class="py-3 px-4 border-b border-gray-700 table-cell">Básica (embutida no HTTP)</td><td class="py-3 px-4 border-b border-gray-700 table-cell">Forte (integrada ao protocolo)</td></tr>
+                             <tr><td class="py-3 px-4 border-b border-gray-700 table-cell">Quando Usar?</td><td class="py-3 px-4 border-b border-gray-700 table-cell">Para filtragem de conteúdo web e cache.</td><td class="py-3 px-4 border-b border-gray-700 table-cell">Para anonimato geral, torrents, jogos e flexibilidade.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+
+        <footer class="text-center mt-16 animate__animated animate__fadeInUp">
+            <a href="index.html" class="inline-block bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 px-6 rounded-full transition-transform transform hover:scale-105 shadow-lg">
+                Voltar ao Módulo de Proxies
+            </a>
+        </footer>
+    </div>
+</body>
+</html>

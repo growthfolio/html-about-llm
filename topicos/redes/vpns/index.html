@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <title>Módulo de VPNs</title>
+    <style>
+        body {
+            background-color: #0a0a0a;
+        }
+        .card:hover .card-title {
+            color: #22c55e; /* Green 500 */
+        }
+        .card-title {
+            transition: color 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-12 animate__animated animate__fadeInDown">
+            <h1 class="text-4xl md:text-5xl font-bold text-green-500" style="text-shadow: 0 0 15px rgba(34, 197, 94, 0.7);">
+                Módulo de VPNs
+            </h1>
+            <p class="mt-4 text-lg text-gray-400">
+                Criando túneis seguros e privados na internet pública.
+            </p>
+        </header>
+
+        <main class="animate__animated animate__fadeInUp">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <a href="criptografia-tunelamento.html" class="card block p-6 bg-gray-800 rounded-xl transform transition duration-300 hover:scale-105 hover:bg-gray-700 shadow-lg">
+                    <h3 class="card-title text-xl font-bold text-white mb-2">Criptografia e Tunelamento</h3>
+                    <p class="text-gray-400">Como as VPNs usam criptografia e encapsulamento para garantir privacidade e segurança.</p>
+                </a>
+                <!-- Card 2 -->
+                <a href="#" class="card block p-6 bg-gray-800 rounded-xl transform transition duration-300 hover:scale-105 hover:bg-gray-700 shadow-lg opacity-50 cursor-not-allowed">
+                    <h3 class="card-title text-xl font-bold text-white mb-2">Protocolos de VPN</h3>
+                    <p class="text-gray-400">Análise de IPSec, OpenVPN, WireGuard e outros.</p>
+                    <span class="text-xs text-yellow-400 mt-2 block">Em breve...</span>
+                </a>
+                 <!-- Card 3 -->
+                <a href="arquiteturas-privacidade.html" class="card block p-6 bg-gray-800 rounded-xl transform transition duration-300 hover:scale-105 hover:bg-gray-700 shadow-lg">
+                    <h3 class="card-title text-xl font-bold text-white mb-2">Arquiteturas e Casos de Uso</h3>
+                    <p class="text-gray-400">Tipos de VPN (Client-to-Site, Site-to-Site), considerações de privacidade e mercado.</p>
+                </a>
+            </div>
+        </main>
+
+        <footer class="text-center mt-16 animate__animated animate__fadeInUp">
+            <a href="../index.html"
+                class="inline-block bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-full transition-transform transform hover:scale-105 shadow-lg">
+                Voltar ao Módulo de Redes
+            </a>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <title>Forward vs. Reverse Proxy</title>
+    <style>
+        body { background-color: #0a0a0a; }
+        .proxy-type-card { background-color: #1e293b; border-left: 5px solid; transition: all 0.3s ease-in-out; }
+        .proxy-type-card:hover { transform: scale(1.02); box-shadow: 0 10px 20px rgba(0,0,0,0.25); }
+        .forward-border { border-color: #3b82f6; } /* Blue-500 */
+        .reverse-border { border-color: #10b981; } /* Emerald-500 */
+        .analogy { background-color: #334155; } /* Slate-700 */
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-12 animate__animated animate__fadeInDown">
+            <h1 class="text-4xl md:text-5xl font-bold text-pink-500" style="text-shadow: 0 0 15px rgba(236, 72, 153, 0.7);">
+                Forward Proxy vs. Reverse Proxy
+            </h1>
+            <p class="mt-4 text-lg text-gray-400">
+                Duas faces da mesma moeda, com propósitos radicalmente diferentes.
+            </p>
+        </header>
+
+        <main class="max-w-5xl mx-auto space-y-12 animate__animated animate__fadeInUp">
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                
+                <!-- Forward Proxy -->
+                <article class="proxy-type-card forward-border rounded-lg p-6">
+                    <h2 class="text-3xl font-bold text-blue-400 mb-4">Forward Proxy (O Proxy do Cliente)</h2>
+                    <p class="text-gray-300 leading-relaxed mb-4">
+                        O Forward Proxy atua em nome do <strong>cliente</strong> (ou de um grupo de clientes em uma rede interna). Ele recebe as requisições dos clientes e as "encaminha" (<em>forwards</em>) para a internet. Para o servidor de destino, a requisição parece vir do proxy, não do cliente original.
+                    </p>
+                    
+                    <div class="analogy rounded-lg p-4 my-4">
+                        <p class="font-semibold text-lg">Analogia:</p>
+                        <p class="text-gray-300">É como pedir para um amigo que mora em outro país comprar um produto que só é vendido lá. A loja vê seu amigo como o comprador, não você.</p>
+                    </div>
+
+                    <h3 class="text-xl font-semibold text-white mt-6 mb-3">Principais Casos de Uso:</h3>
+                    <ul class="space-y-3 text-gray-300 list-disc list-inside">
+                        <li>
+                            <strong>Contornar Restrições Geográficas/Censura:</strong> Acessar conteúdo bloqueado na sua região, fazendo a requisição a partir da localização do proxy.
+                        </li>
+                        <li>
+                            <strong>Anonimato e Privacidade:</strong> Ocultar o endereço IP original do cliente do servidor de destino.
+                        </li>
+                        <li>
+                            <strong>Filtragem de Conteúdo (Segurança Corporativa):</strong> Empresas usam para bloquear o acesso a sites maliciosos ou redes sociais, inspecionando e filtrando as requisições de saída dos funcionários.
+                        </li>
+                        <li>
+                            <strong>Caching:</strong> Armazenar cópias de sites frequentemente acessados para acelerar a navegação para todos os clientes que o utilizam.
+                        </li>
+                    </ul>
+                </article>
+
+                <!-- Reverse Proxy -->
+                <article class="proxy-type-card reverse-border rounded-lg p-6">
+                    <h2 class="text-3xl font-bold text-emerald-400 mb-4">Reverse Proxy (O Proxy do Servidor)</h2>
+                    <p class="text-gray-300 leading-relaxed mb-4">
+                        O Reverse Proxy atua em nome do <strong>servidor</strong> (ou de um conjunto de servidores). Ele fica na frente dos servidores web e recebe todas as requisições dos clientes da internet. Para o cliente, parece que ele está se comunicando diretamente com o servidor final, mas na verdade é o proxy que decide para qual servidor interno encaminhar a requisição.
+                    </p>
+
+                    <div class="analogy rounded-lg p-4 my-4">
+                        <p class="font-semibold text-lg">Analogia:</p>
+                        <p class="text-gray-300">É como o atendente de um grande call center. Você liga para um número único, e o atendente (o proxy) distribui sua chamada para o ramal do departamento correto, sem que você precise saber qual é.</p>
+                    </div>
+
+                    <h3 class="text-xl font-semibold text-white mt-6 mb-3">Principais Casos de Uso:</h3>
+                    <ul class="space-y-3 text-gray-300 list-disc list-inside">
+                        <li>
+                            <strong>Load Balancing (Balanceamento de Carga):</strong> Distribuir as requisições entre múltiplos servidores para evitar sobrecarga e garantir alta disponibilidade.
+                        </li>
+                        <li>
+                            <strong>Segurança e Anonimato para Servidores:</strong> Ocultar os endereços IP e a arquitetura da rede interna, expondo apenas o proxy para a internet e protegendo contra ataques diretos.
+                        </li>
+                         <li>
+                            <strong>SSL/TLS Termination:</strong> Descarregar o pesado trabalho de criptografar e descriptografar o tráfego SSL/TLS dos servidores de aplicação, centralizando a gestão de certificados no proxy.
+                        </li>
+                        <li>
+                            <strong>Caching e Compressão:</strong> Servir conteúdo estático (imagens, CSS) diretamente do cache e comprimir respostas para acelerar a entrega ao cliente.
+                        </li>
+                    </ul>
+                </article>
+
+            </div>
+
+        </main>
+
+        <footer class="text-center mt-16 animate__animated animate__fadeInUp">
+            <a href="index.html" class="inline-block bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 px-6 rounded-full transition-transform transform hover:scale-105 shadow-lg">
+                Voltar ao Módulo de Proxies
+            </a>
+        </footer>
+    </div>
+</body>
+</html>

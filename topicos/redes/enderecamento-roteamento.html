@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <title>Endereçamento e Roteamento</title>
+    <style>
+        body { background-color: #0a0a0a; }
+        .content-section {
+            border-left: 4px solid #6366f1; /* Indigo-500 */
+            padding-left: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        .code-block {
+            background-color: #1e293b; /* Slate-800 */
+            color: #e2e8f0; /* Slate-200 */
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-12 animate__animated animate__fadeInDown">
+            <h1 class="text-4xl md:text-5xl font-bold text-indigo-400" style="text-shadow: 0 0 15px rgba(99, 102, 241, 0.7);">
+                Endereçamento e Roteamento
+            </h1>
+            <p class="mt-4 text-lg text-gray-400">
+                Como os dispositivos se encontram e conversam na vastidão da rede.
+            </p>
+        </header>
+
+        <main class="max-w-4xl mx-auto space-y-12 animate__animated animate__fadeInUp">
+            
+            <!-- Endereçamento IPv4 -->
+            <section class="content-section">
+                <h2 class="text-3xl font-bold text-violet-400 mb-4">Endereçamento IPv4: A Base da Internet Clássica</h2>
+                <p class="text-gray-300 leading-relaxed mb-4">
+                    O IPv4 (Internet Protocol version 4) é o sistema de endereçamento que alimentou o crescimento da internet por décadas. Um endereço IPv4 é um número de 32 bits, geralmente representado em quatro octetos decimais (ex: <code>192.168.1.1</code>).
+                </p>
+                <div class="space-y-4">
+                    <div>
+                        <h3 class="text-xl font-semibold">Endereços Públicos vs. Privados (RFC 1918)</h3>
+                        <p class="text-gray-400">Como os endereços IPv4 são limitados (~4.3 bilhões), foram criadas faixas de endereços "privados". Eles podem ser reutilizados em qualquer rede local (sua casa, sua empresa), mas não podem ser roteados na internet. Para que um dispositivo com IP privado acesse a internet, ele precisa passar por um processo chamado <strong>NAT (Network Address Translation)</strong>, geralmente feito pelo roteador.</p>
+                        <div class="code-block mt-2">
+                            <strong>Faixas Privadas:</strong><br>
+                            10.0.0.0 a 10.255.255.255 (Classe A)<br>
+                            172.16.0.0 a 172.31.255.255 (Classe B)<br>
+                            192.168.0.0 a 192.168.255.255 (Classe C)
+                        </div>
+                    </div>
+                     <div>
+                        <h3 class="text-xl font-semibold">Máscara de Sub-rede e CIDR</h3>
+                        <p class="text-gray-400">A máscara de sub-rede divide o endereço IP em duas partes: a porção de <strong>Rede</strong> e a porção de <strong>Host</strong>. A porção de rede identifica a "rua" onde o dispositivo está, e a porção de host identifica o "número da casa". O CIDR (Classless Inter-Domain Routing) é a notação moderna que usa uma barra para indicar o número de bits da porção de rede (ex: <code>/24</code> significa que os primeiros 24 bits são para a rede).</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Endereçamento IPv6 -->
+            <section class="content-section">
+                <h2 class="text-3xl font-bold text-violet-400 mb-4">Endereçamento IPv6: O Futuro é Agora</h2>
+                <p class="text-gray-300 leading-relaxed mb-4">
+                   Com o esgotamento dos endereços IPv4, o IPv6 foi criado. É um endereço de 128 bits, representado em formato hexadecimal. O número de endereços IPv6 é astronômico, resolvendo o problema de escassez e eliminando a necessidade de NAT.
+                </p>
+                <div class="space-y-4">
+                    <div>
+                        <h3 class="text-xl font-semibold">Formato e Simplificação</h3>
+                        <p class="text-gray-400">Um endereço IPv6 é longo e complexo, mas pode ser simplificado. Zeros à esquerda podem ser omitidos, e um único bloco de zeros consecutivos pode ser substituído por <code>::</code>.</p>
+                        <div class="code-block mt-2">
+                            <strong>Endereço Completo:</strong> 2001:0db8:0000:0000:0000:ff00:0042:8329<br>
+                            <strong>Simplificado:</strong> 2001:db8::ff00:42:8329
+                        </div>
+                    </div>
+                     <div>
+                        <h3 class="text-xl font-semibold">Tipos de Endereços IPv6</h3>
+                         <p class="text-gray-400">
+                             <strong>Global Unicast:</strong> O equivalente ao IP público do IPv4. Roteável na internet.<br>
+                             <strong>Link-Local:</strong> Usado para comunicação apenas na rede local. Começa com <code>fe80::</code>.<br>
+                             <strong>Unique-Local:</strong> O equivalente ao IP privado do IPv4. Não é roteável na internet.
+                         </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Roteamento -->
+            <section class="content-section">
+                <h2 class="text-3xl font-bold text-violet-400 mb-4">Roteamento: Escolhendo o Melhor Caminho</h2>
+                <p class="text-gray-300 leading-relaxed mb-4">
+                    Roteamento é o processo de encaminhar pacotes de uma rede para outra. Os roteadores são os dispositivos que fazem esse trabalho. Eles constroem uma "tabela de roteamento", que funciona como um mapa da internet, para decidir para onde enviar cada pacote que recebem.
+                </p>
+                 <div class="space-y-4">
+                    <div>
+                        <h3 class="text-xl font-semibold">Tabela de Roteamento</h3>
+                        <p class="text-gray-400">Cada entrada na tabela de roteamento contém, no mínimo: o endereço da rede de destino, a máscara de sub-rede, e o "próximo salto" (o endereço do próximo roteador no caminho). A decisão é baseada na correspondência mais específica (a rota com a máscara de sub-rede mais longa).</p>
+                    </div>
+                     <div>
+                        <h3 class="text-xl font-semibold">Roteamento Estático vs. Dinâmico</h3>
+                        <p class="text-gray-400">
+                            <strong>Estático:</strong> As rotas são inseridas manualmente pelo administrador. É simples e seguro para redes pequenas, mas não escala.<br>
+                            <strong>Dinâmico:</strong> Os roteadores "conversam" entre si usando protocolos de roteamento (como OSPF e BGP) para descobrir rotas automaticamente. É escalável e se adapta a falhas na rede, mas é mais complexo.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <footer class="text-center mt-16 animate__animated animate__fadeInUp">
+            <a href="index.html" class="inline-block bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-3 px-6 rounded-full transition-transform transform hover:scale-105 shadow-lg">
+                Voltar ao Módulo de Redes
+            </a>
+        </footer>
+    </div>
+</body>
+</html>

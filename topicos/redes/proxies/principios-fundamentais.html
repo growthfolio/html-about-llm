@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <title>Princípios Fundamentais de Proxies</title>
+    <style>
+        body { background-color: #0a0a0a; }
+        .diagram-bg { background-color: #1e293b; } /* Slate-800 */
+        .arrow { color: #ec4899; } /* Pink-500 */
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-12 animate__animated animate__fadeInDown">
+            <h1 class="text-4xl md:text-5xl font-bold text-pink-500" style="text-shadow: 0 0 15px rgba(236, 72, 153, 0.7);">
+                Princípios Fundamentais de Proxies
+            </h1>
+            <p class="mt-4 text-lg text-gray-400">
+                O que é um proxy e por que ele é uma ferramenta tão poderosa na rede.
+            </p>
+        </header>
+
+        <main class="max-w-4xl mx-auto space-y-12 animate__animated animate__fadeInUp">
+            
+            <!-- O que é um Proxy? -->
+            <section>
+                <h2 class="text-3xl font-bold text-fuchsia-400 mb-4">O que é um Servidor Proxy?</h2>
+                <p class="text-gray-300 leading-relaxed mb-6">
+                    Um servidor proxy é um intermediário na comunicação entre seu dispositivo (o cliente) e a internet (o servidor). Em vez de se conectar diretamente ao site que você quer visitar, sua requisição primeiro vai para o proxy. O proxy, então, faz a requisição em seu nome, recebe a resposta do servidor e a envia de volta para você. Para o servidor de destino, a requisição parece ter se originado do proxy, e não do seu dispositivo.
+                </p>
+                <div class="diagram-bg rounded-lg p-6 text-center font-mono text-sm md:text-base">
+                    <div class="flex flex-col md:flex-row justify-around items-center">
+                        <!-- Cliente -->
+                        <div class="flex flex-col items-center">
+                            <svg class="w-12 h-12 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                            <span class="mt-2">Seu Dispositivo</span>
+                            <span class="text-xs text-gray-400">(Cliente)</span>
+                        </div>
+                        
+                        <!-- Flecha -->
+                        <div class="my-4 md:my-0">
+                            <span class="arrow font-bold text-2xl">&lt;---&gt;</span>
+                            <p class="text-xs text-gray-400">Requisição</p>
+                        </div>
+
+                        <!-- Proxy -->
+                        <div class="flex flex-col items-center">
+                            <svg class="w-12 h-12 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"></path></svg>
+                            <span class="mt-2">Servidor Proxy</span>
+                            <span class="text-xs text-gray-400">(Intermediário)</span>
+                        </div>
+
+                        <!-- Flecha -->
+                        <div class="my-4 md:my-0">
+                             <span class="arrow font-bold text-2xl">&lt;---&gt;</span>
+                             <p class="text-xs text-gray-400">Requisição em seu nome</p>
+                        </div>
+
+                        <!-- Servidor -->
+                        <div class="flex flex-col items-center">
+                           <svg class="w-12 h-12 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"></path></svg>
+                            <span class="mt-2">Internet</span>
+                             <span class="text-xs text-gray-400">(Servidor)</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Proxy vs VPN vs Firewall -->
+            <section>
+                <h2 class="text-3xl font-bold text-fuchsia-400 mb-4">Proxy vs. VPN vs. Firewall</h2>
+                <p class="text-gray-300 leading-relaxed mb-6">
+                    É comum confundir esses três conceitos, mas eles operam em níveis diferentes e com propósitos distintos.
+                </p>
+                <div class="space-y-6">
+                    <div class="border border-pink-500/50 p-4 rounded-lg">
+                        <h3 class="text-xl font-semibold text-pink-400">Proxy</h3>
+                        <p class="text-gray-400">Atua na <strong>camada de Aplicação</strong>. Ele entende o tráfego de aplicações específicas (como o tráfego web HTTP). Seu foco é intermediar e, opcionalmente, filtrar ou modificar requisições para fins de anonimato, cache ou controle de acesso.</p>
+                    </div>
+                     <div class="border border-cyan-500/50 p-4 rounded-lg">
+                        <h3 class="text-xl font-semibold text-cyan-400">VPN (Virtual Private Network)</h3>
+                        <p class="text-gray-400">Opera na <strong>camada de Rede</strong>. Cria um "túnel" criptografado para <strong>todo</strong> o tráfego do seu dispositivo. Seu foco principal é a <strong>privacidade e segurança</strong>, criptografando sua conexão e escondendo sua atividade da sua operadora de internet ou de bisbilhoteiros em redes Wi-Fi públicas.</p>
+                    </div>
+                     <div class="border border-red-500/50 p-4 rounded-lg">
+                        <h3 class="text-xl font-semibold text-red-400">Firewall</h3>
+                        <p class="text-gray-400">Opera principalmente nas <strong>camadas de Rede e Transporte</strong>. Atua como um segurança, inspecionando pacotes e decidindo se eles podem entrar ou sair da sua rede com base em um conjunto de regras. Seu foco é a <strong>segurança</strong>, bloqueando tráfego malicioso ou indesejado.</p>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <footer class="text-center mt-16 animate__animated animate__fadeInUp">
+            <a href="index.html" class="inline-block bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 px-6 rounded-full transition-transform transform hover:scale-105 shadow-lg">
+                Voltar ao Módulo de Proxies
+            </a>
+        </footer>
+    </div>
+</body>
+</html>

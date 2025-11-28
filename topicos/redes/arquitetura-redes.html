@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <title>Arquitetura de Redes - OSI e TCP/IP</title>
+    <style>
+        body { background-color: #0a0a0a; }
+        .layer-card {
+            border-left: 4px solid #1e40af; /* Blue-700 */
+            transition: all 0.3s ease-in-out;
+        }
+        .layer-card:hover {
+            transform: translateY(-5px);
+            border-left-color: #2dd4bf; /* Teal-400 */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+        }
+        .pdu { /* Protocol Data Unit */
+            background-color: #334155; /* Slate-700 */
+            color: #e2e8f0; /* Slate-200 */
+        }
+        .comparison-table th { background-color: #1e3a8a; } /* Blue-800 */
+        .comparison-table td { background-color: #1e293b; } /* Slate-800 */
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-12 animate__animated animate__fadeInDown">
+            <h1 class="text-4xl md:text-5xl font-bold text-cyan-400" style="text-shadow: 0 0 15px rgba(0, 255, 255, 0.7);">
+                Arquitetura de Redes: OSI e TCP/IP
+            </h1>
+            <p class="mt-4 text-lg text-gray-400">
+                Os pilares que sustentam toda a comunicação na internet.
+            </p>
+        </header>
+
+        <main class="max-w-4xl mx-auto space-y-12 animate__animated animate__fadeInUp">
+            
+            <!-- Introdução -->
+            <section>
+                <h2 class="text-3xl font-bold text-teal-400 mb-4">O que são Modelos de Referência?</h2>
+                <p class="text-gray-300 leading-relaxed">
+                    Imagine tentar construir um carro sem uma planta. Cada engenheiro faria uma peça de um jeito, e elas jamais se encaixariam. Modelos de referência, como o OSI e o TCP/IP, são as "plantas" para a comunicação em rede. Eles dividem o complexo processo de enviar dados em camadas menores e gerenciáveis. Cada camada tem uma função específica e só se comunica com a camada imediatamente acima ou abaixo, garantindo que equipamentos de diferentes fabricantes possam conversar entre si.
+                </p>
+            </section>
+
+            <!-- Modelo OSI -->
+            <section>
+                <h2 class="text-3xl font-bold text-teal-400 mb-6">O Modelo OSI (Open Systems Interconnection)</h2>
+                <p class="text-gray-300 leading-relaxed mb-8">
+                    O Modelo OSI é um modelo conceitual de 7 camadas criado pela ISO para padronizar as funções de um sistema de telecomunicação. Embora a internet moderna use o modelo TCP/IP na prática, o OSI é fundamental para o estudo acadêmico por ser mais detalhado e didático.
+                </p>
+                <div class="space-y-6">
+                    <!-- Camada 7: Aplicação -->
+                    <div class="layer-card bg-gray-800 p-6 rounded-lg">
+                        <h3 class="text-2xl font-semibold text-cyan-300">7. Camada de Aplicação</h3>
+                        <p class="text-gray-400 mt-2">A camada mais próxima do usuário. Fornece a interface para que os aplicativos acessem os serviços de rede.</p>
+                        <div class="mt-4">
+                            <span class="pdu inline-block rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2">PDU: Dados (Data)</span>
+                            <p class="text-gray-300"><strong class="text-white">Protocolos:</strong> HTTP, HTTPS, FTP, SMTP, DNS.</p>
+                            <p class="text-gray-300"><strong class="text-white">Função:</strong> Permitir que softwares enviem e recebam informações de forma significativa para humanos.</p>
+                        </div>
+                    </div>
+                    <!-- Camada 6: Apresentação -->
+                    <div class="layer-card bg-gray-800 p-6 rounded-lg">
+                        <h3 class="text-2xl font-semibold text-cyan-300">6. Camada de Apresentação</h3>
+                        <p class="text-gray-400 mt-2">Atua como um "tradutor". Converte os dados para um formato que a camada de aplicação possa entender. Responsável pela criptografia, compressão e formatação.</p>
+                        <div class="mt-4">
+                             <span class="pdu inline-block rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2">PDU: Dados (Data)</span>
+                            <p class="text-gray-300"><strong class="text-white">Função:</strong> Formatação de dados (ex: ASCII, JPEG, MPEG), Criptografia (SSL/TLS).</p>
+                        </div>
+                    </div>
+                    <!-- Camada 5: Sessão -->
+                    <div class="layer-card bg-gray-800 p-6 rounded-lg">
+                        <h3 class="text-2xl font-semibold text-cyan-300">5. Camada de Sessão</h3>
+                        <p class="text-gray-400 mt-2">Estabelece, gerencia e encerra as conexões (sessões) entre computadores.</p>
+                        <div class="mt-4">
+                             <span class="pdu inline-block rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2">PDU: Dados (Data)</span>
+                            <p class="text-gray-300"><strong class="text-white">Função:</strong> Controle de diálogo (quem fala e quando), sincronização e recuperação de falhas.</p>
+                        </div>
+                    </div>
+                    <!-- Camada 4: Transporte -->
+                    <div class="layer-card bg-gray-800 p-6 rounded-lg">
+                        <h3 class="text-2xl font-semibold text-cyan-300">4. Camada de Transporte</h3>
+                        <p class="text-gray-400 mt-2">Responsável pela entrega confiável ou não dos dados entre os hosts de origem e destino. Segmenta os dados e controla o fluxo.</p>
+                        <div class="mt-4">
+                            <span class="pdu inline-block rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2">PDU: Segmento (TCP) / Datagrama (UDP)</span>
+                            <p class="text-gray-300"><strong class="text-white">Protocolos:</strong> TCP (confiável, orientado à conexão), UDP (rápido, sem conexão).</p>
+                        </div>
+                    </div>
+                    <!-- Camada 3: Rede -->
+                    <div class="layer-card bg-gray-800 p-6 rounded-lg">
+                        <h3 class="text-2xl font-semibold text-cyan-300">3. Camada de Rede</h3>
+                        <p class="text-gray-400 mt-2">Decide o caminho físico que os dados tomarão. Responsável pelo endereçamento lógico (IP) e roteamento.</p>
+                         <div class="mt-4">
+                            <span class="pdu inline-block rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2">PDU: Pacote (Packet)</span>
+                            <p class="text-gray-300"><strong class="text-white">Protocolos:</strong> IP (IPv4, IPv6), ICMP.</p>
+                            <p class="text-gray-300"><strong class="text-white">Dispositivos:</strong> Roteadores.</p>
+                        </div>
+                    </div>
+                    <!-- Camada 2: Enlace de Dados -->
+                    <div class="layer-card bg-gray-800 p-6 rounded-lg">
+                        <h3 class="text-2xl font-semibold text-cyan-300">2. Camada de Enlace de Dados</h3>
+                        <p class="text-gray-400 mt-2">Define como os dados são formatados para transmissão em um meio físico. Lida com endereçamento físico (MAC Address) e detecção de erros.</p>
+                        <div class="mt-4">
+                            <span class="pdu inline-block rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2">PDU: Quadro (Frame)</span>
+                            <p class="text-gray-300"><strong class="text-white">Protocolos:</strong> Ethernet, Wi-Fi.</p>
+                             <p class="text-gray-300"><strong class="text-white">Dispositivos:</strong> Switches.</p>
+                        </div>
+                    </div>
+                    <!-- Camada 1: Física -->
+                    <div class="layer-card bg-gray-800 p-6 rounded-lg">
+                        <h3 class="text-2xl font-semibold text-cyan-300">1. Camada Física</h3>
+                        <p class="text-gray-400 mt-2">Define as especificações elétricas e físicas dos dados. Transmite os bits brutos pela rede.</p>
+                         <div class="mt-4">
+                            <span class="pdu inline-block rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2">PDU: Bits</span>
+                            <p class="text-gray-300"><strong class="text-white">Meios:</strong> Cabos (Cobre, Fibra Óptica), Rádio (Wi-Fi, Bluetooth).</p>
+                            <p class="text-gray-300"><strong class="text-white">Dispositivos:</strong> Hubs, Repetidores.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Comparação OSI vs TCP/IP -->
+            <section>
+                 <h2 class="text-3xl font-bold text-teal-400 mb-6">OSI vs. TCP/IP: A Batalha dos Modelos</h2>
+                 <p class="text-gray-300 leading-relaxed mb-8">
+                    O modelo TCP/IP é o que a internet realmente usa. É mais simples, com apenas 4 camadas. Ele combina as funções das camadas superiores do OSI, sendo mais prático e eficiente.
+                </p>
+                <div class="overflow-x-auto">
+                    <table class="comparison-table min-w-full text-center">
+                        <thead>
+                            <tr>
+                                <th class="py-3 px-4">Camada OSI</th>
+                                <th class="py-3 px-4">Camada TCP/IP</th>
+                                <th class="py-3 px-4">Função Principal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td class="py-3 px-4 border-b border-gray-700">7. Aplicação</td><td rowspan="3" class="py-3 px-4 border-b border-gray-700 align-middle">Aplicação</td><td rowspan="3" class="py-3 px-4 border-b border-gray-700 align-middle">Interface com o usuário, formatação e sessão.</td></tr>
+                            <tr><td class="py-3 px-4 border-b border-gray-700">6. Apresentação</td></tr>
+                            <tr><td class="py-3 px-4 border-b border-gray-700">5. Sessão</td></tr>
+                            <tr><td class="py-3 px-4 border-b border-gray-700">4. Transporte</td><td class="py-3 px-4 border-b border-gray-700">Transporte</td><td class="py-3 px-4 border-b border-gray-700">Comunicação ponta a ponta e confiabilidade (TCP/UDP).</td></tr>
+                            <tr><td class="py-3 px-4 border-b border-gray-700">3. Rede</td><td class="py-3 px-4 border-b border-gray-700">Internet</td><td class="py-3 px-4 border-b border-gray-700">Roteamento de pacotes entre redes (IP).</td></tr>
+                            <tr><td class="py-3 px-4 border-b border-gray-700">2. Enlace</td><td rowspan="2" class="py-3 px-4 border-b border-gray-700 align-middle">Acesso à Rede</td><td rowspan="2" class="py-3 px-4 border-b border-gray-700 align-middle">Transmissão de dados no meio físico local.</td></tr>
+                            <tr><td class="py-3 px-4">1. Física</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+
+        <footer class="text-center mt-16 animate__animated animate__fadeInUp">
+            <a href="index.html" class="inline-block bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-3 px-6 rounded-full transition-transform transform hover:scale-105 shadow-lg">
+                Voltar ao Módulo de Redes
+            </a>
+        </footer>
+    </div>
+</body>
+</html>

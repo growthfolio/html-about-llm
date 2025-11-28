@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <title>Implementação e Configuração de Firewalls</title>
+    <style>
+        body { background-color: #0a0a0a; }
+        .zone-card { background-color: #1e293b; border-left: 4px solid; transition: all 0.3s ease-in-out; }
+        .zone-card:hover { transform: translateY(-5px); }
+        .internal-border { border-color: #60a5fa; } /* Blue-400 */
+        .dmz-border { border-color: #fcd34d; } /* Amber-300 */
+        .external-border { border-color: #ef4444; } /* Red-500 */
+        .code-block {
+            background-color: #0f172a;
+            color: #94a3b8;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-12 animate__animated animate__fadeInDown">
+            <h1 class="text-4xl md:text-5xl font-bold text-red-500" style="text-shadow: 0 0 15px rgba(239, 68, 68, 0.7);">
+                Implementação e Configuração de Firewalls
+            </h1>
+            <p class="mt-4 text-lg text-gray-400">
+                Transformando a teoria em prática: protegendo sua rede com regras e políticas.
+            </p>
+        </header>
+
+        <main class="max-w-4xl mx-auto space-y-12 animate__animated animate__fadeInUp">
+            
+            <!-- Zonas de Segurança -->
+            <section>
+                <h2 class="text-3xl font-bold text-rose-400 mb-4">Zonas de Segurança: Segmentando a Rede</h2>
+                <p class="text-gray-300 leading-relaxed mb-6">
+                    A forma como organizamos a rede é fundamental para a segurança. Firewalls são usados para criar e impor limites entre diferentes "zonas de segurança", cada uma com seu próprio nível de confiança e políticas de acesso.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="zone-card internal-border p-5 rounded-lg">
+                        <h3 class="text-xl font-semibold text-blue-400 mb-2">Rede Interna (LAN)</h3>
+                        <p class="text-gray-400">A zona mais confiável, onde estão os recursos críticos da organização e os usuários internos.</p>
+                    </div>
+                    <div class="zone-card dmz-border p-5 rounded-lg">
+                        <h3 class="text-xl font-semibold text-amber-300 mb-2">DMZ (Zona Desmilitarizada)</h3>
+                        <p class="text-gray-400">Uma zona intermediária, menos confiável que a interna, mas mais confiável que a internet. Abriga servidores públicos (web, e-mail) que precisam ser acessíveis externamente, mas que, se comprometidos, não dão acesso direto à rede interna.</p>
+                    </div>
+                    <div class="zone-card external-border p-5 rounded-lg">
+                        <h3 class="text-xl font-semibold text-red-500 mb-2">Rede Externa (Internet)</h3>
+                        <p class="text-gray-400">A zona de menor confiança, considerada hostil e não confiável. Todas as conexões provenientes dela são tratadas com desconfiança.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Criação de Políticas e Regras -->
+            <section>
+                <h2 class="text-3xl font-bold text-rose-400 mb-4">Criação de Políticas e Regras de Firewall</h2>
+                <p class="text-gray-300 leading-relaxed mb-6">
+                    A segurança de um firewall é definida por suas regras. Uma política de firewall é um conjunto de regras que determinam o que é permitido e o que é bloqueado. A ordem das regras é crucial.
+                </p>
+                <div class="space-y-4">
+                    <div>
+                        <h3 class="text-xl font-semibold">Princípio do "Implicit Deny" (Negação Implícita)</h3>
+                        <p class="text-gray-400">A melhor prática em segurança de firewall é "negar tudo que não for explicitamente permitido". A última regra em qualquer firewall deve ser sempre um <code class="code-block inline">deny all</code> (negar tudo), garantindo que nada passe sem uma permissão explícita.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold">Estrutura de uma Regra</h3>
+                        <p class="text-gray-400">As regras geralmente especificam:</p>
+                        <ul class="text-gray-400 list-disc list-inside ml-4">
+                            <li><strong class="text-white">Origem:</strong> Endereço IP/rede, zona.</li>
+                            <li><strong class="text-white">Destino:</strong> Endereço IP/rede, zona.</li>
+                            <li><strong class="text-white">Serviço/Porta:</strong> Ex: HTTP (porta 80), HTTPS (porta 443).</li>
+                            <li><strong class="text-white">Ação:</strong> Permitir (Allow) ou Negar (Deny).</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold">Exemplo de Regras (Conceitual)</h3>
+                        <div class="code-block mt-2">
+                            # Regras de Alto Nível (Permitir o essencial)<br>
+                            PERMITIR TCP de Rede Interna para DMZ na Porta 80 (Acesso ao servidor web)<br>
+                            PERMITIR TCP de Rede Interna para Internet nas Portas 80, 443 (Navegação Web)<br>
+                            <br>
+                            # Regras de Baixo Nível (Restrições específicas)<br>
+                            NEGAR UDP de Internet para Rede Interna na Porta 137 (Evitar ataques NetBIOS)<br>
+                            <br>
+                            # Regra Final (Negação Implícita)<br>
+                            NEGAR TODO O TRÁFEGO QUE NÃO CORRESPONDER A UMA REGRA ANTERIOR
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- NAT (Network Address Translation) -->
+            <section>
+                <h2 class="text-3xl font-bold text-rose-400 mb-4">NAT (Network Address Translation) em Firewalls</h2>
+                <p class="text-gray-300 leading-relaxed mb-6">
+                    NAT é um mecanismo que permite que múltiplos dispositivos com endereços IP privados compartilhem um ou poucos endereços IP públicos para acessar a internet. O firewall é o local comum onde o NAT é implementado.
+                </p>
+                <div class="space-y-4">
+                    <div>
+                        <h3 class="text-xl font-semibold">NAT Estático (Static NAT)</h3>
+                        <p class="text-gray-400">Um endereço IP privado é mapeado para um endereço IP público fixo. Útil para servidores internos que precisam estar sempre acessíveis de fora por um IP público específico.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold">NAT Dinâmico (Dynamic NAT)</h3>
+                        <p class="text-gray-400">Um pool de endereços IP públicos é usado. Quando um dispositivo interno precisa acessar a internet, ele recebe um IP público disponível do pool.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold">PAT (Port Address Translation) ou NAT de Sobrecarga</h3>
+                        <p class="text-gray-400">A forma mais comum de NAT. Múltiplos endereços IP privados são mapeados para um ÚNICO endereço IP público, mas usando diferentes portas para distinguir as conexões. É o que acontece na maioria das redes domésticas.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Firewall de Borda vs. Firewall de Host -->
+            <section>
+                <h2 class="text-3xl font-bold text-rose-400 mb-4">Firewall de Borda vs. Firewall de Host</h2>
+                <p class="text-gray-300 leading-relaxed mb-6">
+                    Firewalls podem ser implementados em diferentes pontos da rede para fornecer camadas de proteção.
+                </p>
+                <div class="space-y-4">
+                    <div>
+                        <h3 class="text-xl font-semibold">Firewall de Borda (Perimeter Firewall)</h3>
+                        <p class="text-gray-400">Protege toda a rede, situado na fronteira entre a rede interna e a internet. É a primeira linha de defesa, protegendo múltiplos dispositivos de uma só vez.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold">Firewall de Host (Host-based Firewall)</h3>
+                        <p class="text-gray-400">Instalado diretamente em um computador individual (ex: Firewall do Windows, iptables no Linux). Protege especificamente aquele host, adicionando uma camada extra de segurança, mesmo que o firewall de borda falhe ou que o host esteja em uma rede não protegida.</p>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <footer class="text-center mt-16 animate__animated animate__fadeInUp">
+            <a href="index.html" class="inline-block bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-full transition-transform transform hover:scale-105 shadow-lg">
+                Voltar ao Módulo de Firewalls
+            </a>
+        </footer>
+    </div>
+</body>
+</html>

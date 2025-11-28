@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <title>Arquiteturas de VPN e Privacidade</title>
+    <style>
+        body { background-color: #0a0a0a; }
+        .arch-card { background-color: #1e293b; border-left: 4px solid #22c55e; transition: all 0.3s ease-in-out; }
+        .arch-card:hover { transform: translateY(-5px); }
+        .privacy-highlight { color: #facc15; } /* Yellow-400 */
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-12 animate__animated animate__fadeInDown">
+            <h1 class="text-4xl md:text-5xl font-bold text-green-500" style="text-shadow: 0 0 15px rgba(34, 197, 94, 0.7);">
+                Arquiteturas de VPN e Considerações de Privacidade
+            </h1>
+            <p class="mt-4 text-lg text-gray-400">
+                Tipos de VPN, cenários de uso e o que realmente significa "privacidade".
+            </p>
+        </header>
+
+        <main class="max-w-4xl mx-auto space-y-12 animate__animated animate__fadeInUp">
+            
+            <!-- Arquiteturas de VPN -->
+            <section>
+                <h2 class="text-3xl font-bold text-emerald-400 mb-4">Arquiteturas de VPN: Conectando Mundos</h2>
+                <p class="text-gray-300 leading-relaxed mb-6">
+                    As VPNs são configuradas de diferentes maneiras para atender a distintas necessidades de conectividade segura. As duas arquiteturas mais comuns são VPN de Acesso Remoto e VPN Site-to-Site.
+                </p>
+                <div class="space-y-6">
+                    <div class="arch-card p-6 rounded-lg">
+                        <h3 class="text-xl font-semibold text-white mb-2">VPN de Acesso Remoto (Client-to-Site)</h3>
+                        <p class="text-gray-400">
+                            Permite que um usuário individual (cliente) se conecte de forma segura a uma rede privada (por exemplo, a rede de uma empresa) através de uma rede pública (a internet).
+                        </p>
+                        <ul class="mt-4 space-y-2 text-gray-300 list-disc list-inside">
+                            <li><strong>Cenário de Uso:</strong> Funcionários trabalhando de casa acessando recursos internos da empresa.</li>
+                            <li><strong>Funcionamento:</strong> O software cliente VPN no dispositivo do usuário estabelece um túnel criptografado com o servidor VPN na borda da rede privada.</li>
+                        </ul>
+                    </div>
+                    <div class="arch-card p-6 rounded-lg">
+                        <h3 class="text-xl font-semibold text-white mb-2">VPN Site-to-Site</h3>
+                        <p class="text-gray-400">
+                            Conecta duas ou mais redes privadas entre si através da internet, como se fossem uma única rede. Geralmente é implementada entre roteadores ou firewalls de borda.
+                        </p>
+                        <ul class="mt-4 space-y-2 text-gray-300 list-disc list-inside">
+                            <li><strong>Cenário de Uso:</strong> Conectar a sede de uma empresa com suas filiais, permitindo que os funcionários em diferentes locais acessem recursos como se estivessem na mesma rede.</li>
+                            <li><strong>Funcionamento:</strong> Os gateways VPN em cada site estabelecem um túnel permanente, através do qual o tráfego da rede inteira é roteado de forma segura.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Considerações de Privacidade em VPNs -->
+            <section>
+                <h2 class="text-3xl font-bold text-emerald-400 mb-4">Considerações de Privacidade: Além da Criptografia</h2>
+                <p class="text-gray-300 leading-relaxed mb-6">
+                    Embora a criptografia seja fundamental, a privacidade de uma VPN vai além do túnel seguro. É crucial entender o que acontece com seus dados no servidor VPN e as políticas do provedor.
+                </p>
+                <div class="space-y-6">
+                    <div class="arch-card p-6 rounded-lg">
+                        <h3 class="text-xl font-semibold text-white mb-2">Política de "No-Logs" (Sem Registros)</h3>
+                        <p class="text-gray-400">
+                            Um provedor de VPN "no-logs" afirma não registrar suas atividades online (sites visitados, downloads, etc.), endereços IP, carimbos de data/hora de conexão, etc. Isso é vital para a privacidade, pois, mesmo que um governo solicite dados, o provedor não terá nada a entregar. <strong class="privacy-highlight">Sempre verifique se a política foi auditada independentemente.</strong>
+                        </p>
+                    </div>
+                    <div class="arch-card p-6 rounded-lg">
+                        <h3 class="text-xl font-semibold text-white mb-2">Jurisdição do Provedor de VPN</h3>
+                        <p class="text-gray-400">
+                            O país onde o provedor de VPN está sediado importa. Alguns países têm leis de retenção de dados ou acordos de compartilhamento de inteligência (como os "Five Eyes", "Nine Eyes", "Fourteen Eyes") que podem forçar provedores a registrar e entregar dados. Optar por provedores em jurisdições com leis de privacidade robustas é recomendado.
+                        </p>
+                    </div>
+                    <div class="arch-card p-6 rounded-lg">
+                        <h3 class="text-xl font-semibold text-white mb-2">Funcionalidades Adicionais de Privacidade</h3>
+                        <ul class="mt-4 space-y-2 text-gray-300 list-disc list-inside">
+                            <li><strong>Kill Switch:</strong> Se a conexão VPN cair, o kill switch bloqueia automaticamente todo o tráfego de internet para evitar vazamento de IP.</li>
+                            <li><strong>Split Tunneling:</strong> Permite escolher quais aplicativos ou sites usarão a conexão VPN e quais usarão a conexão normal da internet.</li>
+                            <li><strong>DNS Próprio:</strong> Muitos provedores de VPN usam seus próprios servidores DNS para evitar vazamentos de DNS e proteger sua atividade de pesquisa.</li>
+                        </ul>
+                    </div>
+                     <div class="arch-card p-6 rounded-lg">
+                        <h3 class="text-xl font-semibold text-white mb-2">VPNs Gratuitas vs. Pagas</h3>
+                        <p class="text-gray-400">
+                            VPNs gratuitas raramente são realmente "gratuitas". Elas frequentemente monetizam seus usuários vendendo dados, exibindo anúncios ou impondo limites de velocidade. VPNs pagas geralmente oferecem melhor desempenho, segurança, suporte e, crucialmente, uma política de privacidade mais confiável.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <footer class="text-center mt-16 animate__animated animate__fadeInUp">
+            <a href="index.html" class="inline-block bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-full transition-transform transform hover:scale-105 shadow-lg">
+                Voltar ao Módulo de VPNs
+            </a>
+        </footer>
+    </div>
+</body>
+</html>

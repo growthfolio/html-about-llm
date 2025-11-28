@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <title>Introdução e Tipos de Firewalls</title>
+    <style>
+        body { background-color: #0a0a0a; }
+        .type-card {
+            border-left: 4px solid;
+            transition: all 0.3s ease-in-out;
+        }
+        .type-card:hover { transform: translateY(-5px); }
+        .stateless-border { border-color: #f87171; } /* Red-400 */
+        .stateful-border { border-color: #fbbf24; } /* Amber-400 */
+        .proxy-border { border-color: #34d399; } /* Green-400 */
+        .ngfw-border { border-color: #60a5fa; } /* Blue-400 */
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-12 animate__animated animate__fadeInDown">
+            <h1 class="text-4xl md:text-5xl font-bold text-red-500" style="text-shadow: 0 0 15px rgba(239, 68, 68, 0.7);">
+                Introdução e Tipos de Firewalls
+            </h1>
+            <p class="mt-4 text-lg text-gray-400">
+                A primeira e mais essencial barreira de segurança da sua rede.
+            </p>
+        </header>
+
+        <main class="max-w-4xl mx-auto space-y-12 animate__animated animate__fadeInUp">
+            
+            <!-- O que é um Firewall? -->
+            <section>
+                <h2 class="text-3xl font-bold text-rose-400 mb-4">O que é um Firewall?</h2>
+                <p class="text-gray-300 leading-relaxed mb-6">
+                    Um firewall atua como um porteiro da rede, inspecionando todo o tráfego que tenta entrar ou sair. Sua função principal é decidir, com base em um conjunto de regras predefinidas, quais pacotes de dados podem passar e quais devem ser bloqueados. Ele é a primeira linha de defesa contra acessos não autorizados, ataques maliciosos e vazamento de informações.
+                </p>
+                <p class="text-gray-300 leading-relaxed">
+                    A importância de um firewall reside na sua capacidade de fazer cumprir a política de segurança de uma organização, protegendo ativos internos de ameaças externas e controlando o comportamento de saída para prevenir vazamentos e infecções.
+                </p>
+            </section>
+
+            <!-- Tipos de Firewalls -->
+            <section>
+                <h2 class="text-3xl font-bold text-rose-400 mb-6">Classificação e Tipos de Firewalls</h2>
+                <p class="text-gray-300 leading-relaxed mb-8">
+                    Existem diferentes gerações e tipos de firewalls, cada um com suas características e capacidades de inspeção.
+                </p>
+                <div class="space-y-6">
+                    <!-- Firewall de Filtragem de Pacotes (Stateless) -->
+                    <div class="type-card stateless-border bg-gray-800 p-6 rounded-lg">
+                        <h3 class="text-2xl font-semibold text-red-400">1. Firewall de Filtragem de Pacotes (Stateless)</h3>
+                        <p class="text-gray-400 mt-2">
+                            A forma mais básica de firewall. Ele inspeciona pacotes individualmente, sem levar em conta o contexto de uma conexão (ou seja, se um pacote faz parte de uma conversa já estabelecida).
+                        </p>
+                        <ul class="mt-4 space-y-2 text-gray-300 list-disc list-inside">
+                            <li><strong>Funcionamento:</strong> Baseia-se em informações do cabeçalho do pacote, como endereço IP de origem/destino, porta de origem/destino e protocolo.</li>
+                            <li><strong>Vantagens:</strong> Rápido e simples de implementar.</li>
+                            <li><strong>Desvantagens:</strong> Não acompanha o estado das conexões, o que o torna vulnerável a certos ataques e menos seguro. Exige regras complexas para permitir tráfego de resposta legítimo.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Firewall de Inspeção de Estado (Stateful) -->
+                    <div class="type-card stateful-border bg-gray-800 p-6 rounded-lg">
+                        <h3 class="text-2xl font-semibold text-amber-400">2. Firewall de Inspeção de Estado (Stateful)</h3>
+                        <p class="text-gray-400 mt-2">
+                            Este é o tipo de firewall mais comum hoje. Ele mantém uma "tabela de estados" que registra informações sobre conexões ativas.
+                        </p>
+                        <ul class="mt-4 space-y-2 text-gray-300 list-disc list-inside">
+                            <li><strong>Funcionamento:</strong> Inspeciona os pacotes e rastreia o estado das conexões TCP e UDP. Permite automaticamente o tráfego de resposta que faz parte de uma conexão estabelecida e legítima.</li>
+                            <li><strong>Vantagens:</strong> Muito mais seguro que o stateless, mais fácil de configurar regras.</li>
+                            <li><strong>Desvantagens:</strong> Consome mais recursos (CPU, memória) para manter a tabela de estados.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Firewall Proxy de Aplicação (Application Gateway) -->
+                    <div class="type-card proxy-border bg-gray-800 p-6 rounded-lg">
+                        <h3 class="text-2xl font-semibold text-green-400">3. Firewall Proxy de Aplicação (Application Gateway)</h3>
+                        <p class="text-gray-400 mt-2">
+                            Funciona na camada de aplicação (Camada 7 do OSI), agindo como um intermediário (proxy) entre o cliente e o servidor.
+                        </p>
+                        <ul class="mt-4 space-y-2 text-gray-300 list-disc list-inside">
+                            <li><strong>Funcionamento:</strong> O cliente se conecta ao proxy, que por sua vez estabelece uma nova conexão com o servidor de destino. Permite inspeção profunda do conteúdo da aplicação (Deep Packet Inspection - DPI).</li>
+                            <li><strong>Vantagens:</strong> Oferece o mais alto nível de segurança, pois inspeciona o tráfego em nível de aplicação. Pode filtrar comandos específicos de protocolos como HTTP ou FTP.</li>
+                            <li><strong>Desvantagens:</strong> Mais lento devido à inspeção aprofundada e ao reencapsulamento do tráfego. Pode exigir configuração específica para cada aplicação.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Next-Generation Firewall (NGFW) -->
+                    <div class="type-card ngfw-border bg-gray-800 p-6 rounded-lg">
+                        <h3 class="text-2xl font-semibold text-blue-400">4. Next-Generation Firewall (NGFW)</h3>
+                        <p class="text-gray-400 mt-2">
+                            Uma evolução que combina as funcionalidades de um firewall tradicional (stateful) com outras tecnologias de segurança.
+                        </p>
+                        <ul class="mt-4 space-y-2 text-gray-300 list-disc list-inside">
+                            <li><strong>Funcionamento:</strong> Integra inspeção de estado, DPI, sistema de prevenção de intrusões (IPS), controle de aplicações (identificação e controle de apps específicas como Facebook, Skype), inteligência de ameaças e outras funções de segurança.</li>
+                            <li><strong>Vantagens:</strong> Proteção abrangente e contextualizada contra uma ampla gama de ameaças, incluindo ataques avançados.</li>
+                            <li><strong>Desvantagens:</strong> Maior complexidade e custo. Exige mais recursos de hardware.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <footer class="text-center mt-16 animate__animated animate__fadeInUp">
+            <a href="index.html" class="inline-block bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-full transition-transform transform hover:scale-105 shadow-lg">
+                Voltar ao Módulo de Firewalls
+            </a>
+        </footer>
+    </div>
+</body>
+</html>
