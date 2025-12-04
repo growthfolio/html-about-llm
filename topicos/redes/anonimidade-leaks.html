@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <title>Anonimidade e Leaks: Mitigação</title>
+    <style>
+        body { background-color: #0a0a0a; }
+        .leak-card {
+            background-color: #1e293b;
+            border-left: 4px solid #f59e0b;
+            transition: all 0.3s ease-in-out;
+        }
+        .leak-card:hover { transform: translateY(-3px); }
+        .mitigation { background-color: #065f46; padding: 1rem; border-radius: 0.5rem; margin-top: 1rem; }
+        .warning { background-color: #7f1d1d; padding: 0.75rem; border-radius: 0.5rem; border-left: 4px solid #ef4444; }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-12 animate__animated animate__fadeInDown">
+            <h1 class="text-4xl md:text-5xl font-bold text-amber-500" style="text-shadow: 0 0 15px rgba(245, 158, 11, 0.7);">
+                Anonimidade e Leaks: Problemas e Mitigação
+            </h1>
+            <p class="mt-4 text-lg text-gray-400">
+                Checklist completo de vazamentos comuns e como proteger-se.
+            </p>
+        </header>
+
+        <main class="max-w-5xl mx-auto space-y-12 animate__animated animate__fadeInUp">
+            
+            <!-- Objetivos -->
+            <section class="bg-gray-800 p-6 rounded-lg border-l-4 border-amber-500">
+                <h2 class="text-xl font-bold text-amber-400 mb-3">Objetivos de Aprendizagem</h2>
+                <p class="text-gray-300">Ao terminar, você saberá identificar e mitigar DNS leaks, WebRTC leaks, IPv6 leaks, browser fingerprinting e compreenderá técnicas de de-anonimização.</p>
+            </section>
+
+            <!-- Resumo Rápido -->
+            <section class="bg-slate-800 p-6 rounded-lg">
+                <h2 class="text-2xl font-bold text-amber-400 mb-4">Resumo Rápido</h2>
+                <ul class="text-gray-300 space-y-2 list-disc list-inside">
+                    <li><strong>DNS leak:</strong> Consultas DNS vão para ISP em vez de passar pela VPN/Tor.</li>
+                    <li><strong>WebRTC leak:</strong> JavaScript expõe IP real mesmo com VPN ativa.</li>
+                    <li><strong>IPv6 leak:</strong> VPN só tunela IPv4, tráfego IPv6 vai direto.</li>
+                    <li><strong>Browser fingerprinting:</strong> Combinação de user-agent, plugins, resolução, timezone identifica você.</li>
+                    <li><strong>Kill-switch:</strong> Bloqueia tráfego se VPN/Tor cair.</li>
+                </ul>
+            </section>
+
+            <!-- DNS Leaks -->
+            <section class="leak-card p-6 rounded-lg">
+                <h2 class="text-3xl font-bold text-yellow-400 mb-4">DNS Leaks</h2>
+                <p class="text-gray-300 leading-relaxed mb-4">
+                    Mesmo com VPN/Tor ativo, seu sistema pode continuar enviando consultas DNS diretamente para os servidores do ISP (geralmente configurados via DHCP). Isso revela quais domínios você acessa.
+                </p>
+                <div class="warning">
+                    <p class="font-semibold text-red-300">Cenário:</p>
+                    <p class="text-gray-300">Usuário ativa VPN para privacidade, mas o SO continua usando DNS do ISP (8.8.8.8 ou DNS local). ISP consegue registrar todos os domínios visitados, anulando benefício da VPN.</p>
+                </div>
+                <div class="mitigation">
+                    <h3 class="text-lg font-semibold text-emerald-300 mb-2">Mitigação:</h3>
+                    <ul class="text-gray-200 space-y-2 list-disc list-inside ml-4">
+                        <li><strong>Configurar DNS over HTTPS (DoH):</strong> Firefox/Chrome suportam nativamente (Cloudflare 1.1.1.1, Google 8.8.8.8).</li>
+                        <li><strong>Usar DNS do provedor VPN:</strong> Garantir que VPN configura DNS automaticamente (push DNS via DHCP).</li>
+                        <li><strong>Forçar DNS via firewall:</strong> <code class="bg-slate-900 px-2 py-1 rounded">iptables -A OUTPUT -p udp --dport 53 -j REJECT</code> (bloqueia DNS fora da VPN).</li>
+                        <li><strong>Verificar leak:</strong> <code class="bg-slate-900 px-2 py-1 rounded">https://dnsleaktest.com/</code></li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- WebRTC Leaks -->
+            <section class="leak-card p-6 rounded-lg">
+                <h2 class="text-3xl font-bold text-yellow-400 mb-4">WebRTC Leaks</h2>
+                <p class="text-gray-300 leading-relaxed mb-4">
+                    WebRTC (Web Real-Time Communication) é uma API de navegador para vídeo/áudio P2P. Para estabelecer conexões diretas, ele expõe o IP local e público real, mesmo através de VPN.
+                </p>
+                <div class="warning">
+                    <p class="font-semibold text-red-300">Cenário:</p>
+                    <p class="text-gray-300">Usuário visita site malicioso com VPN ativa. JavaScript do site usa WebRTC para descobrir IP real do usuário, identificando-o.</p>
+                </div>
+                <div class="mitigation">
+                    <h3 class="text-lg font-semibold text-emerald-300 mb-2">Mitigação:</h3>
+                    <ul class="text-gray-200 space-y-2 list-disc list-inside ml-4">
+                        <li><strong>Desabilitar WebRTC no navegador:</strong>
+                            <ul class="ml-6 mt-1 space-y-1 text-sm">
+                                <li>Firefox: <code class="bg-slate-900 px-2 py-1 rounded">about:config</code> → <code class="bg-slate-900 px-2 py-1 rounded">media.peerconnection.enabled = false</code></li>
+                                <li>Chrome: Usar extensão "WebRTC Leak Prevent" ou "uBlock Origin" (modo avançado).</li>
+                            </ul>
+                        </li>
+                        <li><strong>Usar Tor Browser:</strong> WebRTC já vem desabilitado por padrão.</li>
+                        <li><strong>Verificar leak:</strong> <code class="bg-slate-900 px-2 py-1 rounded">https://browserleaks.com/webrtc</code></li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- IPv6 Leaks -->
+            <section class="leak-card p-6 rounded-lg">
+                <h2 class="text-3xl font-bold text-yellow-400 mb-4">IPv6 Leaks</h2>
+                <p class="text-gray-300 leading-relaxed mb-4">
+                    Muitas VPNs só tunelam tráfego IPv4. Se seu ISP e o site de destino suportam IPv6, o tráfego pode ir direto sem passar pela VPN, expondo seu IP.
+                </p>
+                <div class="warning">
+                    <p class="font-semibold text-red-300">Cenário:</p>
+                    <p class="text-gray-300">Usuário com IPv6 ativo conecta a VPN antiga que não suporta IPv6. Ao acessar site com IPv6, conexão vai direto pelo ISP.</p>
+                </div>
+                <div class="mitigation">
+                    <h3 class="text-lg font-semibold text-emerald-300 mb-2">Mitigação:</h3>
+                    <ul class="text-gray-200 space-y-2 list-disc list-inside ml-4">
+                        <li><strong>Desabilitar IPv6:</strong> Temporariamente ou permanentemente no SO.
+                            <ul class="ml-6 mt-1 space-y-1 text-sm">
+                                <li>Linux: <code class="bg-slate-900 px-2 py-1 rounded">sudo sysctl -w net.ipv6.conf.all.disable_ipv6=1</code></li>
+                                <li>Windows: Desmarcar "Internet Protocol Version 6" nas propriedades da interface de rede.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Usar VPN com suporte IPv6:</strong> Provedores modernos (Mullvad, IVPN) tunelam IPv6.</li>
+                        <li><strong>Verificar leak:</strong> <code class="bg-slate-900 px-2 py-1 rounded">https://test-ipv6.com/</code> ou <code class="bg-slate-900 px-2 py-1 rounded">https://ipleak.net/</code></li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- VPN Kill-Switch -->
+            <section class="leak-card p-6 rounded-lg">
+                <h2 class="text-3xl font-bold text-yellow-400 mb-4">VPN/Proxy Kill-Switch</h2>
+                <p class="text-gray-300 leading-relaxed mb-4">
+                    Se a VPN cai inesperadamente (reconexão, falha de servidor), o tráfego pode voltar a usar a rota padrão (ISP), expondo atividade. Um kill-switch bloqueia todo o tráfego se a VPN não estiver ativa.
+                </p>
+                <div class="mitigation">
+                    <h3 class="text-lg font-semibold text-emerald-300 mb-2">Implementação:</h3>
+                    <ul class="text-gray-200 space-y-2 list-disc list-inside ml-4">
+                        <li><strong>Cliente VPN nativo:</strong> A maioria dos apps VPN (NordVPN, ProtonVPN) tem opção kill-switch embutida.</li>
+                        <li><strong>Firewall manual (Linux com iptables):</strong>
+                            <pre class="bg-slate-900 text-slate-300 p-3 rounded mt-2 text-xs">
+# Permitir apenas tráfego pela interface VPN (tun0)
+iptables -P OUTPUT DROP
+iptables -A OUTPUT -o tun0 -j ACCEPT
+iptables -A OUTPUT -o lo -j ACCEPT
+iptables -A OUTPUT -d VPN_SERVER_IP -j ACCEPT  # Permitir conexão ao servidor VPN</pre>
+                        </li>
+                        <li><strong>WireGuard:</strong> Configurar <code class="bg-slate-900 px-2 py-1 rounded">PostDown</code> hook para bloquear tráfego se interface cair.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Browser Fingerprinting -->
+            <section class="leak-card p-6 rounded-lg">
+                <h2 class="text-3xl font-bold text-yellow-400 mb-4">Browser Fingerprinting</h2>
+                <p class="text-gray-300 leading-relaxed mb-4">
+                    Combinação de atributos do navegador (user-agent, plugins, fontes instaladas, resolução de tela, timezone, canvas rendering) cria uma "impressão digital" única que identifica você mesmo sem cookies.
+                </p>
+                <h3 class="text-xl font-semibold text-white mb-3">Vetores de fingerprinting:</h3>
+                <ul class="text-gray-300 space-y-2 list-disc list-inside ml-4">
+                    <li><strong>Canvas fingerprinting:</strong> Renderiza imagem invisível; mínimas diferenças de hardware criam hash único.</li>
+                    <li><strong>Font enumeration:</strong> JavaScript lista fontes instaladas (cada combo é raro).</li>
+                    <li><strong>WebGL/GPU info:</strong> Expõe modelo de GPU.</li>
+                    <li><strong>Battery API:</strong> Nível de bateria + tempo de carga = identificador temporário.</li>
+                </ul>
+                <div class="mitigation mt-4">
+                    <h3 class="text-lg font-semibold text-emerald-300 mb-2">Mitigação:</h3>
+                    <ul class="text-gray-200 space-y-2 list-disc list-inside ml-4">
+                        <li><strong>Usar Tor Browser:</strong> Todos os usuários têm fingerprint idêntico (resistência ativa).</li>
+                        <li><strong>Extensões:</strong> uBlock Origin (modo avançado), Privacy Badger, Canvas Blocker.</li>
+                        <li><strong>Configuração manual:</strong> Desabilitar JavaScript em sites não-confiáveis, usar private browsing mode.</li>
+                        <li><strong>Evitar plugins:</strong> Flash, Java, PDF plugins aumentam superfície de fingerprinting.</li>
+                        <li><strong>Verificar fingerprint:</strong> <code class="bg-slate-900 px-2 py-1 rounded">https://amiunique.org/</code> ou <code class="bg-slate-900 px-2 py-1 rounded">https://coveryourtracks.eff.org/</code></li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- TLS Fingerprinting -->
+            <section class="leak-card p-6 rounded-lg">
+                <h2 class="text-3xl font-bold text-yellow-400 mb-4">TLS Fingerprinting</h2>
+                <p class="text-gray-300 leading-relaxed mb-4">
+                    Diferentes clients (browsers, apps) enviam diferentes conjuntos de cipher suites, extensões e versões TLS no handshake inicial. Isso cria uma "assinatura TLS" que pode identificar navegador/OS.
+                </p>
+                <div class="mitigation">
+                    <h3 class="text-lg font-semibold text-emerald-300 mb-2">Mitigação:</h3>
+                    <ul class="text-gray-200 space-y-2 list-disc list-inside ml-4">
+                        <li><strong>Usar Tor Browser:</strong> TLS fingerprint padronizado.</li>
+                        <li><strong>Awareness:</strong> Difícil de mitigar manualmente; usar software atualizado e popular (Firefox, Chrome) torna você "comum" no fingerprint.</li>
+                        <li><strong>Verificar:</strong> <code class="bg-slate-900 px-2 py-1 rounded">https://www.ssllabs.com/ssltest/viewMyClient.html</code></li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Técnicas de De-anonymization -->
+            <section class="bg-gray-800 p-6 rounded-lg">
+                <h2 class="text-2xl font-bold text-amber-400 mb-4">Técnicas de De-anonymization</h2>
+                <p class="text-gray-300 mb-4">Adversários avançados (agências estatais, ISPs) têm técnicas sofisticadas:</p>
+                <ul class="text-gray-300 space-y-3 list-disc list-inside ml-4">
+                    <li><strong>Timing Attacks:</strong> Correlacionar timestamps de pacotes entrando e saindo de nós Tor/VPN para identificar usuário (requer controle de múltiplos pontos).</li>
+                    <li><strong>Traffic Correlation:</strong> Analisar padrões de volume/timing de tráfego. Ex: se único usuário acessa VPN às 2AM e site X recebe visita anônima às 2AM, correlação probabilística é alta.</li>
+                    <li><strong>Website Fingerprinting:</strong> Machine learning para identificar sites visitados via Tor analisando padrões de tamanho/timing de pacotes criptografados.</li>
+                    <li><strong>Browser Exploits:</strong> Zero-days para explorar navegadores e deanonymizar (ex: FBI vs. Tor em operações criminais).</li>
+                </ul>
+                <p class="text-gray-300 mt-4"><strong>Defesa:</strong> Não existe proteção 100%. Combinar camadas (Tor + VPN + Tails + boas práticas) dificulta, mas não elimina risco contra adversários de estado-nação.</p>
+            </section>
+
+            <!-- Checklist de Anonimidade -->
+            <section class="bg-slate-800 p-6 rounded-lg">
+                <h2 class="text-2xl font-bold text-amber-400 mb-4">Checklist de Anonimidade</h2>
+                <p class="text-gray-300 mb-4">Use esta lista para revisar sua configuração:</p>
+                <ul class="text-gray-300 space-y-2">
+                    <li><input type="checkbox" class="mr-2"> VPN/Tor ativo e verificado (<code class="bg-slate-900 px-2 py-1 rounded">https://ipleak.net/</code>)</li>
+                    <li><input type="checkbox" class="mr-2"> DNS configurado para passar pela VPN/Tor (teste em <code class="bg-slate-900 px-2 py-1 rounded">dnsleaktest.com</code>)</li>
+                    <li><input type="checkbox" class="mr-2"> WebRTC desabilitado ou mitigado</li>
+                    <li><input type="checkbox" class="mr-2"> IPv6 desabilitado ou tunelado pela VPN</li>
+                    <li><input type="checkbox" class="mr-2"> Kill-switch configurado</li>
+                    <li><input type="checkbox" class="mr-2"> Navegador resistente a fingerprinting (Tor Browser ou Firefox hardened)</li>
+                    <li><input type="checkbox" class="mr-2"> JavaScript desabilitado em sites não-confiáveis (NoScript)</li>
+                    <li><input type="checkbox" class="mr-2"> Sem plugins/extensões desnecessárias</li>
+                    <li><input type="checkbox" class="mr-2"> Sem login em contas reais durante atividade anônima</li>
+                    <li><input type="checkbox" class="mr-2"> Timezone do sistema em UTC (reduz fingerprinting)</li>
+                </ul>
+            </section>
+
+            <!-- Glossário -->
+            <section class="bg-gray-800 p-6 rounded-lg">
+                <h2 class="text-2xl font-bold text-amber-400 mb-4">Glossário Rápido</h2>
+                <dl class="text-gray-300 space-y-2">
+                    <dt class="font-semibold text-white">DNS Leak:</dt>
+                    <dd class="ml-4">Consultas DNS vão para ISP em vez de VPN/Tor.</dd>
+                    
+                    <dt class="font-semibold text-white mt-3">WebRTC Leak:</dt>
+                    <dd class="ml-4">API de navegador que expõe IP real via JavaScript.</dd>
+                    
+                    <dt class="font-semibold text-white mt-3">Kill-Switch:</dt>
+                    <dd class="ml-4">Mecanismo que bloqueia internet se VPN cair.</dd>
+                    
+                    <dt class="font-semibold text-white mt-3">Browser Fingerprinting:</dt>
+                    <dd class="ml-4">Identificação via combinação de atributos do navegador.</dd>
+                    
+                    <dt class="font-semibold text-white mt-3">Traffic Correlation:</dt>
+                    <dd class="ml-4">Técnica de análise de timing/volume para deanonymizar.</dd>
+                </dl>
+            </section>
+
+        </main>
+
+        <footer class="text-center mt-16 animate__animated animate__fadeInUp">
+            <a href="index.html" class="inline-block bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 px-6 rounded-full transition-transform transform hover:scale-105 shadow-lg">
+                Voltar ao Módulo de Redes
+            </a>
+        </footer>
+    </div>
+</body>
+</html>

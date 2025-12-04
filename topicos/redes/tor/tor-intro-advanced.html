@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <title>Tor: Anonimato e Onion Routing</title>
+    <style>
+        body { background-color: #0a0a0a; }
+        .tor-card {
+            background-color: #1e293b;
+            border-left: 4px solid #8b5cf6;
+            transition: all 0.3s ease-in-out;
+        }
+        .tor-card:hover { transform: translateY(-3px); }
+        .code-block {
+            background-color: #0f172a;
+            color: #94a3b8;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+            font-size: 0.85rem;
+        }
+        .warning { background-color: #7f1d1d; border-left: 4px solid #ef4444; }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-12 animate__animated animate__fadeInDown">
+            <h1 class="text-4xl md:text-5xl font-bold text-purple-500" style="text-shadow: 0 0 15px rgba(139, 92, 246, 0.7);">
+                Tor: Anonimato e Onion Routing
+            </h1>
+            <p class="mt-4 text-lg text-gray-400">
+                Do básico ao avançado — circuitos, hidden services, riscos e defesa em camadas.
+            </p>
+        </header>
+
+        <main class="max-w-5xl mx-auto space-y-12 animate__animated animate__fadeInUp">
+            
+            <!-- Objetivos -->
+            <section class="bg-gray-800 p-6 rounded-lg border-l-4 border-purple-500">
+                <h2 class="text-xl font-bold text-purple-400 mb-3">Objetivos de Aprendizagem</h2>
+                <p class="text-gray-300">Ao terminar, você entenderá como Tor funciona (circuitos, camadas de criptografia), reconhecerá seus pontos fracos e saberá combinar Tor com VPN para defesa em camadas.</p>
+            </section>
+
+            <!-- Resumo Rápido -->
+            <section class="bg-slate-800 p-6 rounded-lg">
+                <h2 class="text-2xl font-bold text-purple-400 mb-4">Resumo Rápido</h2>
+                <p class="text-gray-300 mb-4">Tor (The Onion Router) encaminha tráfego através de circuitos de três nós (entry/guard → middle → exit). Cada salto descasca uma camada de cifragem — por isso o nome "onion" — fornecendo anonimato de caminho, mas não imunidade a correlação de tráfego ou leaks do navegador. Use Tor Browser para maior proteção; combine com boas práticas (desativar plugins, evitar login reidentificável).</p>
+                <ul class="text-gray-300 space-y-2 list-disc list-inside mt-4">
+                    <li><strong>3 saltos:</strong> Guard → Middle → Exit (cada um só sabe vizinhos imediatos).</li>
+                    <li><strong>Exit node risk:</strong> Tráfego não-HTTPS pode ser lido pelo exit node.</li>
+                    <li><strong>Comando útil:</strong> <code class="bg-slate-900 px-2 py-1 rounded">curl --socks5-hostname 127.0.0.1:9050 https://check.torproject.org/</code></li>
+                </ul>
+            </section>
+
+            <!-- Como Tor Funciona -->
+            <section class="tor-card p-6 rounded-lg">
+                <h2 class="text-3xl font-bold text-violet-400 mb-4">Como Tor Funciona: Circuitos de Onion Routing</h2>
+                <p class="text-gray-300 leading-relaxed mb-4">
+                    Tor constrói um caminho (circuito) através de três nós aleatórios da rede Tor: <strong>Guard (Entry) → Middle (Relay) → Exit</strong>. Cada camada do circuito é criptografada separadamente, como camadas de uma cebola.
+                </p>
+                <h3 class="text-xl font-semibold text-white mb-3">Funcionamento passo-a-passo:</h3>
+                <ol class="text-gray-300 space-y-2 list-decimal list-inside ml-4">
+                    <li><strong>Cliente escolhe Guard node:</strong> O cliente Tor negocia chaves criptográficas com o Guard. Este nó sabe o IP do cliente, mas não o destino final.</li>
+                    <li><strong>Guard → Middle node:</strong> O Guard encaminha para o Middle, que desencapsula uma camada. Middle não sabe a origem real nem o destino final.</li>
+                    <li><strong>Middle → Exit node:</strong> O Exit desencapsula a última camada e faz a requisição ao destino final (ex: website). O Exit vê o tráfego não-criptografado (se HTTP) ou criptografado (se HTTPS).</li>
+                    <li><strong>Resposta volta:</strong> O processo inverte, cada nó adiciona sua camada de criptografia até voltar ao cliente.</li>
+                </ol>
+                <p class="text-gray-300 mt-4"><strong>Resultado:</strong> Nenhum nó único sabe simultaneamente origem e destino; o anonimato é preservado pela distribuição de conhecimento.</p>
+            </section>
+
+            <!-- Hidden Services (.onion) -->
+            <section class="tor-card p-6 rounded-lg">
+                <h2 class="text-3xl font-bold text-violet-400 mb-4">Hidden Services (.onion)</h2>
+                <p class="text-gray-300 leading-relaxed mb-4">
+                    Sites .onion (hidden services) não expõem IP do servidor. Tanto o cliente quanto o servidor constroem circuitos Tor, e se encontram em um ponto intermediário (rendezvous point), garantindo anonimato bidirecional.
+                </p>
+                <h3 class="text-xl font-semibold text-white mb-3">Como funciona:</h3>
+                <ul class="text-gray-300 space-y-2 list-disc list-inside ml-4">
+                    <li>O servidor anuncia seu endereço .onion (hash de chave pública) em nós de introdução.</li>
+                    <li>Cliente descobre o serviço via diretório Tor.</li>
+                    <li>Cliente e servidor negociam um rendezvous point comum na rede Tor.</li>
+                    <li>Comunicação ocorre sem que nenhum dos lados revele seu IP real.</li>
+                </ul>
+                <p class="text-gray-300 mt-4"><strong>Uso comum:</strong> Whistleblowing (SecureDrop), mercados anônimos, fóruns de privacidade.</p>
+            </section>
+
+            <!-- Pontos Fracos e Riscos -->
+            <section class="warning p-6 rounded-lg">
+                <h2 class="text-3xl font-bold text-red-400 mb-4">Pontos Fracos e Riscos do Tor</h2>
+                <p class="text-gray-300 leading-relaxed mb-4">
+                    Tor não é infalível. Existem vetores de ataque conhecidos e boas práticas essenciais.
+                </p>
+                <h3 class="text-xl font-semibold text-white mb-3">Vulnerabilidades:</h3>
+                <ul class="text-gray-300 space-y-3 list-disc list-inside ml-4">
+                    <li><strong>Exit Node Sniffing:</strong> O exit node pode ler tráfego HTTP não-criptografado. <em>Mitigação:</em> Use apenas HTTPS.</li>
+                    <li><strong>Traffic Correlation Attacks:</strong> Adversário que controla entry e exit pode correlacionar timings de pacotes e identificar usuário. <em>Difícil mas possível para agências estatais.</em></li>
+                    <li><strong>Browser Fingerprinting:</strong> JavaScript, WebRTC, plugins podem revelar identidade mesmo via Tor. <em>Mitigação:</em> Use Tor Browser (configurado para resistir fingerprinting).</li>
+                    <li><strong>Malformed TLS/SSL Stripping:</strong> Exit nodes maliciosos podem tentar downgrade de HTTPS para HTTP. <em>Mitigação:</em> HSTS, Tor Browser alerta sobre cert inválidos.</li>
+                    <li><strong>De-anonymization via Login:</strong> Se você fizer login em conta real (Gmail, Facebook) via Tor, compromete anonimato. <em>Nunca misture identidades.</em></li>
+                </ul>
+            </section>
+
+            <!-- Pluggable Transports & Bridges -->
+            <section class="tor-card p-6 rounded-lg">
+                <h2 class="text-3xl font-bold text-violet-400 mb-4">Pluggable Transports & Bridges</h2>
+                <p class="text-gray-300 leading-relaxed mb-4">
+                    Em países com censura, ISPs bloqueiam conexões Tor detectando padrões de tráfego. <strong>Pluggable Transports</strong> disfarçam o tráfego Tor para parecer outro protocolo. <strong>Bridges</strong> são nós Tor não-listados publicamente, difíceis de bloquear em massa.
+                </p>
+                <h3 class="text-xl font-semibold text-white mb-3">Tipos de Pluggable Transports:</h3>
+                <ul class="text-gray-300 space-y-2 list-disc list-inside ml-4">
+                    <li><strong>obfs4:</strong> Ofusca tráfego Tor para parecer aleatório, dificulta DPI (Deep Packet Inspection).</li>
+                    <li><strong>meek:</strong> Tunela tráfego via domínios permitidos (ex: Azure, CloudFront), parecendo tráfego HTTPS normal para CDNs.</li>
+                    <li><strong>Snowflake:</strong> Usa WebRTC para criar proxies efêmeros em navegadores de voluntários; muito difícil de bloquear.</li>
+                </ul>
+                <div class="code-block mt-4">
+# Configurar Tor com obfs4 bridge (adicionar em torrc):
+UseBridges 1
+ClientTransportPlugin obfs4 exec /usr/bin/obfs4proxy
+Bridge obfs4 IP:PORT FINGERPRINT cert=... iat-mode=0
+
+# Obter bridges: https://bridges.torproject.org/</div>
+                <p class="text-gray-300 mt-4"><strong>Cenário:</strong> Jornalista em país com censura usa Snowflake bridges para acessar Tor sem ser detectado pelo firewall estatal.</p>
+            </section>
+
+            <!-- Operação Prática -->
+            <section class="bg-gray-800 p-6 rounded-lg">
+                <h2 class="text-2xl font-bold text-purple-400 mb-4">Operação Prática do Tor</h2>
+                <h3 class="text-xl font-semibold text-white mb-3">Usar Tor Browser (recomendado):</h3>
+                <p class="text-gray-300 mb-4">Tor Browser é um Firefox modificado, pré-configurado para segurança máxima (NoScript, anti-fingerprinting, isolamento de circuitos por site).</p>
+                <p class="text-gray-300 mb-4">Download: <code class="bg-slate-900 px-2 py-1 rounded">https://www.torproject.org/</code></p>
+                
+                <h3 class="text-xl font-semibold text-white mt-6 mb-3">Usar Tor como SOCKS5 Proxy:</h3>
+                <p class="text-gray-300 mb-2">Tor roda serviço SOCKS5 local em <code class="bg-slate-900 px-2 py-1 rounded">127.0.0.1:9050</code>. Aplicações podem ser configuradas para usá-lo.</p>
+                <div class="code-block mt-4">
+# Instalar Tor (Ubuntu/Debian):
+sudo apt install tor
+
+# Tor inicia automaticamente. Porta padrão: 9050
+
+# Usar com curl:
+curl --socks5-hostname 127.0.0.1:9050 https://check.torproject.org/
+
+# Usar com torify (wrapper que força SOCKS5):
+torify curl https://example.com
+
+# Configurar app (ex: SSH via Tor):
+ssh -o ProxyCommand='nc -x 127.0.0.1:9050 %h %p' user@host.onion</div>
+
+                <h3 class="text-xl font-semibold text-white mt-6 mb-3">Configurar torrc (básico):</h3>
+                <div class="code-block mt-2">
+# Localização: /etc/tor/torrc (Linux) ou Tor Browser/torrc (Windows/Mac)
+
+# Usar bridges (anti-censura):
+UseBridges 1
+Bridge obfs4 ...
+
+# Aumentar anonimato (cuidado: mais lento):
+CircuitBuildTimeout 30
+LearnCircuitBuildTimeout 0
+
+# Recarregar config:
+sudo systemctl reload tor</div>
+            </section>
+
+            <!-- Tor over VPN vs VPN over Tor -->
+            <section class="tor-card p-6 rounded-lg">
+                <h2 class="text-3xl font-bold text-violet-400 mb-4">Tor over VPN vs. VPN over Tor</h2>
+                <p class="text-gray-300 leading-relaxed mb-4">
+                    Combinar Tor e VPN adiciona camada extra de proteção, mas a ordem importa.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-gray-800 p-5 rounded-lg">
+                        <h3 class="text-xl font-semibold text-cyan-400 mb-2">Tor over VPN (VPN → Tor)</h3>
+                        <p class="text-gray-300 mb-3">Você conecta à VPN, depois ao Tor. Seu ISP vê apenas tráfego VPN, não sabe que você usa Tor.</p>
+                        <p class="text-sm font-semibold text-white mt-3">Prós:</p>
+                        <ul class="text-sm text-gray-400 list-disc list-inside ml-2">
+                            <li>ISP não sabe que você usa Tor.</li>
+                            <li>Útil se Tor é bloqueado/malvisto.</li>
+                        </ul>
+                        <p class="text-sm font-semibold text-white mt-3">Contras:</p>
+                        <ul class="text-sm text-gray-400 list-disc list-inside ml-2">
+                            <li>Provedor VPN vê seu IP real.</li>
+                            <li>Exit node ainda vê tráfego.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-800 p-5 rounded-lg">
+                        <h3 class="text-xl font-semibold text-emerald-400 mb-2">VPN over Tor (Tor → VPN)</h3>
+                        <p class="text-gray-300 mb-3">Você conecta ao Tor, depois à VPN. VPN não sabe seu IP real (vê exit node).</p>
+                        <p class="text-sm font-semibold text-white mt-3">Prós:</p>
+                        <ul class="text-sm text-gray-400 list-disc list-inside ml-2">
+                            <li>Provedor VPN não sabe seu IP real.</li>
+                            <li>Protege contra exit nodes maliciosos.</li>
+                        </ul>
+                        <p class="text-sm font-semibold text-white mt-3">Contras:</p>
+                        <ul class="text-sm text-gray-400 list-disc list-inside ml-2">
+                            <li>Complexo de configurar.</li>
+                            <li>Poucos provedores VPN suportam.</li>
+                            <li>Performance muito degradada.</li>
+                        </ul>
+                    </div>
+                </div>
+                <p class="text-gray-300 mt-6"><strong>Recomendação geral:</strong> Para a maioria dos casos, <em>Tor over VPN</em> é mais prático. Para máxima paranoia, use <em>VPN over Tor</em> (ou apenas Tor + Tails).</p>
+            </section>
+
+            <!-- Cenários de Uso -->
+            <section class="bg-slate-800 p-6 rounded-lg">
+                <h2 class="text-2xl font-bold text-purple-400 mb-4">Cenários de Uso</h2>
+                <ul class="text-gray-300 space-y-3 list-disc list-inside ml-4">
+                    <li><strong>Whistleblowing:</strong> Denunciante usa Tor Browser + Tails (OS amnésico) para enviar documentos via SecureDrop sem deixar rastros.</li>
+                    <li><strong>Jornalismo Investigativo:</strong> Repórter em zona de conflito combina Tor over VPN para pesquisar fontes sensíveis sem revelar localização.</li>
+                    <li><strong>Ativismo:</strong> Ativista usa Tor + bridges (Snowflake) para contornar censura e organizar protestos de forma segura.</li>
+                    <li><strong>Pesquisa de Segurança:</strong> Pesquisador acessa fóruns clandestinos (.onion) para estudar malware sem comprometer identidade.</li>
+                </ul>
+            </section>
+
+            <!-- Glossário -->
+            <section class="bg-gray-800 p-6 rounded-lg">
+                <h2 class="text-2xl font-bold text-purple-400 mb-4">Glossário Rápido</h2>
+                <dl class="text-gray-300 space-y-2">
+                    <dt class="font-semibold text-white">Guard Node (Entry):</dt>
+                    <dd class="ml-4">Primeiro nó no circuito Tor; sabe seu IP real mas não o destino.</dd>
+                    
+                    <dt class="font-semibold text-white mt-3">Exit Node:</dt>
+                    <dd class="ml-4">Último nó; faz requisição ao destino final; pode ver tráfego não-HTTPS.</dd>
+                    
+                    <dt class="font-semibold text-white mt-3">Bridge:</dt>
+                    <dd class="ml-4">Nó Tor não-listado publicamente; usado para contornar bloqueios.</dd>
+                    
+                    <dt class="font-semibold text-white mt-3">Pluggable Transport:</dt>
+                    <dd class="ml-4">Técnica para disfarçar tráfego Tor (obfs4, meek, Snowflake).</dd>
+                    
+                    <dt class="font-semibold text-white mt-3">Hidden Service (.onion):</dt>
+                    <dd class="ml-4">Site acessível apenas via Tor, com IP do servidor oculto.</dd>
+                    
+                    <dt class="font-semibold text-white mt-3">Tails:</dt>
+                    <dd class="ml-4">Sistema operacional live (USB/DVD) focado em anonimato, roda Tor por padrão.</dd>
+                </dl>
+            </section>
+
+        </main>
+
+        <footer class="text-center mt-16 animate__animated animate__fadeInUp">
+            <a href="../index.html" class="inline-block bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-full transition-transform transform hover:scale-105 shadow-lg">
+                Voltar ao Módulo de Redes
+            </a>
+        </footer>
+    </div>
+</body>
+</html>

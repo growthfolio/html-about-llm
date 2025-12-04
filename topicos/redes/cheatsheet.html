@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <title>Cheat Sheet de Redes - Revisão Rápida</title>
+    <style>
+        body { background-color: #0a0a0a; }
+        .cheat-section {
+            background-color: #1e293b;
+            border-left: 4px solid;
+            transition: all 0.3s ease-in-out;
+        }
+        .cheat-section:hover { transform: translateX(5px); }
+        .code-inline {
+            background-color: #0f172a;
+            color: #94a3b8;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.875rem;
+        }
+        .cmd-block {
+            background-color: #0f172a;
+            color: #10b981;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-12 animate__animated animate__fadeInDown">
+            <h1 class="text-4xl md:text-5xl font-bold text-cyan-400" style="text-shadow: 0 0 15px rgba(6, 182, 212, 0.7);">
+                📋 Cheat Sheet de Redes
+            </h1>
+            <p class="mt-4 text-lg text-gray-400">
+                Resumo rápido de comandos, conceitos e valores essenciais para revisão.
+            </p>
+        </header>
+
+        <main class="max-w-6xl mx-auto space-y-8 animate__animated animate__fadeInUp">
+            
+            <!-- Modelos OSI/TCP-IP -->
+            <section class="cheat-section p-6 rounded-lg" style="border-color: #3b82f6;">
+                <h2 class="text-2xl font-bold text-blue-400 mb-4">🏗️ Modelos OSI e TCP/IP</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="text-lg font-semibold text-white mb-2">Modelo OSI (7 camadas)</h3>
+                        <ol class="text-gray-300 text-sm space-y-1">
+                            <li><strong>7. Aplicação:</strong> HTTP, FTP, DNS - PDU: Dados</li>
+                            <li><strong>6. Apresentação:</strong> Criptografia, compressão - PDU: Dados</li>
+                            <li><strong>5. Sessão:</strong> Controle de diálogo - PDU: Dados</li>
+                            <li><strong>4. Transporte:</strong> TCP/UDP - PDU: Segmento/Datagrama</li>
+                            <li><strong>3. Rede:</strong> IP, roteamento - PDU: Pacote</li>
+                            <li><strong>2. Enlace:</strong> Ethernet, MAC - PDU: Quadro</li>
+                            <li><strong>1. Física:</strong> Bits, cabos - PDU: Bits</li>
+                        </ol>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-white mb-2">Modelo TCP/IP (4 camadas)</h3>
+                        <ol class="text-gray-300 text-sm space-y-1">
+                            <li><strong>4. Aplicação:</strong> Combina camadas 5-7 OSI</li>
+                            <li><strong>3. Transporte:</strong> TCP/UDP (= OSI 4)</li>
+                            <li><strong>2. Internet:</strong> IP, ICMP (= OSI 3)</li>
+                            <li><strong>1. Acesso à Rede:</strong> Ethernet, Wi-Fi (= OSI 1-2)</li>
+                        </ol>
+                        <p class="text-gray-400 text-xs mt-3">Mnemônico OSI (cima→baixo): <strong>A P S T R E F</strong></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Endereçamento IP -->
+            <section class="cheat-section p-6 rounded-lg" style="border-color: #8b5cf6;">
+                <h2 class="text-2xl font-bold text-violet-400 mb-4">🌐 Endereçamento IP</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="text-lg font-semibold text-white mb-2">IPv4 Privado (RFC 1918)</h3>
+                        <ul class="text-gray-300 text-sm space-y-1">
+                            <li><code class="code-inline">10.0.0.0/8</code> (10.0.0.0 - 10.255.255.255)</li>
+                            <li><code class="code-inline">172.16.0.0/12</code> (172.16.0.0 - 172.31.255.255)</li>
+                            <li><code class="code-inline">192.168.0.0/16</code> (192.168.0.0 - 192.168.255.255)</li>
+                        </ul>
+                        <h3 class="text-lg font-semibold text-white mt-4 mb-2">CIDR Comum</h3>
+                        <ul class="text-gray-300 text-sm space-y-1">
+                            <li><code class="code-inline">/8</code> = 255.0.0.0 → 16.777.214 hosts</li>
+                            <li><code class="code-inline">/16</code> = 255.255.0.0 → 65.534 hosts</li>
+                            <li><code class="code-inline">/24</code> = 255.255.255.0 → 254 hosts</li>
+                            <li><code class="code-inline">/30</code> = 255.255.255.252 → 2 hosts (p2p)</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-white mb-2">IPv6</h3>
+                        <ul class="text-gray-300 text-sm space-y-1">
+                            <li><strong>Global Unicast:</strong> <code class="code-inline">2000::/3</code> (roteável)</li>
+                            <li><strong>Link-Local:</strong> <code class="code-inline">fe80::/10</code> (só rede local)</li>
+                            <li><strong>Unique-Local:</strong> <code class="code-inline">fc00::/7</code> (= privado IPv4)</li>
+                            <li><strong>Loopback:</strong> <code class="code-inline">::1</code></li>
+                        </ul>
+                        <p class="text-gray-400 text-xs mt-3">Simplificação: omitir zeros à esquerda; substituir bloco de zeros consecutivos por <code class="code-inline">::</code> (uma vez apenas).</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TCP vs UDP -->
+            <section class="cheat-section p-6 rounded-lg" style="border-color: #f59e0b;">
+                <h2 class="text-2xl font-bold text-amber-400 mb-4">⚡ TCP vs UDP</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="text-lg font-semibold text-cyan-400 mb-2">TCP (Transmission Control Protocol)</h3>
+                        <ul class="text-gray-300 text-sm space-y-1 list-disc list-inside">
+                            <li><strong>Confiável:</strong> Garante entrega e ordem</li>
+                            <li><strong>Handshake:</strong> SYN → SYN-ACK → ACK</li>
+                            <li><strong>Controle de fluxo:</strong> Gerencia velocidade</li>
+                            <li><strong>Uso:</strong> HTTP/S, FTP, SMTP, SSH</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-lime-400 mb-2">UDP (User Datagram Protocol)</h3>
+                        <ul class="text-gray-300 text-sm space-y-1 list-disc list-inside">
+                            <li><strong>Rápido:</strong> Sem garantia de entrega</li>
+                            <li><strong>Sem conexão:</strong> Envia e esquece</li>
+                            <li><strong>Baixa latência:</strong> Ideal para tempo real</li>
+                            <li><strong>Uso:</strong> DNS, streaming, VoIP, jogos</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Portas Comuns -->
+            <section class="cheat-section p-6 rounded-lg" style="border-color: #ec4899;">
+                <h2 class="text-2xl font-bold text-pink-400 mb-4">🔌 Portas Comuns (Well-Known)</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                    <div><code class="code-inline">20/21</code> FTP</div>
+                    <div><code class="code-inline">22</code> SSH</div>
+                    <div><code class="code-inline">23</code> Telnet</div>
+                    <div><code class="code-inline">25</code> SMTP</div>
+                    <div><code class="code-inline">53</code> DNS</div>
+                    <div><code class="code-inline">67/68</code> DHCP</div>
+                    <div><code class="code-inline">80</code> HTTP</div>
+                    <div><code class="code-inline">110</code> POP3</div>
+                    <div><code class="code-inline">143</code> IMAP</div>
+                    <div><code class="code-inline">443</code> HTTPS</div>
+                    <div><code class="code-inline">3306</code> MySQL</div>
+                    <div><code class="code-inline">3389</code> RDP</div>
+                    <div><code class="code-inline">5432</code> PostgreSQL</div>
+                    <div><code class="code-inline">8080</code> HTTP-Alt</div>
+                    <div><code class="code-inline">1194</code> OpenVPN</div>
+                    <div><code class="code-inline">51820</code> WireGuard</div>
+                </div>
+            </section>
+
+            <!-- Comandos Essenciais -->
+            <section class="cheat-section p-6 rounded-lg" style="border-color: #10b981;">
+                <h2 class="text-2xl font-bold text-emerald-400 mb-4">💻 Comandos Essenciais (Linux)</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="text-lg font-semibold text-white mb-2">Rede e Interfaces</h3>
+                        <div class="cmd-block">
+# Ver interfaces e IPs
+ip a
+ip addr show
+
+# Ver rotas
+ip route
+ip route show
+
+# Adicionar rota estática
+ip route add 192.168.2.0/24 via 192.168.1.1
+
+# Ver tabela ARP
+ip neigh
+arp -a
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-white mb-2">Conexões e Portas</h3>
+                        <div class="cmd-block">
+# Ver conexões TCP/UDP
+ss -tulpn
+netstat -tulpn
+
+# Portas em escuta
+ss -ltn
+lsof -i -P -n | grep LISTEN
+
+# Conexões estabelecidas
+ss -tn state established
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-white mb-2">Diagnóstico</h3>
+                        <div class="cmd-block">
+# Ping (ICMP)
+ping -c 4 8.8.8.8
+
+# Traceroute (caminho de pacotes)
+traceroute google.com
+mtr google.com  # Melhor que traceroute
+
+# Testar porta TCP
+nc -zv example.com 443
+telnet example.com 443
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-white mb-2">Captura de Pacotes</h3>
+                        <div class="cmd-block">
+# Capturar todo tráfego
+sudo tcpdump -i eth0 -w capture.pcap
+
+# Capturar porta específica
+sudo tcpdump -i eth0 port 80 -n
+
+# Ver handshake TCP (SYN)
+sudo tcpdump -i eth0 'tcp[tcpflags] & tcp-syn != 0'
+
+# Ler pcap
+tcpdump -r capture.pcap
+tshark -r capture.pcap
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Proxies & VPNs -->
+            <section class="cheat-section p-6 rounded-lg" style="border-color: #a78bfa;">
+                <h2 class="text-2xl font-bold text-purple-400 mb-4">🔒 Proxies & VPNs</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="text-lg font-semibold text-white mb-2">Proxies</h3>
+                        <ul class="text-gray-300 text-sm space-y-1 list-disc list-inside">
+                            <li><strong>Transparent:</strong> Cliente não sabe (captive portal)</li>
+                            <li><strong>Anonymous:</strong> Oculta IP, revela proxy</li>
+                            <li><strong>Elite:</strong> Oculta IP e proxy</li>
+                            <li><strong>Forward:</strong> Para clientes (filtro/anonimato)</li>
+                            <li><strong>Reverse:</strong> Para servidores (LB/SSL term)</li>
+                        </ul>
+                        <div class="cmd-block mt-2">
+# SOCKS5 via SSH
+ssh -D 1080 user@proxy.example.com
+
+# Usar proxy HTTP
+curl -x http://proxy:3128 https://example.com
+
+# Usar SOCKS5
+curl --socks5-hostname localhost:1080 https://example.com
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-white mb-2">VPNs</h3>
+                        <ul class="text-gray-300 text-sm space-y-1 list-disc list-inside">
+                            <li><strong>IPSec:</strong> Site-to-site, complexo</li>
+                            <li><strong>OpenVPN:</strong> SSL/TLS, versátil, 1194/UDP</li>
+                            <li><strong>WireGuard:</strong> Moderno, rápido, 51820/UDP</li>
+                            <li><strong>Split-tunnel:</strong> Só tráfego específico</li>
+                            <li><strong>Full-tunnel:</strong> Todo tráfego via VPN</li>
+                        </ul>
+                        <div class="cmd-block mt-2">
+# WireGuard up/down
+wg-quick up wg0
+wg-quick down wg0
+
+# Ver status WireGuard
+sudo wg show
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tor & Anonimidade -->
+            <section class="cheat-section p-6 rounded-lg" style="border-color: #6366f1;">
+                <h2 class="text-2xl font-bold text-indigo-400 mb-4">🕵️ Tor & Anonimidade</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="text-lg font-semibold text-white mb-2">Tor Basics</h3>
+                        <ul class="text-gray-300 text-sm space-y-1 list-disc list-inside">
+                            <li>3 saltos: <strong>Guard → Middle → Exit</strong></li>
+                            <li>Cada camada descriptografa 1 nível (onion)</li>
+                            <li>Exit node vê tráfego não-criptografado</li>
+                            <li>Hidden services: <code class="code-inline">.onion</code></li>
+                        </ul>
+                        <div class="cmd-block mt-2">
+# Usar Tor SOCKS5 (porta 9050)
+curl --socks5-hostname 127.0.0.1:9050 https://check.torproject.org/
+
+# Com torsocks (wrapper)
+torsocks curl https://example.com
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-white mb-2">Leaks Comuns</h3>
+                        <ul class="text-gray-300 text-sm space-y-1 list-disc list-inside">
+                            <li><strong>DNS leak:</strong> DNS não vai pelo VPN/Tor</li>
+                            <li><strong>WebRTC leak:</strong> Revela IP real via browser</li>
+                            <li><strong>IPv6 leak:</strong> VPN só rota IPv4</li>
+                        </ul>
+                        <p class="text-gray-400 text-xs mt-2"><strong>Teste:</strong> browserleaks.com/webrtc, ipleak.net</p>
+                        <p class="text-gray-400 text-xs"><strong>Mitigação:</strong> DNS over HTTPS, desabilitar WebRTC (<code class="code-inline">media.peerconnection.enabled=false</code> no Firefox), desabilitar IPv6.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Firewalls -->
+            <section class="cheat-section p-6 rounded-lg" style="border-color: #ef4444;">
+                <h2 class="text-2xl font-bold text-red-400 mb-4">🔥 Firewalls</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="text-lg font-semibold text-white mb-2">Tipos</h3>
+                        <ul class="text-gray-300 text-sm space-y-1 list-disc list-inside">
+                            <li><strong>Stateless:</strong> Inspeciona pacotes isolados</li>
+                            <li><strong>Stateful:</strong> Mantém tabela de estados</li>
+                            <li><strong>Proxy/App:</strong> Camada 7, DPI</li>
+                            <li><strong>NGFW:</strong> Stateful + IPS + App control</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-white mb-2">iptables (básico)</h3>
+                        <div class="cmd-block">
+# Listar regras
+iptables -L -n -v
+
+# Permitir SSH
+iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+
+# Bloquear IP
+iptables -A INPUT -s 1.2.3.4 -j DROP
+
+# Política padrão (negar tudo)
+iptables -P INPUT DROP
+iptables -P FORWARD DROP
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Detectabilidade -->
+            <section class="cheat-section p-6 rounded-lg" style="border-color: #f59e0b;">
+                <h2 class="text-2xl font-bold text-orange-400 mb-4">🔍 Detectabilidade</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="text-lg font-semibold text-white mb-2">Sinais de Proxy/VPN</h3>
+                        <ul class="text-gray-300 text-sm space-y-1 list-disc list-inside">
+                            <li><strong>TTL anomaly:</strong> Valor inesperado (proxy adiciona hop)</li>
+                            <li><strong>TLS fingerprint:</strong> Inconsistência SO/cliente</li>
+                            <li><strong>IP blacklists:</strong> IPs conhecidos de VPN</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-white mb-2">DNS Tunneling</h3>
+                        <ul class="text-gray-300 text-sm space-y-1 list-disc list-inside">
+                            <li>Queries muito longas (60+ chars)</li>
+                            <li>Alta frequência (100s/min)</li>
+                            <li>Alta entropia (aleatório)</li>
+                            <li>Tipos raros (TXT, NULL)</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Ferramentas -->
+            <section class="cheat-section p-6 rounded-lg" style="border-color: #14b8a6;">
+                <h2 class="text-2xl font-bold text-teal-400 mb-4">🛠️ Ferramentas Essenciais</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-gray-300">
+                    <div><strong>tcpdump:</strong> Captura CLI</div>
+                    <div><strong>Wireshark:</strong> Análise GUI</div>
+                    <div><strong>tshark:</strong> Wireshark CLI</div>
+                    <div><strong>nmap:</strong> Port scan</div>
+                    <div><strong>Zeek:</strong> IDS/logs</div>
+                    <div><strong>Suricata:</strong> IDS/IPS</div>
+                    <div><strong>p0f:</strong> OS fingerprint</div>
+                    <div><strong>mtr:</strong> Traceroute melhor</div>
+                    <div><strong>netcat:</strong> TCP/UDP Swiss army</div>
+                    <div><strong>ss/netstat:</strong> Conexões</div>
+                    <div><strong>iptables:</strong> Firewall Linux</div>
+                    <div><strong>curl/wget:</strong> HTTP CLI</div>
+                </div>
+            </section>
+
+            <!-- Dicas de Revisão -->
+            <section class="bg-gradient-to-r from-cyan-900 to-blue-900 p-6 rounded-lg">
+                <h2 class="text-2xl font-bold text-cyan-300 mb-4">💡 Dicas de Revisão</h2>
+                <ul class="space-y-2 text-gray-200 list-disc list-inside">
+                    <li>Lembre-se do <strong>three-way handshake TCP:</strong> SYN → SYN-ACK → ACK (cliente→servidor→cliente).</li>
+                    <li><strong>Subnetting:</strong> /24 = 254 hosts, /30 = 2 hosts (P2P links).</li>
+                    <li><strong>NAT:</strong> Traduz IPs privados para públicos (geralmente no roteador/firewall).</li>
+                    <li><strong>DMZ:</strong> Zona intermediária entre internet e LAN interna (servidores públicos).</li>
+                    <li><strong>Proxy vs VPN:</strong> Proxy = camada 7 (app); VPN = camada 3 (rede, todo tráfego).</li>
+                    <li><strong>Tor:</strong> 3 saltos, camadas de cifragem, exit node vê tráfego não-HTTPS.</li>
+                    <li><strong>DNS leak:</strong> Testar com dnsleaktest.com ou ipleak.net.</li>
+                </ul>
+            </section>
+
+        </main>
+
+        <footer class="text-center mt-16 animate__animated animate__fadeInUp">
+            <a href="index.html" class="inline-block bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-3 px-6 rounded-full transition-transform transform hover:scale-105 shadow-lg">
+                Voltar ao Módulo de Redes
+            </a>
+        </footer>
+    </div>
+</body>
+</html>

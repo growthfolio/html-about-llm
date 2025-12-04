@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <title>Técnicas Avançadas de Proxies</title>
+    <style>
+        body { background-color: #0a0a0a; }
+        .content-card {
+            background-color: #1e293b;
+            border-left: 4px solid #ec4899;
+            transition: all 0.3s ease-in-out;
+        }
+        .content-card:hover { transform: translateY(-3px); }
+        .code-block {
+            background-color: #0f172a;
+            color: #94a3b8;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+            font-size: 0.9rem;
+        }
+        .scenario { background-color: #334155; padding: 1rem; border-radius: 0.5rem; }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-12 animate__animated animate__fadeInDown">
+            <h1 class="text-4xl md:text-5xl font-bold text-pink-500" style="text-shadow: 0 0 15px rgba(236, 72, 153, 0.7);">
+                Técnicas Avançadas de Proxies
+            </h1>
+            <p class="mt-4 text-lg text-gray-400">
+                Do básico ao enterprise: todos os tipos, técnicas e cenários práticos.
+            </p>
+        </header>
+
+        <main class="max-w-5xl mx-auto space-y-12 animate__animated animate__fadeInUp">
+            
+            <!-- Objetivos -->
+            <section class="bg-gray-800 p-6 rounded-lg border-l-4 border-pink-500">
+                <h2 class="text-xl font-bold text-pink-400 mb-3">Objetivos de Aprendizagem</h2>
+                <p class="text-gray-300">Ao terminar, você será capaz de identificar tipos avançados de proxies, entender técnicas de chaining, TLS interception e escolher a arquitetura ideal para cada cenário.</p>
+            </section>
+
+            <!-- Resumo Rápido -->
+            <section class="bg-slate-800 p-6 rounded-lg">
+                <h2 class="text-2xl font-bold text-pink-400 mb-4">Resumo Rápido</h2>
+                <ul class="text-gray-300 space-y-2 list-disc list-inside">
+                    <li><strong>Transparent proxy:</strong> intercepta tráfego sem config do cliente (captive portals, content filtering).</li>
+                    <li><strong>Anonymous vs Elite:</strong> Anonymous envia X-Forwarded-For; Elite não revela ser proxy.</li>
+                    <li><strong>Proxy chaining:</strong> encadear múltiplos proxies para distribuir confiança ou latência.</li>
+                    <li><strong>TLS interception:</strong> MITM corporativo com certificado root para inspeção de HTTPS.</li>
+                    <li><strong>Comando útil:</strong> <code class="bg-slate-900 px-2 py-1 rounded">ssh -D 1080 user@host</code> cria SOCKS5 local.</li>
+                </ul>
+            </section>
+
+            <!-- Transparent/Intercepting Proxy -->
+            <section class="content-card p-6 rounded-lg">
+                <h2 class="text-3xl font-bold text-fuchsia-400 mb-4">Transparent/Intercepting Proxy</h2>
+                <p class="text-gray-300 leading-relaxed mb-4">
+                    Um proxy transparente intercepta o tráfego de rede automaticamente, sem que o cliente precise configurar nada. Ele se posiciona no caminho do tráfego (geralmente no gateway/roteador) e redireciona conexões HTTP/HTTPS para si mesmo.
+                </p>
+                <h3 class="text-xl font-semibold text-white mt-6 mb-3">Quando é usado:</h3>
+                <ul class="text-gray-300 space-y-2 list-disc list-inside ml-4">
+                    <li><strong>Captive Portals:</strong> Redes públicas (aeroportos, cafés) redirecionam para página de login antes de liberar acesso.</li>
+                    <li><strong>Content Filtering:</strong> Escolas e empresas bloqueiam sites sem exigir configuração nos dispositivos dos usuários.</li>
+                    <li><strong>Caching:</strong> ISPs usam para cachear conteúdo popular e reduzir banda.</li>
+                </ul>
+                <h3 class="text-xl font-semibold text-white mt-6 mb-3">Implicações legais e éticas:</h3>
+                <p class="text-gray-300">Pode ser considerado invasivo se usado sem consentimento (violação de privacidade). Em ambientes corporativos, deve ser explicitado em políticas de uso aceitável.</p>
+                <div class="scenario mt-4">
+                    <p class="font-semibold text-lg text-cyan-400">Cenário:</p>
+                    <p class="text-gray-300">Uma biblioteca pública usa transparent proxy para redirecionar tentativas de acesso a sites adultos para uma página de aviso.</p>
+                </div>
+            </section>
+
+            <!-- Anonymous vs Elite Proxies -->
+            <section class="content-card p-6 rounded-lg">
+                <h2 class="text-3xl font-bold text-fuchsia-400 mb-4">Anonymous vs. Elite (High Anonymity) Proxies</h2>
+                <p class="text-gray-300 leading-relaxed mb-4">
+                    Proxies têm diferentes níveis de anonimato baseados em quais informações revelam ao servidor de destino.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-gray-800 p-5 rounded-lg">
+                        <h3 class="text-xl font-semibold text-cyan-400 mb-2">Anonymous Proxy</h3>
+                        <p class="text-gray-300 mb-3">Esconde seu IP real, mas revela que você está usando um proxy através de headers como <code class="bg-slate-900 px-2 py-1 rounded">X-Forwarded-For</code> ou <code class="bg-slate-900 px-2 py-1 rounded">Via</code>.</p>
+                        <p class="text-sm text-gray-400">Bom para: bypass de geo-restrições leves, mas detectável.</p>
+                    </div>
+                    <div class="bg-gray-800 p-5 rounded-lg">
+                        <h3 class="text-xl font-semibold text-emerald-400 mb-2">Elite/High Anonymity Proxy</h3>
+                        <p class="text-gray-300 mb-3">Não adiciona headers reveladores. Para o servidor, a requisição parece vir diretamente do proxy, sem evidência de intermediação.</p>
+                        <p class="text-sm text-gray-400">Bom para: anonimato máximo, scraping, pesquisa sensível.</p>
+                    </div>
+                </div>
+                <div class="scenario mt-4">
+                    <p class="font-semibold text-lg text-cyan-400">Cenário:</p>
+                    <p class="text-gray-300">Um pesquisador de segurança usa elite proxy para testar vulnerabilidades sem expor o IP da empresa.</p>
+                </div>
+            </section>
+
+            <!-- Reverse Proxy Avançado -->
+            <section class="content-card p-6 rounded-lg">
+                <h2 class="text-3xl font-bold text-fuchsia-400 mb-4">Reverse Proxy Avançado</h2>
+                <p class="text-gray-300 leading-relaxed mb-4">
+                    Técnicas empresariais de reverse proxy vão muito além do simples encaminhamento de tráfego.
+                </p>
+                <h3 class="text-xl font-semibold text-white mb-3">Técnicas avançadas:</h3>
+                <ul class="text-gray-300 space-y-3 list-disc list-inside ml-4">
+                    <li><strong>SSL/TLS Termination:</strong> O proxy descriptografa o tráfego HTTPS, inspeciona e re-criptografa antes de enviar aos backends. Centraliza gestão de certificados e reduz carga de CPU nos servidores de aplicação.</li>
+                    <li><strong>Load Balancing Strategies:</strong>
+                        <ul class="ml-6 mt-2 space-y-1">
+                            <li><em>Round-robin:</em> distribui requisições de forma circular entre os servidores.</li>
+                            <li><em>Least connections:</em> envia para o servidor com menos conexões ativas.</li>
+                            <li><em>IP hash:</em> garante que o mesmo cliente sempre vá para o mesmo servidor (útil para sessões).</li>
+                        </ul>
+                    </li>
+                    <li><strong>Health Checks:</strong> O proxy monitora a saúde dos backends (HTTP probes, TCP checks) e remove automaticamente servidores falhados do pool.</li>
+                    <li><strong>Canary Releases:</strong> Direcionar uma pequena porcentagem do tráfego para uma nova versão da aplicação para teste gradual.</li>
+                </ul>
+                <div class="code-block mt-4">
+# Exemplo Nginx: SSL termination + load balancing
+upstream backend {
+    least_conn;
+    server backend1.example.com:8080;
+    server backend2.example.com:8080;
+}
+
+server {
+    listen 443 ssl;
+    ssl_certificate /path/to/cert.pem;
+    ssl_certificate_key /path/to/key.pem;
+    
+    location / {
+        proxy_pass http://backend;
+    }
+}</div>
+                <div class="scenario mt-4">
+                    <p class="font-semibold text-lg text-cyan-400">Cenário:</p>
+                    <p class="text-gray-300">E-commerce usa Nginx como reverse proxy para fazer SSL termination de milhares de conexões simultâneas e distribuir carga entre 10 servidores backend.</p>
+                </div>
+            </section>
+
+            <!-- Forward Proxy Avançado -->
+            <section class="content-card p-6 rounded-lg">
+                <h2 class="text-3xl font-bold text-fuchsia-400 mb-4">Forward Proxy Avançado</h2>
+                <h3 class="text-xl font-semibold text-white mb-3">Técnicas corporativas:</h3>
+                <ul class="text-gray-300 space-y-3 list-disc list-inside ml-4">
+                    <li><strong>Caching Strategies:</strong> Proxies como Squid armazenam objetos web (imagens, CSS) por tempo configurável para acelerar requisições repetidas e economizar banda.</li>
+                    <li><strong>Authentication Methods:</strong> NTLM, Kerberos, LDAP integration para autenticar usuários antes de permitir acesso externo.</li>
+                    <li><strong>URL Filtering com Regex:</strong> Bloquear padrões específicos (ex: <code class="bg-slate-900 px-2 py-1 rounded">.*gambling.*</code>) ou categorias (redes sociais, streaming).</li>
+                    <li><strong>Header Rewriting:</strong> Modificar ou adicionar headers HTTP antes de enviar à internet (ex: adicionar <code class="bg-slate-900 px-2 py-1 rounded">User-Agent</code> corporativo).</li>
+                </ul>
+                <div class="code-block mt-4">
+# Exemplo curl usando proxy HTTP com autenticação
+curl -x http://proxy.corp.com:3128 \
+     -U username:password \
+     https://example.com</div>
+                <div class="scenario mt-4">
+                    <p class="font-semibold text-lg text-cyan-400">Cenário:</p>
+                    <p class="text-gray-300">Empresa de 5000 funcionários usa Squid proxy com autenticação LDAP, cache de 100GB e bloqueio de streaming para otimizar link de internet.</p>
+                </div>
+            </section>
+
+            <!-- Proxy Chaining -->
+            <section class="content-card p-6 rounded-lg">
+                <h2 class="text-3xl font-bold text-fuchsia-400 mb-4">Proxy Chaining & Cascading</h2>
+                <p class="text-gray-300 leading-relaxed mb-4">
+                    Encadear múltiplos proxies significa que sua conexão passa por Proxy A → Proxy B → Proxy C → Destino. Cada proxy só conhece o anterior e o próximo, não a origem ou destino final.
+                </p>
+                <h3 class="text-xl font-semibold text-white mb-3">Trade-offs:</h3>
+                <ul class="text-gray-300 space-y-2 list-disc list-inside ml-4">
+                    <li><strong>Anonimato aumentado:</strong> Distribuir confiança entre múltiplos operadores (nenhum tem visão completa).</li>
+                    <li><strong>Performance degradada:</strong> Cada salto adiciona latência e pode reduzir throughput.</li>
+                    <li><strong>Complexidade:</strong> Mais pontos de falha; se um proxy cair, a cadeia quebra.</li>
+                </ul>
+                <div class="code-block mt-4">
+# Exemplo: configurar proxy chain com ProxyChains
+# Editar /etc/proxychains.conf:
+strict_chain  # Falha se qualquer proxy falhar
+proxy_dns     # Resolver DNS via proxies
+
+[ProxyList]
+socks5  127.0.0.1  1080
+http    proxy2.com 8080
+socks5  proxy3.com 9050
+
+# Usar:
+proxychains curl https://example.com</div>
+                <div class="scenario mt-4">
+                    <p class="font-semibold text-lg text-cyan-400">Cenário:</p>
+                    <p class="text-gray-300">Pesquisador usa chaining (SSH tunnel → Tor → VPN) para testar rotas de latência e bypass de censura multi-camadas.</p>
+                </div>
+            </section>
+
+            <!-- TLS Interception -->
+            <section class="content-card p-6 rounded-lg">
+                <h2 class="text-3xl font-bold text-fuchsia-400 mb-4">Transparent TLS Interception (Corporate MITM)</h2>
+                <p class="text-gray-300 leading-relaxed mb-4">
+                    Em ambientes corporativos, é comum que o proxy intercepte tráfego HTTPS para inspeção de conteúdo (DLP, malware scanning). Isso é tecnicamente um Man-in-the-Middle, mas autorizado.
+                </p>
+                <h3 class="text-xl font-semibold text-white mb-3">Como funciona:</h3>
+                <ol class="text-gray-300 space-y-2 list-decimal list-inside ml-4">
+                    <li>Cliente inicia conexão HTTPS para <code class="bg-slate-900 px-2 py-1 rounded">example.com</code>.</li>
+                    <li>Proxy intercepta, estabelece conexão TLS com <code class="bg-slate-900 px-2 py-1 rounded">example.com</code>.</li>
+                    <li>Proxy cria certificado falso para <code class="bg-slate-900 px-2 py-1 rounded">example.com</code> assinado pelo CA corporativo (instalado nos endpoints).</li>
+                    <li>Cliente aceita o certificado (confia no CA corporativo) e a conexão é descriptografada/inspecionada no proxy.</li>
+                </ol>
+                <h3 class="text-xl font-semibold text-white mt-6 mb-3">Riscos e Mitigação:</h3>
+                <ul class="text-gray-300 space-y-2 list-disc list-inside ml-4">
+                    <li><strong>Risco:</strong> Exposição de credenciais e dados sensíveis ao operador do proxy.</li>
+                    <li><strong>Mitigação cliente:</strong> Certificate Pinning (app só aceita certs específicos), HSTS (força HTTPS direto, dificulta intercept inicial).</li>
+                    <li><strong>Compliance:</strong> Deve ser documentado e comunicado aos usuários (LGPD, GDPR).</li>
+                </ul>
+                <div class="scenario mt-4">
+                    <p class="font-semibold text-lg text-cyan-400">Cenário:</p>
+                    <p class="text-gray-300">Banco usa TLS interception para detectar exfiltração de dados via HTTPS e bloquear uploads suspeitos para serviços cloud não autorizados.</p>
+                </div>
+            </section>
+
+            <!-- SOCKS5 UDP ASSOCIATE -->
+            <section class="content-card p-6 rounded-lg">
+                <h2 class="text-3xl font-bold text-fuchsia-400 mb-4">SOCKS5 com UDP ASSOCIATE</h2>
+                <p class="text-gray-300 leading-relaxed mb-4">
+                    SOCKS5 não se limita a TCP. O comando UDP ASSOCIATE permite tunelamento de datagramas UDP, essencial para VoIP, jogos online e streaming de baixa latência.
+                </p>
+                <div class="code-block mt-4">
+# Criar tunnel SOCKS5 com SSH (suporta UDP se servidor permitir)
+ssh -D 1080 user@bastion.example.com
+
+# Testar com aplicação que suporta SOCKS5 UDP:
+# Exemplo: alguns jogos permitem configurar SOCKS5 proxy</div>
+                <p class="text-gray-300 mt-4"><strong>Nota:</strong> Nem todos os servers SOCKS5 implementam UDP ASSOCIATE; verifique a documentação.</p>
+            </section>
+
+            <!-- Glossário -->
+            <section class="bg-gray-800 p-6 rounded-lg">
+                <h2 class="text-2xl font-bold text-pink-400 mb-4">Glossário Rápido</h2>
+                <dl class="text-gray-300 space-y-2">
+                    <dt class="font-semibold text-white">X-Forwarded-For:</dt>
+                    <dd class="ml-4">Header HTTP que revela o IP original do cliente ao passar por proxy.</dd>
+                    
+                    <dt class="font-semibold text-white mt-3">SSL Termination:</dt>
+                    <dd class="ml-4">Processo de descriptografar TLS no proxy e re-criptografar para backend.</dd>
+                    
+                    <dt class="font-semibold text-white mt-3">Health Check:</dt>
+                    <dd class="ml-4">Verificação periódica do proxy para saber se um backend está respondendo.</dd>
+                    
+                    <dt class="font-semibold text-white mt-3">Canary Release:</dt>
+                    <dd class="ml-4">Técnica de deploy gradual onde parte do tráfego vai para nova versão.</dd>
+                    
+                    <dt class="font-semibold text-white mt-3">Certificate Pinning:</dt>
+                    <dd class="ml-4">Técnica de segurança onde app só aceita certificados específicos, impedindo MITM.</dd>
+                </dl>
+            </section>
+
+        </main>
+
+        <footer class="text-center mt-16 animate__animated animate__fadeInUp">
+            <a href="index.html" class="inline-block bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 px-6 rounded-full transition-transform transform hover:scale-105 shadow-lg">
+                Voltar ao Módulo de Proxies
+            </a>
+        </footer>
+    </div>
+</body>
+</html>

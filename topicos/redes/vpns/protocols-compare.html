@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <title>Protocolos de VPN: Comparativo Prático</title>
+    <style>
+        body { background-color: #0a0a0a; }
+        .protocol-card {
+            background-color: #1e293b;
+            border-left: 4px solid;
+            transition: all 0.3s ease-in-out;
+        }
+        .protocol-card:hover { transform: translateY(-3px); }
+        .ipsec-border { border-color: #3b82f6; }
+        .openvpn-border { border-color: #10b981; }
+        .wireguard-border { border-color: #f59e0b; }
+        .code-block {
+            background-color: #0f172a;
+            color: #94a3b8;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+            font-size: 0.85rem;
+        }
+        .comparison-table th { background-color: #1e3a8a; }
+        .comparison-table td { background-color: #1e293b; }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-12 animate__animated animate__fadeInDown">
+            <h1 class="text-4xl md:text-5xl font-bold text-green-500" style="text-shadow: 0 0 15px rgba(34, 197, 94, 0.7);">
+                Protocolos de VPN: Comparativo Prático
+            </h1>
+            <p class="mt-4 text-lg text-gray-400">
+                IPSec, OpenVPN, WireGuard: entenda as diferenças, trade-offs e quando usar cada um.
+            </p>
+        </header>
+
+        <main class="max-w-5xl mx-auto space-y-12 animate__animated animate__fadeInUp">
+            
+            <!-- Objetivos -->
+            <section class="bg-gray-800 p-6 rounded-lg border-l-4 border-green-500">
+                <h2 class="text-xl font-bold text-green-400 mb-3">Objetivos de Aprendizagem</h2>
+                <p class="text-gray-300">Ao terminar, você será capaz de escolher o protocolo VPN adequado para cada cenário, entender trade-offs de performance/segurança e configurar exemplos básicos.</p>
+            </section>
+
+            <!-- Resumo Rápido -->
+            <section class="bg-slate-800 p-6 rounded-lg">
+                <h2 class="text-2xl font-bold text-green-400 mb-4">Resumo Rápido</h2>
+                <ul class="text-gray-300 space-y-2 list-disc list-inside">
+                    <li><strong>IPSec:</strong> Padrão corporativo para site-to-site, complexo mas robusto.</li>
+                    <li><strong>OpenVPN:</strong> Maduro, baseado em SSL/TLS, amplamente suportado, configurável.</li>
+                    <li><strong>WireGuard:</strong> Moderno, simples, rápido, código auditável (~4k linhas vs ~100k do OpenVPN).</li>
+                    <li><strong>Split tunneling:</strong> Apenas tráfego específico vai pela VPN; full-tunneling envia tudo.</li>
+                    <li><strong>Comando útil:</strong> <code class="bg-slate-900 px-2 py-1 rounded">wg-quick up wg0</code> ativa interface WireGuard.</li>
+                </ul>
+            </section>
+
+            <!-- IPSec -->
+            <section class="protocol-card ipsec-border p-6 rounded-lg">
+                <h2 class="text-3xl font-bold text-blue-400 mb-4">IPSec (Internet Protocol Security)</h2>
+                <p class="text-gray-300 leading-relaxed mb-4">
+                    IPSec é um conjunto de protocolos que opera na camada de rede (Layer 3), criptografando pacotes IP. É o padrão de facto para VPNs corporativas site-to-site, mas também usado em client-to-site.
+                </p>
+                <h3 class="text-xl font-semibold text-white mb-3">Características:</h3>
+                <ul class="text-gray-300 space-y-2 list-disc list-inside ml-4">
+                    <li><strong>Modos:</strong> Tunnel mode (criptografa pacote inteiro, usado em VPNs) e Transport mode (criptografa apenas payload).</li>
+                    <li><strong>Protocolos:</strong> ESP (Encapsulating Security Payload) para confidencialidade e AH (Authentication Header) para autenticidade.</li>
+                    <li><strong>Key Management:</strong> IKE (Internet Key Exchange) negocia chaves; IKEv2 é a versão moderna, mais rápida e resistente a desconexões (ideal para mobile).</li>
+                    <li><strong>Complexidade:</strong> Configuração verbosa, múltiplas fases de negociação, difícil troubleshooting.</li>
+                </ul>
+                <h3 class="text-xl font-semibold text-white mt-6 mb-3">Quando usar:</h3>
+                <p class="text-gray-300">Site-to-site entre escritórios, integração com hardware dedicado (firewalls Cisco, Fortinet), compliance corporativo.</p>
+                <div class="bg-gray-800 p-4 rounded-lg mt-4">
+                    <p class="font-semibold text-lg text-cyan-400">Cenário:</p>
+                    <p class="text-gray-300">Empresa multinacional conecta matriz e 20 filiais usando IPSec site-to-site em firewalls Cisco ASA, com failover automático.</p>
+                </div>
+            </section>
+
+            <!-- OpenVPN -->
+            <section class="protocol-card openvpn-border p-6 rounded-lg">
+                <h2 class="text-3xl font-bold text-emerald-400 mb-4">OpenVPN</h2>
+                <p class="text-gray-300 leading-relaxed mb-4">
+                    OpenVPN usa SSL/TLS para autenticação e criptografia, operando sobre UDP ou TCP. É altamente configurável e funciona em quase qualquer plataforma.
+                </p>
+                <h3 class="text-xl font-semibold text-white mb-3">Características:</h3>
+                <ul class="text-gray-300 space-y-2 list-disc list-inside ml-4">
+                    <li><strong>Baseado em SSL/TLS:</strong> Usa bibliotecas criptográficas maduras (OpenSSL, mbed TLS).</li>
+                    <li><strong>Flexibilidade:</strong> Suporta certificate-based auth, username/password, 2FA, configuração via arquivos .ovpn.</li>
+                    <li><strong>UDP vs TCP:</strong> UDP (porta 1194) é mais rápido; TCP (porta 443) útil para bypass de firewalls (parece HTTPS).</li>
+                    <li><strong>Overhead:</strong> Maior latência que WireGuard devido à complexidade do protocolo.</li>
+                </ul>
+                <h3 class="text-xl font-semibold text-white mt-6 mb-3">Quando usar:</h3>
+                <p class="text-gray-300">Clientes remotos acessando rede corporativa, ambientes multi-plataforma (Windows, Linux, macOS, Android, iOS), quando precisa de compatibilidade máxima.</p>
+                <div class="code-block mt-4">
+# Exemplo de configuração cliente OpenVPN (.ovpn)
+client
+dev tun
+proto udp
+remote vpn.example.com 1194
+resolv-retry infinite
+nobind
+persist-key
+persist-tun
+ca ca.crt
+cert client.crt
+key client.key
+cipher AES-256-GCM
+auth SHA256
+verb 3
+
+# Conectar:
+sudo openvpn --config client.ovpn</div>
+                <div class="bg-gray-800 p-4 rounded-lg mt-4">
+                    <p class="font-semibold text-lg text-cyan-400">Cenário:</p>
+                    <p class="text-gray-300">Startup de 200 funcionários remotos usa OpenVPN Access Server com 2FA (Google Authenticator) para acesso à rede interna.</p>
+                </div>
+            </section>
+
+            <!-- WireGuard -->
+            <section class="protocol-card wireguard-border p-6 rounded-lg">
+                <h2 class="text-3xl font-bold text-amber-400 mb-4">WireGuard</h2>
+                <p class="text-gray-300 leading-relaxed mb-4">
+                    WireGuard é o mais novo (2020 no kernel Linux), desenhado para ser simples, rápido e seguro. Usa criptografia moderna (ChaCha20, Curve25519) e tem código mínimo auditável.
+                </p>
+                <h3 class="text-xl font-semibold text-white mb-3">Características:</h3>
+                <ul class="text-gray-300 space-y-2 list-disc list-inside ml-4">
+                    <li><strong>Performance:</strong> Muito mais rápido que OpenVPN e IPSec; menor latência, maior throughput.</li>
+                    <li><strong>Simplicidade:</strong> Configuração minimalista (~10 linhas), baseada em public/private keypairs.</li>
+                    <li><strong>Criptografia moderna:</strong> Noise Protocol Framework, sem negociação complexa de cipher suites.</li>
+                    <li><strong>Stateless:</strong> Não mantém estado de conexão, reconecta instantaneamente (ideal para mobile).</li>
+                    <li><strong>Trade-off:</strong> Requer IP estático ou DNS dinâmico para peers; menos features que OpenVPN (sem user/pass nativo).</li>
+                </ul>
+                <h3 class="text-xl font-semibold text-white mt-6 mb-3">Quando usar:</h3>
+                <p class="text-gray-300">Conexões ponto-a-ponto de alta performance, ambientes cloud (AWS, GCP), mobile workers, quando simplicidade e velocidade são prioridade.</p>
+                <div class="code-block mt-4">
+# Configuração WireGuard Server (/etc/wireguard/wg0.conf)
+[Interface]
+Address = 10.0.0.1/24
+ListenPort = 51820
+PrivateKey = <server_private_key>
+PostUp = iptables -A FORWARD -i wg0 -j ACCEPT
+PostDown = iptables -D FORWARD -i wg0 -j ACCEPT
+
+[Peer]
+PublicKey = <client_public_key>
+AllowedIPs = 10.0.0.2/32
+
+# Ativar:
+sudo wg-quick up wg0
+
+# Configuração Cliente
+[Interface]
+Address = 10.0.0.2/24
+PrivateKey = <client_private_key>
+DNS = 1.1.1.1
+
+[Peer]
+PublicKey = <server_public_key>
+Endpoint = vpn.example.com:51820
+AllowedIPs = 0.0.0.0/0  # Full tunneling
+PersistentKeepalive = 25
+
+# Conectar:
+sudo wg-quick up wg0</div>
+                <div class="bg-gray-800 p-4 rounded-lg mt-4">
+                    <p class="font-semibold text-lg text-cyan-400">Cenário:</p>
+                    <p class="text-gray-300">Freelancer usa WireGuard para conectar laptop e celular ao servidor home, com roaming automático entre WiFi e 4G sem interrupção.</p>
+                </div>
+            </section>
+
+            <!-- Tabela Comparativa -->
+            <section>
+                <h2 class="text-3xl font-bold text-green-400 mb-6">Comparativo Direto</h2>
+                <div class="overflow-x-auto">
+                    <table class="comparison-table min-w-full text-center">
+                        <thead>
+                            <tr>
+                                <th class="py-3 px-4">Critério</th>
+                                <th class="py-3 px-4">IPSec</th>
+                                <th class="py-3 px-4">OpenVPN</th>
+                                <th class="py-3 px-4">WireGuard</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td class="py-3 px-4 border-b border-gray-700">Performance</td><td class="py-3 px-4 border-b border-gray-700">Boa</td><td class="py-3 px-4 border-b border-gray-700">Moderada</td><td class="py-3 px-4 border-b border-gray-700">Excelente</td></tr>
+                            <tr><td class="py-3 px-4 border-b border-gray-700">Complexidade Config</td><td class="py-3 px-4 border-b border-gray-700">Alta</td><td class="py-3 px-4 border-b border-gray-700">Média</td><td class="py-3 px-4 border-b border-gray-700">Baixa</td></tr>
+                            <tr><td class="py-3 px-4 border-b border-gray-700">Compatibilidade</td><td class="py-3 px-4 border-b border-gray-700">Universal (nativa OS)</td><td class="py-3 px-4 border-b border-gray-700">Universal (apps)</td><td class="py-3 px-4 border-b border-gray-700">Crescendo</td></tr>
+                            <tr><td class="py-3 px-4 border-b border-gray-700">Auditabilidade</td><td class="py-3 px-4 border-b border-gray-700">Complexo</td><td class="py-3 px-4 border-b border-gray-700">~100k linhas</td><td class="py-3 px-4 border-b border-gray-700">~4k linhas</td></tr>
+                            <tr><td class="py-3 px-4 border-b border-gray-700">Mobile Roaming</td><td class="py-3 px-4 border-b border-gray-700">IKEv2 suporta</td><td class="py-3 px-4 border-b border-gray-700">Reconexão lenta</td><td class="py-3 px-4 border-b border-gray-700">Seamless</td></tr>
+                            <tr><td class="py-3 px-4 border-b border-gray-700">Caso de Uso Ideal</td><td class="py-3 px-4 border-b border-gray-700">Site-to-Site corp</td><td class="py-3 px-4 border-b border-gray-700">Client-to-Site geral</td><td class="py-3 px-4 border-b border-gray-700">Ponto-a-ponto rápido</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Arquiteturas -->
+            <section class="bg-gray-800 p-6 rounded-lg">
+                <h2 class="text-2xl font-bold text-green-400 mb-4">Arquiteturas de VPN</h2>
+                <div class="space-y-4 text-gray-300">
+                    <div>
+                        <h3 class="text-xl font-semibold text-white">Client-to-Site (Remote Access)</h3>
+                        <p>Usuário remoto conecta-se à rede corporativa. Protocolo comum: OpenVPN, IKEv2, WireGuard.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-white">Site-to-Site</h3>
+                        <p>Conecta duas redes inteiras (ex: matriz ↔ filial). Protocolo comum: IPSec, WireGuard em gateways.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-white">Mesh VPN</h3>
+                        <p>Cada nó conecta-se a todos os outros. Usado em infraestruturas distribuídas (Kubernetes clusters, multi-cloud). Ferramentas: Tailscale, Nebula, ZeroTier.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-white">Cloud VPN (Managed)</h3>
+                        <p>AWS VPN, GCP Cloud VPN, Azure VPN Gateway — serviços gerenciados que abstraem configuração de IPSec.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Conceitos Avançados -->
+            <section class="bg-slate-800 p-6 rounded-lg">
+                <h2 class="text-2xl font-bold text-green-400 mb-4">Conceitos Avançados</h2>
+                <ul class="text-gray-300 space-y-3 list-disc list-inside">
+                    <li><strong>Split-tunneling:</strong> Apenas tráfego para redes específicas vai pela VPN (ex: apenas 10.0.0.0/8); resto vai direto pela internet. Economiza banda e latência.</li>
+                    <li><strong>Full-tunneling:</strong> Todo o tráfego passa pela VPN. Mais seguro, mas pode ser mais lento.</li>
+                    <li><strong>MTU/Overhead:</strong> VPNs adicionam headers (encapsulamento), reduzindo MTU efetivo. Configurar MTU correto evita fragmentação e melhora performance.</li>
+                    <li><strong>Key Management:</strong> Certificate-based (PKI com CA) vs keypair (WireGuard). Rotação de chaves é critical para segurança de longo prazo.</li>
+                    <li><strong>Multi-hop VPNs:</strong> Encadear VPNs (VPN1 → VPN2) para distribuir confiança, mas com penalidade de latência.</li>
+                </ul>
+            </section>
+
+            <!-- Privacy Trade-offs -->
+            <section class="bg-gray-800 p-6 rounded-lg">
+                <h2 class="text-2xl font-bold text-green-400 mb-4">Privacy Trade-offs</h2>
+                <p class="text-gray-300 mb-4">VPNs comerciais (NordVPN, ProtonVPN, Mullvad) prometem privacidade, mas considere:</p>
+                <ul class="text-gray-300 space-y-2 list-disc list-inside ml-4">
+                    <li><strong>Logging policies:</strong> Verifique se guardam logs de conexão, DNS queries, IPs. Preferir "no-log" auditados.</li>
+                    <li><strong>Jurisdição:</strong> País onde a empresa está sediada (14 Eyes intelligence alliance, GDPR, etc).</li>
+                    <li><strong>Chaining VPNs:</strong> Usar duas VPNs sequencialmente distribui confiança, mas duplica latência.</li>
+                    <li><strong>VPN Kill-switch:</strong> Bloqueia tráfego se VPN cair, evitando leaks acidentais.</li>
+                </ul>
+            </section>
+
+            <!-- Glossário -->
+            <section class="bg-slate-800 p-6 rounded-lg">
+                <h2 class="text-2xl font-bold text-green-400 mb-4">Glossário Rápido</h2>
+                <dl class="text-gray-300 space-y-2">
+                    <dt class="font-semibold text-white">IKE (Internet Key Exchange):</dt>
+                    <dd class="ml-4">Protocolo que negocia chaves criptográficas para IPSec.</dd>
+                    
+                    <dt class="font-semibold text-white mt-3">ESP (Encapsulating Security Payload):</dt>
+                    <dd class="ml-4">Parte do IPSec que criptografa o payload.</dd>
+                    
+                    <dt class="font-semibold text-white mt-3">MTU (Maximum Transmission Unit):</dt>
+                    <dd class="ml-4">Tamanho máximo de pacote; VPN reduz devido ao overhead de encapsulamento.</dd>
+                    
+                    <dt class="font-semibold text-white mt-3">Split-tunneling:</dt>
+                    <dd class="ml-4">Apenas tráfego selecionado vai pela VPN; resto vai direto.</dd>
+                    
+                    <dt class="font-semibold text-white mt-3">Keypair:</dt>
+                    <dd class="ml-4">Par de chaves pública/privada; usado em WireGuard para autenticação.</dd>
+                </dl>
+            </section>
+
+        </main>
+
+        <footer class="text-center mt-16 animate__animated animate__fadeInUp">
+            <a href="index.html" class="inline-block bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-full transition-transform transform hover:scale-105 shadow-lg">
+                Voltar ao Módulo de VPNs
+            </a>
+        </footer>
+    </div>
+</body>
+</html>

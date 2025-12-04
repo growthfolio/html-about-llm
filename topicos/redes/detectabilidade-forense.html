@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <title>Detectabilidade e Forense de Rede</title>
+    <style>
+        body { background-color: #0a0a0a; }
+        .detection-card {
+            background-color: #1e293b;
+            border-left: 4px solid #f59e0b;
+            transition: all 0.3s ease-in-out;
+        }
+        .detection-card:hover { transform: scale(1.02); box-shadow: 0 10px 20px rgba(245, 158, 11, 0.3); }
+        .code-block {
+            background-color: #0f172a;
+            color: #94a3b8;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+            font-size: 0.875rem;
+        }
+        .tool-badge {
+            display: inline-block;
+            background-color: #334155;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            margin: 0.25rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-12 animate__animated animate__fadeInDown">
+            <h1 class="text-4xl md:text-5xl font-bold text-amber-500" style="text-shadow: 0 0 15px rgba(245, 158, 11, 0.7);">
+                Detectabilidade e Forense de Rede
+            </h1>
+            <p class="mt-4 text-lg text-gray-400">
+                Como identificar uso de proxies/VPNs e técnicas forenses para análise de tráfego.
+            </p>
+        </header>
+
+        <main class="max-w-5xl mx-auto space-y-12 animate__animated animate__fadeInUp">
+            
+            <!-- Objetivos -->
+            <section class="bg-gray-800 p-6 rounded-lg border-l-4 border-amber-500">
+                <h2 class="text-2xl font-bold text-amber-400 mb-3">🎯 Objetivos</h2>
+                <p class="text-gray-300">Ao terminar, você será capaz de: identificar sinais de uso de proxies/VPNs em tráfego de rede, entender técnicas básicas de correlação de logs e tráfego, e conhecer ferramentas forenses essenciais (tcpdump, Wireshark, Zeek, Suricata).</p>
+            </section>
+
+            <!-- Resumo Rápido -->
+            <section class="bg-gray-800 p-6 rounded-lg">
+                <h2 class="text-2xl font-bold text-amber-400 mb-4">⚡ Resumo Rápido</h2>
+                <ul class="space-y-2 text-gray-300 list-disc list-inside">
+                    <li><strong>TTL Anomalies:</strong> VPNs/proxies alteram TTL dos pacotes — compare com baseline.</li>
+                    <li><strong>TCP/TLS Fingerprinting:</strong> Identificação de SO/cliente via padrões de handshake e cipher suites.</li>
+                    <li><strong>DNS Tunneling:</strong> Detectável por tamanho anormal de queries, alta frequência e entropia de subdomínios.</li>
+                    <li><strong>Port Knocking:</strong> Sequências de conexões a portas fechadas podem indicar covert channels.</li>
+                    <li><strong>Ferramentas:</strong> tcpdump/Wireshark (captura), Zeek/Suricata (IDS/análise), jq/awk (parsing de logs).</li>
+                </ul>
+            </section>
+
+            <!-- Identificando Uso de Proxies/VPNs -->
+            <section>
+                <h2 class="text-3xl font-bold text-orange-500 mb-4">Identificando Uso de Proxies/VPNs</h2>
+                
+                <div class="detection-card p-6 rounded-lg mb-6">
+                    <h3 class="text-xl font-semibold text-yellow-400 mb-3">1. TTL (Time-to-Live) Anomalies</h3>
+                    <p class="text-gray-300 leading-relaxed mb-3">
+                        Cada pacote IP tem um campo TTL que é decrementado a cada salto (roteador). Sistemas operacionais usam valores iniciais padrão: <strong>Windows = 128</strong>, <strong>Linux = 64</strong>, <strong>macOS = 64</strong>.
+                    </p>
+                    <p class="text-gray-300 mb-3">
+                        Quando um usuário se conecta via VPN/proxy, o TTL é decrementado pelo túnel/proxy. Se você espera TTL ~60-64 (cliente Linux direto), mas recebe ~30-40, pode indicar intermediário.
+                    </p>
+                    <div class="code-block">
+# Capturar TTL com tcpdump:
+sudo tcpdump -i eth0 -n 'src host 192.168.1.100' -v | grep ttl
+
+# Analisar com tshark (Wireshark CLI):
+tshark -r capture.pcap -T fields -e ip.src -e ip.ttl | sort | uniq -c
+                    </div>
+                    <p class="text-gray-400 text-sm mt-2"><strong>Limitação:</strong> Nem sempre confiável; TTL pode variar por roteamento legítimo. Use como indicador, não prova absoluta.</p>
+                </div>
+
+                <div class="detection-card p-6 rounded-lg mb-6">
+                    <h3 class="text-xl font-semibold text-yellow-400 mb-3">2. TCP/TLS Fingerprinting</h3>
+                    <p class="text-gray-300 leading-relaxed mb-3">
+                        Cada sistema operacional e aplicação tem padrões únicos no handshake TCP e nas negociações TLS (ordem de cipher suites, extensões, tamanhos de janela). Ferramentas como <strong>p0f</strong> e <strong>JA3</strong> (para TLS) criam "fingerprints" identificáveis.
+                    </p>
+                    <p class="text-gray-300 mb-3">
+                        Se o fingerprint TLS indica "Cliente Linux com OpenSSL 1.1.1", mas o user-agent HTTP diz "Windows 10 com Chrome", há inconsistência suspeita (possível proxy/VPN intermediário modificando tráfego).
+                    </p>
+                    <div class="code-block">
+# p0f (passive OS fingerprinting):
+sudo p0f -i eth0 -p -o /tmp/p0f.log
+
+# JA3 fingerprint (requer Zeek ou script Python):
+# Zeek gera JA3 automaticamente em ssl.log
+zeek -i eth0 -C local
+cat ssl.log | zeek-cut ja3 ja3s
+                    </div>
+                </div>
+
+                <div class="detection-card p-6 rounded-lg mb-6">
+                    <h3 class="text-xl font-semibold text-yellow-400 mb-3">3. Listas de IPs Conhecidos de VPN/Proxy</h3>
+                    <p class="text-gray-300 leading-relaxed mb-3">
+                        Existem bancos de dados públicos de IPs de provedores de VPN (NordVPN, ExpressVPN, etc.) e proxies públicos. Comparar IPs de origem com essas listas é método rápido, mas requer atualização constante.
+                    </p>
+                    <p class="text-gray-400 text-sm"><strong>Serviços:</strong> IPHub, IP2Proxy, MaxMind GeoIP2 Anonymous IP.</p>
+                </div>
+
+                <div class="detection-card p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-yellow-400 mb-3">4. Port Knocking & Anomalias de Porta</h3>
+                    <p class="text-gray-300 leading-relaxed mb-3">
+                        <strong>Port knocking</strong> é técnica onde cliente envia sequência específica de conexões a portas fechadas antes de acessar porta real (covert channel). Detectável por padrões repetidos de SYN a portas fechadas em curto espaço de tempo.
+                    </p>
+                    <div class="code-block">
+# Detectar port scans/knocking com tcpdump:
+sudo tcpdump -i eth0 'tcp[tcpflags] & tcp-syn != 0 and tcp[tcpflags] & tcp-ack == 0' -n
+
+# Ou com iptables logging:
+iptables -A INPUT -p tcp --dport 1000:9000 -j LOG --log-prefix "PORT_KNOCK: "
+                    </div>
+                </div>
+            </section>
+
+            <!-- Detectando DNS Tunneling -->
+            <section>
+                <h2 class="text-3xl font-bold text-orange-500 mb-4">Detectando DNS Tunneling & Exfiltração</h2>
+                <div class="detection-card p-6 rounded-lg">
+                    <p class="text-gray-300 leading-relaxed mb-4">
+                        <strong>DNS tunneling</strong> usa queries DNS para encapsular dados arbitrários (ex: comandos C2, exfiltração de arquivos). Ferramentas como <strong>Iodine</strong> e <strong>dnscat2</strong> fazem isso.
+                    </p>
+                    <h3 class="text-xl font-semibold text-white mb-3">Sinais de DNS Tunneling</h3>
+                    <ul class="text-gray-300 list-disc list-inside space-y-2">
+                        <li><strong>Queries muito longas:</strong> Subdomínios com 50+ caracteres (dados codificados em base64/hex).</li>
+                        <li><strong>Alta frequência:</strong> Centenas de queries para mesmo domínio em curto período.</li>
+                        <li><strong>Alta entropia:</strong> Subdomínios parecem aleatórios (ex: <code class="code-block inline px-1">a8f3b2c9d1e4.evil.com</code>).</li>
+                        <li><strong>Tipos de registro incomuns:</strong> Uso excessivo de TXT, NULL ou registros raros.</li>
+                    </ul>
+                    <div class="code-block mt-4">
+# Capturar DNS queries com tcpdump:
+sudo tcpdump -i eth0 port 53 -w dns.pcap
+
+# Analisar com tshark:
+tshark -r dns.pcap -Y "dns.qry.name" -T fields -e dns.qry.name | sort | uniq -c | sort -rn
+
+# Calcular entropia de subdomínios (script Python/awk):
+# Subdomínios com entropia > 3.5 são suspeitos
+                    </div>
+                    <p class="text-gray-400 text-sm mt-3"><strong>Cenário:</strong> SOC detecta exfiltration via DNS tunneling ao observar queries de 60 caracteres com alta entropia para domínio externo, em volume de 500 queries/min.</p>
+                </div>
+            </section>
+
+            <!-- Logs e Monitoramento -->
+            <section>
+                <h2 class="text-3xl font-bold text-orange-500 mb-4">Logs e Monitoramento: O Que Registrar</h2>
+                <div class="detection-card p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-white mb-3">Dados Essenciais para Forense</h3>
+                    <ul class="text-gray-300 list-disc list-inside space-y-2">
+                        <li><strong>Connection tracking (conntrack):</strong> IP origem/destino, portas, protocolo, duração, bytes transferidos.</li>
+                        <li><strong>Logs de Proxy:</strong> User, timestamp, URL acessada, método HTTP, status code, tamanho de resposta, user-agent.</li>
+                        <li><strong>Logs de Firewall:</strong> Pacotes aceitos/bloqueados, regra acionada, flags TCP.</li>
+                        <li><strong>DNS logs:</strong> Query, resposta, cliente, servidor DNS consultado.</li>
+                        <li><strong>TLS/SSL logs:</strong> Cipher suites negociadas, versão TLS, SNI (Server Name Indication), JA3 fingerprint.</li>
+                    </ul>
+                    <h3 class="text-xl font-semibold text-white mt-6 mb-3">Correlação Básica de Logs</h3>
+                    <p class="text-gray-300 mb-3">
+                        Correlacionar eventos de diferentes fontes (firewall + proxy + DNS) por timestamp e IP de origem. Por exemplo:
+                    </p>
+                    <ol class="text-gray-300 list-decimal list-inside space-y-2">
+                        <li>Firewall registra conexão de <code class="code-block inline px-1">192.168.1.50</code> para <code class="code-block inline px-1">1.2.3.4:443</code>.</li>
+                        <li>Proxy registra <code class="code-block inline px-1">192.168.1.50</code> acessando <code class="code-block inline px-1">https://suspicious.com</code>.</li>
+                        <li>DNS log mostra <code class="code-block inline px-1">192.168.1.50</code> consultou <code class="code-block inline px-1">suspicious.com</code> 2 segundos antes.</li>
+                    </ol>
+                    <p class="text-gray-300 mt-3">Timeline completa permite rastrear origem e destino de incidentes.</p>
+                    <div class="code-block mt-4">
+# Extrair IPs de múltiplos logs e correlacionar com jq/grep:
+grep "192.168.1.50" /var/log/firewall.log
+grep "192.168.1.50" /var/log/proxy/access.log
+grep "192.168.1.50" /var/log/named/queries.log
+
+# Usar awk para parsing e join por timestamp:
+awk '{print $1, $2, $5}' firewall.log > fw.tmp
+awk '{print $1, $2, $7}' proxy.log > proxy.tmp
+join -j 1 fw.tmp proxy.tmp
+                    </div>
+                </div>
+            </section>
+
+            <!-- Ferramentas Relevantes -->
+            <section>
+                <h2 class="text-3xl font-bold text-orange-500 mb-4">🛠️ Ferramentas Forenses Essenciais</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    
+                    <div class="detection-card p-5 rounded-lg">
+                        <h3 class="text-lg font-semibold text-cyan-400 mb-2">tcpdump</h3>
+                        <p class="text-gray-300 text-sm mb-2">Captura de pacotes em linha de comando. Leve, rápido, ideal para captura remota via SSH.</p>
+                        <div class="code-block text-xs mt-2">
+sudo tcpdump -i eth0 -n -s0 -w capture.pcap
+sudo tcpdump -i eth0 port 443 -A
+                        </div>
+                        <div class="mt-2">
+                            <span class="tool-badge">Captura</span>
+                            <span class="tool-badge">CLI</span>
+                        </div>
+                    </div>
+
+                    <div class="detection-card p-5 rounded-lg">
+                        <h3 class="text-lg font-semibold text-cyan-400 mb-2">Wireshark / tshark</h3>
+                        <p class="text-gray-300 text-sm mb-2">Análise profunda de pacotes com GUI (Wireshark) ou CLI (tshark). Suporta centenas de protocolos, filtros avançados.</p>
+                        <div class="code-block text-xs mt-2">
+wireshark capture.pcap
+tshark -r capture.pcap -Y "http.request"
+                        </div>
+                        <div class="mt-2">
+                            <span class="tool-badge">Análise</span>
+                            <span class="tool-badge">GUI/CLI</span>
+                        </div>
+                    </div>
+
+                    <div class="detection-card p-5 rounded-lg">
+                        <h3 class="text-lg font-semibold text-cyan-400 mb-2">Zeek (antigo Bro)</h3>
+                        <p class="text-gray-300 text-sm mb-2">IDS/Network Security Monitor que gera logs estruturados (JSON) de conexões, HTTP, DNS, SSL/TLS. Altamente extensível via scripts.</p>
+                        <div class="code-block text-xs mt-2">
+zeek -i eth0 -C local
+cat conn.log | zeek-cut id.orig_h id.resp_h service duration
+                        </div>
+                        <div class="mt-2">
+                            <span class="tool-badge">IDS</span>
+                            <span class="tool-badge">Logs Estruturados</span>
+                        </div>
+                    </div>
+
+                    <div class="detection-card p-5 rounded-lg">
+                        <h3 class="text-lg font-semibold text-cyan-400 mb-2">Suricata</h3>
+                        <p class="text-gray-300 text-sm mb-2">IDS/IPS multi-threaded com suporte a regras Snort. Gera alertas e logs detalhados, compatível com Zeek para correlação.</p>
+                        <div class="code-block text-xs mt-2">
+sudo suricata -c /etc/suricata/suricata.yaml -i eth0
+tail -f /var/log/suricata/fast.log
+                        </div>
+                        <div class="mt-2">
+                            <span class="tool-badge">IDS/IPS</span>
+                            <span class="tool-badge">Regras</span>
+                        </div>
+                    </div>
+
+                    <div class="detection-card p-5 rounded-lg">
+                        <h3 class="text-lg font-semibold text-cyan-400 mb-2">p0f</h3>
+                        <p class="text-gray-300 text-sm mb-2">Passive OS fingerprinting. Identifica SO e aplicação sem enviar pacotes, apenas analisando tráfego observado.</p>
+                        <div class="code-block text-xs mt-2">
+sudo p0f -i eth0 -p -o /tmp/p0f.log
+                        </div>
+                        <div class="mt-2">
+                            <span class="tool-badge">Fingerprinting</span>
+                            <span class="tool-badge">Passivo</span>
+                        </div>
+                    </div>
+
+                    <div class="detection-card p-5 rounded-lg">
+                        <h3 class="text-lg font-semibold text-cyan-400 mb-2">jq / awk / grep</h3>
+                        <p class="text-gray-300 text-sm mb-2">Ferramentas CLI para parsing e análise de logs (JSON, texto). Essenciais para correlação rápida.</p>
+                        <div class="code-block text-xs mt-2">
+cat conn.log | jq '.id.orig_h' | sort | uniq -c
+grep "192.168.1" access.log | awk '{print $7}'
+                        </div>
+                        <div class="mt-2">
+                            <span class="tool-badge">Parsing</span>
+                            <span class="tool-badge">CLI</span>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- Cenários Práticos -->
+            <section>
+                <h2 class="text-3xl font-bold text-orange-500 mb-4">📋 Cenários Práticos</h2>
+                <div class="space-y-4">
+                    <div class="detection-card p-5 rounded-lg">
+                        <h3 class="text-lg font-semibold text-yellow-300 mb-2">Cenário 1: Detecção de Exfiltração via DNS Tunneling</h3>
+                        <p class="text-gray-300 text-sm">
+                            <strong>Situação:</strong> Analista do SOC nota volume anormal de queries DNS para domínio externo <code class="code-block inline px-1">c2server.xyz</code>.<br>
+                            <strong>Análise:</strong> Captura com tcpdump mostra subdomínios de 60+ caracteres com alta entropia, 500 queries/min.<br>
+                            <strong>Ação:</strong> Bloquear domínio no firewall/DNS, isolar máquina comprometida, investigar origem (malware, insider threat).<br>
+                            <strong>Ferramenta:</strong> Zeek + script de cálculo de entropia + análise manual com Wireshark.
+                        </p>
+                    </div>
+                    <div class="detection-card p-5 rounded-lg">
+                        <h3 class="text-lg font-semibold text-yellow-300 mb-2">Cenário 2: Identificação de VPN Corporativa Não Autorizada</h3>
+                        <p class="text-gray-300 text-sm">
+                            <strong>Situação:</strong> Política proíbe VPNs pessoais. Firewall detecta tráfego OpenVPN (porta 1194/UDP) de workstation interna.<br>
+                            <strong>Análise:</strong> TLS fingerprint confirma OpenVPN client. TTL inconsistente (esperado 64, recebido 50) indica túnel.<br>
+                            <strong>Ação:</strong> Bloquear porta 1194/UDP, confrontar usuário, aplicar política de segurança.<br>
+                            <strong>Ferramenta:</strong> Firewall logs + p0f + Zeek SSL logs.
+                        </p>
+                    </div>
+                    <div class="detection-card p-5 rounded-lg">
+                        <h3 class="text-lg font-semibold text-yellow-300 mb-2">Cenário 3: Investigação de Port Knocking Suspeito</h3>
+                        <p class="text-gray-300 text-sm">
+                            <strong>Situação:</strong> IDS alerta sobre sequência repetida de SYN para portas fechadas (1234, 5678, 9012) de IP externo.<br>
+                            <strong>Análise:</strong> Após sequência, conexão SSH (porta 22) é estabelecida. Port knocking para backdoor SSH.<br>
+                            <strong>Ação:</strong> Bloquear IP de origem, revisar regras de firewall, buscar backdoor no servidor.<br>
+                            <strong>Ferramenta:</strong> Suricata (custom rule) + iptables logging + correlação manual.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Glossário -->
+            <section class="bg-gray-800 p-6 rounded-lg">
+                <h2 class="text-2xl font-bold text-amber-400 mb-4">📚 Glossário</h2>
+                <dl class="space-y-3 text-gray-300">
+                    <div>
+                        <dt class="font-semibold text-white">TTL (Time-to-Live)</dt>
+                        <dd>Campo IP que limita número de saltos de um pacote; decrementado a cada roteador.</dd>
+                    </div>
+                    <div>
+                        <dt class="font-semibold text-white">JA3 Fingerprint</dt>
+                        <dd>Hash MD5 de características do handshake TLS; identifica cliente/biblioteca TLS.</dd>
+                    </div>
+                    <div>
+                        <dt class="font-semibold text-white">DNS Tunneling</dt>
+                        <dd>Técnica de encapsular dados em queries/respostas DNS para evadir firewall.</dd>
+                    </div>
+                    <div>
+                        <dt class="font-semibold text-white">Port Knocking</dt>
+                        <dd>Sequência de conexões a portas fechadas para abrir porta de serviço (covert channel).</dd>
+                    </div>
+                    <div>
+                        <dt class="font-semibold text-white">Conntrack</dt>
+                        <dd>Connection tracking; registro de conexões ativas/históricas no firewall/sistema.</dd>
+                    </div>
+                    <div>
+                        <dt class="font-semibold text-white">Zeek (Bro)</dt>
+                        <dd>Network Security Monitor que gera logs estruturados de protocolos (HTTP, DNS, SSL, etc).</dd>
+                    </div>
+                    <div>
+                        <dt class="font-semibold text-white">p0f</dt>
+                        <dd>Ferramenta de passive OS fingerprinting via análise de padrões TCP/IP.</dd>
+                    </div>
+                </dl>
+            </section>
+
+        </main>
+
+        <footer class="text-center mt-16 animate__animated animate__fadeInUp">
+            <a href="index.html" class="inline-block bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 px-6 rounded-full transition-transform transform hover:scale-105 shadow-lg">
+                Voltar ao Módulo de Redes
+            </a>
+        </footer>
+    </div>
+</body>
+</html>

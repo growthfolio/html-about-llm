@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <title>Tunelamento Avançado e Pluggable Transports</title>
+    <style>
+        body { background-color: #0a0a0a; }
+        .tunnel-card {
+            background-color: #1e293b;
+            border-left: 4px solid #06b6d4;
+            transition: all 0.3s ease-in-out;
+        }
+        .tunnel-card:hover { transform: translateY(-3px); }
+        .code-block {
+            background-color: #0f172a;
+            color: #94a3b8;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-12 animate__animated animate__fadeInDown">
+            <h1 class="text-4xl md:text-5xl font-bold text-cyan-500" style="text-shadow: 0 0 15px rgba(6, 182, 212, 0.7);">
+                Tunelamento Avançado e Pluggable Transports
+            </h1>
+            <p class="mt-4 text-lg text-gray-400">
+                SSH tunnels, DNS/ICMP tunneling e técnicas para evadir censura.
+            </p>
+        </header>
+
+        <main class="max-w-5xl mx-auto space-y-12 animate__animated animate__fadeInUp">
+            
+            <!-- Objetivos -->
+            <section class="bg-gray-800 p-6 rounded-lg border-l-4 border-cyan-500">
+                <h2 class="text-xl font-bold text-cyan-400 mb-3">Objetivos de Aprendizagem</h2>
+                <p class="text-gray-300">Ao terminar, você saberá criar túneis SSH (local/remote/dynamic), usar DNS/ICMP tunneling para contornar firewalls e entender pluggable transports para evasão de censura.</p>
+            </section>
+
+            <!-- Resumo Rápido -->
+            <section class="bg-slate-800 p-6 rounded-lg">
+                <h2 class="text-2xl font-bold text-cyan-400 mb-4">Resumo Rápido</h2>
+                <ul class="text-gray-300 space-y-2 list-disc list-inside">
+                    <li><strong>SSH Local Forwarding:</strong> <code class="bg-slate-900 px-2 py-1 rounded">ssh -L local_port:dest:dest_port user@server</code></li>
+                    <li><strong>SSH Remote Forwarding:</strong> <code class="bg-slate-900 px-2 py-1 rounded">ssh -R remote_port:dest:dest_port user@server</code></li>
+                    <li><strong>SSH Dynamic Forwarding (SOCKS5):</strong> <code class="bg-slate-900 px-2 py-1 rounded">ssh -D 1080 user@server</code></li>
+                    <li><strong>DNS tunneling:</strong> Encapsula dados em queries DNS (útil quando apenas DNS é permitido).</li>
+                    <li><strong>Pluggable transports:</strong> Disfarçam tráfego proibido (Tor) como permitido (HTTPS, WebRTC).</li>
+                </ul>
+            </section>
+
+            <!-- SSH Tunneling -->
+            <section class="tunnel-card p-6 rounded-lg">
+                <h2 class="text-3xl font-bold text-sky-400 mb-4">SSH Tunneling</h2>
+                <p class="text-gray-300 leading-relaxed mb-4">
+                    SSH não é apenas para acesso remoto; pode criar túneis criptografados para encaminhar tráfego de forma segura através de redes não-confiáveis.
+                </p>
+                
+                <h3 class="text-xl font-semibold text-white mt-6 mb-3">Local Port Forwarding (-L)</h3>
+                <p class="text-gray-300 mb-2">Encaminha porta local para um destino via servidor SSH intermediário.</p>
+                <div class="code-block mt-2">
+# Sintaxe: ssh -L [bind_address:]local_port:destination:destination_port user@ssh_server
+
+# Exemplo: acessar banco de dados interno via bastion
+ssh -L 3306:db.internal.corp:3306 user@bastion.corp.com
+
+# Agora: mysql -h 127.0.0.1 -P 3306 se conecta ao db.internal.corp via túnel SSH</div>
+                <p class="text-gray-300 mt-3"><strong>Caso de uso:</strong> Acessar serviços internos (DB, web apps) de forma segura sem expor diretamente à internet.</p>
+
+                <h3 class="text-xl font-semibold text-white mt-8 mb-3">Remote Port Forwarding (-R)</h3>
+                <p class="text-gray-300 mb-2">Expõe porta do servidor remoto para acessar serviço local (túnel reverso).</p>
+                <div class="code-block mt-2">
+# Sintaxe: ssh -R [bind_address:]remote_port:destination:destination_port user@ssh_server
+
+# Exemplo: expor app local (localhost:8000) na porta 8080 do servidor remoto
+ssh -R 8080:localhost:8000 user@remote.example.com
+
+# Qualquer um que acessar remote.example.com:8080 será redirecionado para seu localhost:8000</div>
+                <p class="text-gray-300 mt-3"><strong>Caso de uso:</strong> Demonstrar app local para cliente externo sem deploy, ou contornar NAT/firewall (reverse shell legítimo).</p>
+
+                <h3 class="text-xl font-semibold text-white mt-8 mb-3">Dynamic Port Forwarding (-D) — SOCKS5 Proxy</h3>
+                <p class="text-gray-300 mb-2">Cria um proxy SOCKS5 local que encaminha qualquer tráfego via servidor SSH.</p>
+                <div class="code-block mt-2">
+# Sintaxe: ssh -D [bind_address:]local_port user@ssh_server
+
+# Exemplo: criar SOCKS5 proxy em localhost:1080
+ssh -D 1080 user@bastion.example.com
+
+# Configurar navegador/app para usar SOCKS5 proxy em 127.0.0.1:1080
+# Todo o tráfego sai do bastion, não do seu IP local</div>
+                <p class="text-gray-300 mt-3"><strong>Caso de uso:</strong> Contornar firewall corporativo, acessar recursos geo-restritos via servidor em outra região.</p>
+
+                <div class="bg-gray-800 p-4 rounded-lg mt-6">
+                    <p class="font-semibold text-lg text-cyan-400">Cenário combinado:</p>
+                    <p class="text-gray-300">Desenvolvedor remoto usa <code class="bg-slate-900 px-2 py-1 rounded">ssh -L</code> para acessar DB de produção via bastion, e <code class="bg-slate-900 px-2 py-1 rounded">ssh -D</code> para rotear tráfego web via servidor da empresa.</p>
+                </div>
+            </section>
+
+            <!-- HTTP CONNECT Tunneling -->
+            <section class="tunnel-card p-6 rounded-lg">
+                <h2 class="text-3xl font-bold text-sky-400 mb-4">HTTP CONNECT Tunneling</h2>
+                <p class="text-gray-300 leading-relaxed mb-4">
+                    O método HTTP CONNECT foi criado para permitir tráfego HTTPS via proxies HTTP. Ele estabelece um túnel TCP "cru" através do proxy, permitindo passar qualquer protocolo.
+                </p>
+                <div class="code-block mt-4">
+# Usar SSH através de proxy HTTP (corkscrew ou nc + ProxyCommand)
+# Instalar corkscrew: apt-get install corkscrew
+
+# ~/.ssh/config:
+Host restricted-server
+    Hostname server.example.com
+    ProxyCommand corkscrew proxy.corp.com 8080 %h %p
+    User myuser
+
+# Conectar normalmente: ssh restricted-server</div>
+                <p class="text-gray-300 mt-4"><strong>Caso de uso:</strong> Ambiente corporativo onde apenas proxy HTTP (porta 8080) é permitido; tunela SSH através dele.</p>
+            </section>
+
+            <!-- DNS Tunneling -->
+            <section class="tunnel-card p-6 rounded-lg">
+                <h2 class="text-3xl font-bold text-sky-400 mb-4">DNS Tunneling</h2>
+                <p class="text-gray-300 leading-relaxed mb-4">
+                    Encapsula dados arbitrários em queries e respostas DNS. Útil quando firewall bloqueia tudo exceto DNS (porta 53 UDP/TCP). Muito lento, mas eficaz para contornar censura extrema.
+                </p>
+                <h3 class="text-xl font-semibold text-white mb-3">Como funciona:</h3>
+                <ol class="text-gray-300 space-y-2 list-decimal list-inside ml-4">
+                    <li>Cliente codifica dados em subdomain (ex: <code class="bg-slate-900 px-2 py-1 rounded">data123.tunnel.example.com</code>).</li>
+                    <li>Query DNS é enviada; servidor autoritativo para <code class="bg-slate-900 px-2 py-1 rounded">tunnel.example.com</code> decodifica.</li>
+                    <li>Resposta DNS contém dados codificados (TXT records, CNAME, etc).</li>
+                </ol>
+                <h3 class="text-xl font-semibold text-white mt-6 mb-3">Ferramenta: Iodine</h3>
+                <div class="code-block mt-2">
+# Servidor (precisa de domínio + servidor DNS autoritativo):
+sudo iodined -f -c -P senha 10.0.0.1 tunnel.example.com
+
+# Cliente:
+sudo iodine -f -P senha tunnel.example.com
+
+# Interface tun criada (dns0); rotear tráfego via 10.0.0.1</div>
+                <p class="text-gray-300 mt-4"><strong>Performance:</strong> ~3-50 KB/s (muito lento), alta latência. Útil apenas para texto/comandos, não para streaming.</p>
+                <div class="bg-gray-800 p-4 rounded-lg mt-6">
+                    <p class="font-semibold text-lg text-cyan-400">Cenário:</p>
+                    <p class="text-gray-300">Pentester em rede corporativa restrita exfiltra dados via DNS tunneling, já que firewall só permite DNS.</p>
+                </div>
+            </section>
+
+            <!-- ICMP Tunneling -->
+            <section class="tunnel-card p-6 rounded-lg">
+                <h2 class="text-3xl font-bold text-sky-400 mb-4">ICMP Tunneling</h2>
+                <p class="text-gray-300 leading-relaxed mb-4">
+                    Encapsula dados em pacotes ICMP Echo Request/Reply (ping). Firewalls geralmente permitem ICMP para diagnóstico, criando vetor de exfiltração.
+                </p>
+                <h3 class="text-xl font-semibold text-white mb-3">Ferramenta: ptunnel</h3>
+                <div class="code-block mt-2">
+# Servidor:
+sudo ptunnel
+
+# Cliente (tunela porta SSH local via ICMP para servidor remoto):
+sudo ptunnel -p proxy.example.com -lp 8000 -da remote.internal -dp 22
+
+# Conectar: ssh -p 8000 localhost (vai via ICMP para remote.internal:22)</div>
+                <p class="text-gray-300 mt-4"><strong>Detecção:</strong> IDS/IPS modernos detectam ICMP anômalo (payload não-padrão, alto volume). Uso deve ser cauteloso.</p>
+            </section>
+
+            <!-- Pluggable Transports -->
+            <section class="tunnel-card p-6 rounded-lg">
+                <h2 class="text-3xl font-bold text-sky-400 mb-4">Pluggable Transports (Evasão de Censura)</h2>
+                <p class="text-gray-300 leading-relaxed mb-4">
+                    Desenvolvidos para Tor, pluggable transports disfarçam tráfego proibido para parecer tráfego legítimo, contornando DPI (Deep Packet Inspection) e bloqueios de protocolo.
+                </p>
+                
+                <h3 class="text-xl font-semibold text-white mb-3">obfs4 (Obfuscation 4)</h3>
+                <p class="text-gray-300 mb-2">Randomiza tráfego Tor para evitar detecção de padrões. Adiciona ruído aleatório e timing variations.</p>
+                <div class="code-block mt-2">
+# Configurar Tor com obfs4 (já visto em página Tor):
+UseBridges 1
+ClientTransportPlugin obfs4 exec /usr/bin/obfs4proxy
+Bridge obfs4 IP:PORT FINGERPRINT cert=...</div>
+
+                <h3 class="text-xl font-semibold text-white mt-6 mb-3">meek (Domain Fronting)</h3>
+                <p class="text-gray-300 mb-2">Tunela tráfego via domínios permitidos (CDNs grandes como Azure, CloudFront). Firewall vê HTTPS para microsoft.com, não Tor.</p>
+                <p class="text-gray-300 mt-2"><strong>Limitação:</strong> Azure/Google bloquearam domain fronting em 2018; meek agora usa fallback methods.</p>
+
+                <h3 class="text-xl font-semibold text-white mt-6 mb-3">Snowflake</h3>
+                <p class="text-gray-300 mb-2">Cria proxies temporários usando WebRTC em navegadores de voluntários. Cliente Tor conecta a um "snowflake proxy" efêmero; muito difícil de bloquear (IPs mudam constantemente).</p>
+                <div class="code-block mt-2">
+# Ativar Snowflake no Tor Browser:
+# Settings → Connection → Use a bridge → Select "Snowflake"
+
+# Voluntariar-se como proxy:
+# Instalar extensão Snowflake no Firefox/Chrome</div>
+
+                <div class="bg-gray-800 p-4 rounded-lg mt-6">
+                    <p class="font-semibold text-lg text-cyan-400">Cenário:</p>
+                    <p class="text-gray-300">Ativista em país com censura pesada usa Snowflake bridges para acessar Tor sem ser detectado pelo Great Firewall.</p>
+                </div>
+            </section>
+
+            <!-- TLS Tunneling -->
+            <section class="tunnel-card p-6 rounded-lg">
+                <h2 class="text-3xl font-bold text-sky-400 mb-4">TLS/SSL Tunneling (stunnel)</h2>
+                <p class="text-gray-300 leading-relaxed mb-4">
+                    Encapsula protocolos não-criptografados dentro de TLS, fazendo-os parecer HTTPS. Útil para proteger protocolos legados ou passar por firewalls que só permitem HTTPS.
+                </p>
+                <div class="code-block mt-4">
+# Servidor stunnel (encapsula serviço local não-criptografado):
+# /etc/stunnel/stunnel.conf:
+[service]
+accept = 443
+connect = 127.0.0.1:8080
+cert = /etc/stunnel/cert.pem
+key = /etc/stunnel/key.pem
+
+# Cliente stunnel:
+[service]
+client = yes
+accept = 127.0.0.1:8080
+connect = server.example.com:443
+
+# App local conecta a localhost:8080, tráfego vai criptografado via TLS para server:443</div>
+                <p class="text-gray-300 mt-4"><strong>Caso de uso:</strong> Proteger tráfego HTTP legado, ou passar firewall que bloqueia tudo exceto porta 443.</p>
+            </section>
+
+            <!-- Glossário -->
+            <section class="bg-gray-800 p-6 rounded-lg">
+                <h2 class="text-2xl font-bold text-cyan-400 mb-4">Glossário Rápido</h2>
+                <dl class="text-gray-300 space-y-2">
+                    <dt class="font-semibold text-white">Port Forwarding:</dt>
+                    <dd class="ml-4">Redirecionamento de porta para outro destino via intermediário.</dd>
+                    
+                    <dt class="font-semibold text-white mt-3">SOCKS5 Proxy:</dt>
+                    <dd class="ml-4">Proxy versátil que suporta TCP/UDP; criado com <code class="bg-slate-900 px-1">ssh -D</code>.</dd>
+                    
+                    <dt class="font-semibold text-white mt-3">DNS Tunneling:</dt>
+                    <dd class="ml-4">Encapsular dados em queries DNS para contornar firewalls.</dd>
+                    
+                    <dt class="font-semibold text-white mt-3">Pluggable Transport:</dt>
+                    <dd class="ml-4">Técnica para disfarçar tráfego proibido (obfs4, meek, Snowflake).</dd>
+                    
+                    <dt class="font-semibold text-white mt-3">Domain Fronting:</dt>
+                    <dd class="ml-4">Técnica de usar CDN para esconder destino real de requisição HTTPS.</dd>
+                </dl>
+            </section>
+
+        </main>
+
+        <footer class="text-center mt-16 animate__animated animate__fadeInUp">
+            <a href="index.html" class="inline-block bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-3 px-6 rounded-full transition-transform transform hover:scale-105 shadow-lg">
+                Voltar ao Módulo de Redes
+            </a>
+        </footer>
+    </div>
+</body>
+</html>
